@@ -1,0 +1,247 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>Contact &amp; Booking · Eins Motorsports</title><meta name="claude:viewport-fit-sides" content="cover"><meta name="description" content="Text, call or book online. Eins Motorsports, 222 Park St, Bensenville, IL."><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Barlow:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap"><style>
+/* Layout concept: a shop floor at night. Full-bleed photo bands alternate with
+   dense, catalog-style information blocks. One accent (brand red) for actions,
+   lift-arm yellow only as a marker. Tri-stripe slash = brand mark. */
+:root{
+  --bg:#0b0b0c; --panel:#141416; --panel-2:#1b1b1e; --line:#2a2a2e;
+  --fg:#f2f2f0; --muted:#a3a39e; --dim:#6f6f6b;
+  --red:#e2231a; --red-deep:#b3160f; --yellow:#f2c300; --steel:#b8bcc2;
+  --display:"Barlow Condensed","Arial Narrow","Helvetica Neue",Arial,sans-serif;
+  --body:"Barlow","Helvetica Neue",Arial,sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+  --gutter:max(16px,env(safe-area-inset-left,0px));
+  --gutter-r:max(16px,env(safe-area-inset-right,0px));
+  --max:1180px;
+  color-scheme:dark;
+}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto} *{animation:none!important;transition:none!important}}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--body);font-size:17px;line-height:1.55;-webkit-font-smoothing:antialiased}
+img{max-width:100%;display:block}
+a{color:inherit}
+h1,h2,h3,h4{font-family:var(--display);text-transform:uppercase;line-height:.95;margin:0;text-wrap:balance;letter-spacing:.005em}
+h1{font-size:clamp(44px,8.5vw,112px);font-weight:800}
+h2{font-size:clamp(34px,5.2vw,64px);font-weight:800}
+h3{font-size:clamp(24px,3vw,34px);font-weight:700}
+p{margin:0}
+.wrap{max-width:var(--max);margin-inline:auto;padding-left:var(--gutter);padding-right:var(--gutter-r)}
+.eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--yellow)}
+.eyebrow--muted{color:var(--muted)}
+.lede{font-size:clamp(18px,2vw,22px);line-height:1.45;color:var(--muted);max-width:62ch}
+.prose{max-width:66ch;display:grid;gap:1em;color:var(--fg)}
+.prose p{color:var(--muted)}
+.prose strong{color:var(--fg);font-weight:600}
+.mono{font-family:var(--mono)}
+.tabular{font-variant-numeric:tabular-nums}
+
+/* tri-stripe brand mark */
+.stripe{display:inline-block;width:38px;height:22px;background:
+  linear-gradient(115deg,transparent 0 18%,var(--red) 18% 42%,transparent 42% 48%,var(--yellow) 48% 72%,transparent 72% 78%,var(--steel) 78% 100%);
+  flex:none}
+.stripe--lg{width:64px;height:36px}
+
+/* header */
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:40;background:rgba(11,11,12,.86);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.top__in{display:flex;align-items:center;gap:18px;min-height:64px}
+.brand{display:flex;align-items:center;gap:12px;text-decoration:none;font-family:var(--display);font-weight:800;font-size:26px;letter-spacing:.02em;text-transform:uppercase}
+.brand small{display:block;font-size:11px;letter-spacing:.22em;color:var(--muted);font-weight:600;line-height:1}
+.brand__logo{height:34px;width:auto;display:block}
+@media (min-width:900px){.brand__logo{height:40px}}
+.nav{display:flex;gap:4px;margin-left:auto;align-items:center}
+.nav a{text-decoration:none;font-family:var(--display);font-weight:600;font-size:17px;letter-spacing:.06em;text-transform:uppercase;padding:10px 12px;color:var(--muted);border-radius:4px}
+.nav a:hover,.nav a[aria-current]{color:var(--fg)}
+.nav a[aria-current]{box-shadow:inset 0 -3px 0 var(--red)}
+.nav .btn{margin-left:8px}
+.menu-btn{margin-left:auto;display:none;background:none;border:1px solid var(--line);color:var(--fg);font-family:var(--display);font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:9px 14px;border-radius:4px;font-size:15px;cursor:pointer}
+@media (max-width:860px){
+  .nav{display:none;position:absolute;left:0;right:0;top:100%;background:var(--panel);border-bottom:1px solid var(--line);flex-direction:column;align-items:stretch;padding:8px var(--gutter) 16px var(--gutter)}
+  .nav.open{display:flex}
+  .nav a{padding:12px 8px;font-size:20px}
+  .nav .btn{margin:8px 0 0}
+  .menu-btn{display:block}
+}
+
+/* buttons */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;text-decoration:none;font-family:var(--display);font-weight:700;letter-spacing:.08em;text-transform:uppercase;font-size:18px;padding:14px 22px;border-radius:4px;border:1px solid transparent;cursor:pointer;text-align:center;max-width:100%;min-width:0}
+.btn--red{background:var(--red);color:#fff}
+.btn--red:hover{background:var(--red-deep)}
+.btn--ghost{border-color:var(--steel);color:var(--fg);background:transparent}
+.btn--ghost:hover{background:rgba(255,255,255,.06)}
+.btn--sm{font-size:15px;padding:10px 14px}
+.btn:focus-visible,a:focus-visible,button:focus-visible{outline:2px solid var(--yellow);outline-offset:3px}
+
+/* hero */
+.hero{position:relative;isolation:isolate;overflow:hidden;border-bottom:1px solid var(--line)}
+.hero .ph{position:absolute;inset:0;aspect-ratio:auto;height:100%;z-index:-2;margin:0}
+.hero .ph img{width:100%;height:100%;object-fit:cover}
+.hero::after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(90deg,rgba(11,11,12,.92) 0%,rgba(11,11,12,.72) 45%,rgba(11,11,12,.35) 100%),linear-gradient(0deg,var(--bg) 0%,transparent 40%)}
+.hero__in{padding-block:clamp(72px,12vw,150px) clamp(44px,7vw,90px);display:grid;gap:22px;max-width:900px}
+.hero__codes{display:flex;flex-wrap:wrap;gap:8px 18px;font-family:var(--mono);font-size:13px;letter-spacing:.12em;color:var(--steel)}
+.hero__codes b{color:var(--yellow);font-weight:500}
+.cta-row{display:flex;flex-wrap:wrap;gap:12px;align-items:center}
+.phone-line{font-family:var(--mono);font-size:15px;color:var(--muted);display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.phone-line b{color:var(--fg);font-weight:500;user-select:all}
+.copy{background:none;border:1px solid var(--line);color:var(--muted);font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;padding:5px 9px;border-radius:3px;cursor:pointer}
+.copy:hover{color:var(--fg);border-color:var(--steel)}
+
+/* sections */
+.sec{padding-block:clamp(56px,8vw,110px);border-bottom:1px solid var(--line)}
+.sec--tight{padding-block:clamp(36px,5vw,64px)}
+.sec--panel{background:var(--panel)}
+.sec__head{display:grid;gap:14px;margin-bottom:clamp(28px,4vw,48px);max-width:820px}
+.sec__head .lede{max-width:60ch}
+.split{display:grid;grid-template-columns:1fr 1fr;gap:clamp(24px,5vw,64px);align-items:center}
+@media (max-width:860px){.split{grid-template-columns:1fr}}
+.split>*{min-width:0}
+
+/* photo placeholders / figures */
+.ph{margin:0;position:relative;overflow:hidden;background:var(--panel-2);max-width:100%;border:1px solid var(--line)}
+.ph img{width:100%;height:100%;object-fit:cover}
+.ph--empty{background:
+  repeating-linear-gradient(135deg,transparent 0 14px,rgba(255,255,255,.035) 14px 15px),var(--panel-2);
+  display:flex;flex-direction:column;justify-content:flex-end;padding:14px}
+.ph__tag{position:absolute;top:12px;left:12px;font-family:var(--mono);font-size:10px;letter-spacing:.18em;color:var(--yellow);border:1px solid rgba(242,195,0,.5);padding:3px 6px;border-radius:2px}
+.ph__alt{font-family:var(--mono);font-size:12px;color:var(--muted);line-height:1.4}
+.ph--round{border-radius:6px}
+
+/* platform catalog */
+.catalog{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:22px 22px 20px;display:grid;gap:12px;text-decoration:none;position:relative;overflow:hidden;min-width:0}
+.card:hover{border-color:var(--steel)}
+.card::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--red);transform:scaleY(0);transform-origin:top;transition:transform .2s}
+.card:hover::before{transform:scaleY(1)}
+.card__code{font-family:var(--display);font-weight:800;font-size:clamp(44px,5vw,60px);line-height:.9;letter-spacing:.01em}
+.card__chassis{font-family:var(--mono);font-size:12px;letter-spacing:.1em;color:var(--yellow);text-transform:uppercase}
+.card__title{font-family:var(--display);font-weight:700;font-size:22px;text-transform:uppercase;letter-spacing:.03em}
+.card ul{margin:0;padding:0;list-style:none;display:grid;gap:6px;color:var(--muted);font-size:15.5px}
+.card ul li::before{content:"— ";color:var(--dim)}
+.card__go{font-family:var(--display);font-weight:700;letter-spacing:.08em;text-transform:uppercase;font-size:15px;color:var(--fg);margin-top:4px}
+
+/* services list */
+.svc{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1px;background:var(--line);border:1px solid var(--line)}
+.svc>a,.svc>div{background:var(--bg);padding:24px 22px;display:grid;gap:10px;text-decoration:none;min-width:0}
+.svc>a:hover{background:var(--panel)}
+.svc h3{font-size:26px}
+.svc p{color:var(--muted);font-size:15.5px}
+.svc .mono{font-size:12px;letter-spacing:.12em;color:var(--yellow);text-transform:uppercase}
+
+/* process strip */
+.steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:18px;counter-reset:s}
+.step{display:grid;gap:8px;padding-top:14px;border-top:2px solid var(--line);position:relative}
+.step::before{counter-increment:s;content:"0" counter(s);font-family:var(--mono);font-size:12px;color:var(--yellow);letter-spacing:.14em}
+.step h3{font-size:24px}
+.step p{color:var(--muted);font-size:15.5px}
+
+/* spec table */
+.spec{width:100%;border-collapse:collapse;font-size:15.5px}
+.spec th,.spec td{text-align:left;padding:12px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+.spec th{font-family:var(--mono);font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:500;width:38%}
+.spec td{color:var(--fg)}
+.table-wrap{overflow-x:auto}
+
+/* gallery */
+.gallery{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:10px}
+.gallery figure{aspect-ratio:4/5}
+.gallery .wide{grid-column:span 2;aspect-ratio:16/10}
+@media (max-width:560px){.gallery{grid-template-columns:1fr 1fr}.gallery .wide{grid-column:span 2}}
+.cap{font-family:var(--mono);font-size:12px;color:var(--muted);margin-top:8px}
+
+/* build list */
+.builds{display:grid;gap:14px}
+.build{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:18px;background:var(--panel);border:1px solid var(--line);border-radius:6px;overflow:hidden}
+.build .ph{border:0;border-radius:0;aspect-ratio:4/3}
+.build__body{padding:22px 22px 22px 4px;display:grid;gap:10px;align-content:center}
+.build__body h3{font-size:28px}
+.build__body p{color:var(--muted);font-size:15.5px}
+.build__tags{display:flex;flex-wrap:wrap;gap:6px}
+.tag{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--steel);border:1px solid var(--line);padding:4px 7px;border-radius:3px}
+@media (max-width:700px){.build{grid-template-columns:1fr}.build__body{padding:18px}}
+
+/* callout band */
+.band{background:var(--red);color:#fff;border-bottom:1px solid var(--line)}
+.band .wrap{display:flex;flex-wrap:wrap;gap:16px 32px;align-items:center;justify-content:space-between;padding-block:26px}
+.band h2{font-size:clamp(28px,4vw,44px)}
+.band .btn--ghost{border-color:#fff;color:#fff}
+.band .btn--ghost:hover{background:rgba(255,255,255,.14)}
+
+/* footer */
+.foot{padding-block:48px 120px;color:var(--muted);font-size:15px}
+.foot__grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:28px}
+.foot h4{font-size:16px;letter-spacing:.1em;color:var(--fg);margin-bottom:10px}
+.foot a{color:var(--muted);text-decoration:none}
+.foot a:hover{color:var(--fg)}
+.foot ul{list-style:none;margin:0;padding:0;display:grid;gap:6px}
+.foot .fine{margin-top:34px;font-family:var(--mono);font-size:12px;color:var(--dim)}
+@media (min-width:861px){.foot{padding-bottom:48px}}
+
+/* mobile action bar */
+.actbar{position:fixed;left:0;right:0;bottom:0;z-index:50;display:none;grid-template-columns:1fr 1fr 1fr;gap:1px;background:var(--line);border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom,0px);padding-left:env(safe-area-inset-left,0px);padding-right:env(safe-area-inset-right,0px)}
+.actbar a{background:var(--panel);color:var(--fg);text-decoration:none;font-family:var(--display);font-weight:700;letter-spacing:.08em;text-transform:uppercase;font-size:16px;padding:15px 8px;text-align:center}
+.actbar a.red{background:var(--red);color:#fff}
+@media (max-width:860px){.actbar{display:grid}}
+
+/* page hero (interior) */
+.phead{padding-block:clamp(48px,7vw,96px) clamp(28px,4vw,48px);border-bottom:1px solid var(--line);display:grid;gap:16px}
+.phead .lede{max-width:64ch}
+.kicker{display:flex;align-items:center;gap:14px}
+
+/* faq */
+details{border-top:1px solid var(--line);padding:16px 0}
+details:last-of-type{border-bottom:1px solid var(--line)}
+summary{cursor:pointer;font-family:var(--display);font-weight:700;font-size:22px;text-transform:uppercase;letter-spacing:.03em;list-style:none;display:flex;justify-content:space-between;gap:16px}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"+";color:var(--yellow);font-weight:600}
+details[open] summary::after{content:"–"}
+details p{color:var(--muted);margin-top:10px;max-width:66ch}
+
+/* utilities */
+.grid-2{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px}
+.stack{display:grid;gap:14px}
+.muted{color:var(--muted)}
+.ig-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:6px}
+.ig-grid figure{aspect-ratio:1}
+.note{font-family:var(--mono);font-size:12px;color:var(--dim);border-left:2px solid var(--yellow);padding-left:10px}
+</style></head><body><header class="top"><div class="wrap top__in">
+  <a class="brand" href="/"><img class="brand__logo" src="/img/logo.png" alt="Eins Motorsports" width="900" height="260"></a>
+  <button class="menu-btn" type="button" aria-expanded="false" aria-controls="nav">Menu</button>
+  <nav class="nav" id="nav" aria-label="Main"><a href="/">Home</a><a href="/platforms/">Platforms</a><a href="/services/">Services</a><a href="/exotic/">Exotic & AMG</a><a href="/builds/">Builds</a><a href="/about/">About</a><a href="/contact/" aria-current="page">Contact</a><a class="btn btn--red btn--sm" href="sms:7087079756">Text us</a></nav>
+</div></header>
+<section class="phead"><div class="wrap stack">
+  <div class="kicker"><span class="stripe" aria-hidden="true"></span><span class="eyebrow">Contact &amp; booking</span></div>
+  <h1>Text first.<br>We answer.</h1>
+  <p class="lede">Texting is how the shop runs. Send the car, the symptom or the goal, and a photo if you've got one. You'll get questions back, then a real quote.</p>
+  <div class="cta-row"><a class="btn btn--red" href="sms:7087079756">Text (708) 707-9756</a><a class="btn btn--ghost" href="tel:+17087079756">Call (708) 707-9756</a></div>
+</div></section>
+<section class="sec"><div class="wrap grid-2">
+  <div class="stack">
+    <span class="eyebrow">Find us</span>
+    <h3>222 Park St<br>Bensenville, IL 60106</h3>
+    <p class="muted">Just off the Park St industrial strip in Bensenville, a few minutes from O'Hare and the Tri-State. Pull up to the Eins wall and you're in the right place.</p>
+    <div class="cta-row"><a class="btn btn--ghost" href="https://www.google.com/maps/search/?api=1&query=Eins+Motorsports+222+Park+St+Bensenville+IL" target="_blank" rel="noopener">Open in Maps</a><a class="btn btn--ghost" href="https://www.instagram.com/einsmotorsports/" target="_blank" rel="noopener">Instagram</a></div>
+    <div class="table-wrap"><table class="spec"><tbody>
+      <tr><th>Phone / text</th><td class="mono">(708) 707-9756</td></tr>
+      <tr><th>Hours</th><td>By appointment. Text any time; we reply when we're not under a car.</td></tr>
+      <tr><th>Drop-off</th><td>Early morning and evening drop-offs by arrangement.</td></tr>
+      <tr><th>Payment</th><td>Card, Zelle, cash. Parts deposit on larger builds.</td></tr>
+    </tbody></table></div>
+  </div>
+  <div class="stack"><span class="eyebrow">Book online</span><h3>Pick a slot.</h3><iframe src="https://blueprintcatalogen.as.me/" title="Book an appointment" width="100%" height="800" frameborder="0" style="border:1px solid var(--line);border-radius:6px;background:#fff"></iframe></div>
+</div></section>
+<section class="sec sec--tight"><div class="wrap"><figure class="ph ph--round" style="aspect-ratio:21/9"><img src="/img/about-exterior-night.jpg" alt="The shop at night: Eins sign over the bay door" loading="lazy" width="1600" height="1200"></figure></div></section><footer class="foot"><div class="wrap">
+  <div class="foot__grid">
+    <div><h4>Eins Motorsports</h4><ul><li>222 Park St</li><li>Bensenville, IL 60106</li><li><a href="https://www.google.com/maps/search/?api=1&query=Eins+Motorsports+222+Park+St+Bensenville+IL" target="_blank" rel="noopener">Open in Maps</a></li></ul></div>
+    <div><h4>Reach us</h4><ul><li><b class="mono">(708) 707-9756</b></li><li><a href="sms:7087079756">Text the shop</a></li><li><a href="https://blueprintcatalogen.as.me/" target="_blank" rel="noopener">Book online</a></li><li><a href="https://www.instagram.com/einsmotorsports/" target="_blank" rel="noopener">Instagram @einsmotorsports</a></li></ul></div>
+    <div><h4>Platforms</h4><ul><li><a href="/s55/">F80 / F82 M3 M4 · S55</a></li><li><a href="/s58/">G80 / G82 / G87 · S58</a></li><li><a href="/b58/">B58 &amp; N55</a></li><li><a href="/n54/">N54 · 335i 135i 1M</a></li><li><a href="/s65/">E90 / E92 M3 · S65</a></li></ul></div>
+    <div><h4>Work</h4><ul><li><a href="/flex-fuel/">Flex fuel &amp; E85</a></li><li><a href="/tuning/">Custom tuning</a></li><li><a href="/turbo/">Turbo &amp; bolt-ons</a></li><li><a href="/repair/">Repair &amp; diagnostics</a></li><li><a href="/exotic/">Lamborghini · McLaren · AMG</a></li></ul></div>
+  </div>
+  <p class="fine">© 2026 Eins Motorsports · Independent shop. Not affiliated with BMW AG, Automobili Lamborghini, McLaren Automotive or Mercedes-Benz AG. Model names are used to identify the vehicles we work on.</p>
+</div></footer>
+<nav class="actbar" aria-label="Quick actions"><a href="sms:7087079756" class="red">Text</a><a href="tel:+17087079756">Call</a><a href="https://blueprintcatalogen.as.me/" target="_blank" rel="noopener">Book</a></nav><script>
+(function(){
+  var b=document.querySelector('.menu-btn'),n=document.querySelector('.nav');
+  if(b&&n){b.addEventListener('click',function(){var o=n.classList.toggle('open');b.setAttribute('aria-expanded',o?'true':'false');b.textContent=o?'Close':'Menu';});}
+  document.querySelectorAll('.copy').forEach(function(c){c.addEventListener('click',function(){var t=c.getAttribute('data-copy');function sel(){var el=c.previousElementSibling;if(el){var r=document.createRange();r.selectNodeContents(el);var s=getSelection();s.removeAllRanges();s.addRange(r);}}
+    if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(function(){c.textContent='Copied';setTimeout(function(){c.textContent='Copy'},1500)}).catch(sel);}else{sel();}});});
+})();
+</script></body></html>
