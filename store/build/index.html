@@ -241,7 +241,7 @@ p{margin:0}
       <div class="field"><label for="year">Year</label><div class="sel"><select id="year"><option value="">Select year</option></select></div></div>
       <div class="field"><label for="make">Make</label><div class="sel"><select id="make" disabled><option value="">Select make</option></select></div></div>
       <div class="field"><label for="model">Model</label><div class="sel"><select id="model" disabled><option value="">Select model</option></select></div></div>
-      <div class="quick"><span class="eyebrow">Or jump to</span><span id="quick"><button class="chipbtn" type="button" data-eng="N54">N54</button> <button class="chipbtn" type="button" data-eng="N55">N55</button> <button class="chipbtn" type="button" data-eng="B58">B58</button> <button class="chipbtn" type="button" data-eng="B58TU">B58TU</button> <button class="chipbtn" type="button" data-eng="S55">S55</button> <button class="chipbtn" type="button" data-eng="S58">S58</button> <button class="chipbtn" type="button" data-eng="S63TU4">S63</button> <button class="chipbtn" type="button" data-eng="N63TU3">N63</button> <button class="chipbtn" type="button" data-eng="S65">S65</button></span></div>
+      <div class="quick"><span class="eyebrow">Or jump to</span><span id="quick"><button class="chipbtn" type="button" data-eng="N54">N54</button> <button class="chipbtn" type="button" data-eng="N55">N55</button> <button class="chipbtn" type="button" data-eng="B58">B58</button> <button class="chipbtn" type="button" data-eng="B58TU">B58TU</button> <button class="chipbtn" type="button" data-eng="S55">S55</button> <button class="chipbtn" type="button" data-eng="S58">S58</button> <button class="chipbtn" type="button" data-eng="S63TU4">S63</button> <button class="chipbtn" type="button" data-eng="N63TU3">N63</button> <button class="chipbtn" type="button" data-eng="B48">B46 / B48</button> <button class="chipbtn" type="button" data-eng="S65">S65</button></span></div>
     </form>
   </div>
   <div class="wrap stagewrap">
@@ -326,7 +326,8 @@ p{margin:0}
     N63:{code:'N63',sub:'4.4 twin-turbo hot-V V8 · 550i 650i 750i · E70 X5 E71 X6 50i · 2008–2013',layout:'v8',turbos:2,cooler:'hotv',cc:'bank',cover:'plastic'},
     N63TU:{code:'N63TU',sub:'4.4 twin-turbo hot-V V8 · 550i 650i 750i · F15 X5 F16 X6 50i · 2013–2019',layout:'v8',turbos:2,cooler:'hotv',cc:'bank',cover:'plastic'},
     N63TU2:{code:'N63TU2',sub:'4.4 twin-turbo hot-V V8 · G30 M550i · G11 750i · G05 X5 G07 X7 50i · 2016–2019',layout:'v8',turbos:2,cooler:'hotv',cc:'bank',cover:'plastic'},
-    N63TU3:{code:'N63TU3',sub:'4.4 twin-turbo hot-V V8 · M550i M850i 760i · X5 X6 X7 M50i M60i · 2019–now',layout:'v8',turbos:2,cooler:'hotv',cc:'bank',cover:'plastic'}
+    N63TU3:{code:'N63TU3',sub:'4.4 twin-turbo hot-V V8 · M550i M850i 760i · X5 X6 X7 M50i M60i · 2019–now',layout:'v8',turbos:2,cooler:'hotv',cc:'bank',cover:'plastic'},
+    B48:{code:'B48',label:'B46 / B48',sub:'2.0 twin-scroll turbo I4 (B46 is the US-emissions twin) · 230i 330i 430i 530i · X1–X4 · Z4 · Mini · Supra 2.0 · 2016–now',layout:'i4',turbos:1,cooler:'awic',cover:'plastic'}
   };
   // make, model, first year, last year, chassis, engine
   var V=[
@@ -355,6 +356,12 @@ p{margin:0}
     ['BMW','550i',2014,2016,'F10','N63TU'],['BMW','550i GT',2014,2017,'F07','N63TU'],['BMW','650i',2013,2019,'F06 · F12 · F13','N63TU'],['BMW','750i / 750Li',2013,2015,'F01 · F02','N63TU'],['BMW','X5 xDrive50i',2014,2018,'F15','N63TU'],['BMW','X6 xDrive50i',2015,2019,'F16','N63TU'],
     ['BMW','750i / 750Li',2016,2019,'G11 · G12','N63TU2'],['BMW','M550i',2018,2019,'G30','N63TU2'],['BMW','X5 xDrive50i',2019,2019,'G05','N63TU2'],['BMW','X7 xDrive50i',2019,2019,'G07','N63TU2'],
     ['BMW','M550i',2020,2023,'G30','N63TU3'],['BMW','M850i',2019,2025,'G14 · G15 · G16','N63TU3'],['BMW','750i / 750Li',2020,2022,'G11 · G12','N63TU3'],['BMW','760i',2023,2025,'G70','N63TU3'],['BMW','X5 M50i / M60i',2020,2025,'G05','N63TU3'],['BMW','X6 M50i / M60i',2020,2025,'G06','N63TU3'],['BMW','X7 M50i / M60i',2020,2025,'G07','N63TU3'],
+    ['BMW','230i',2017,2021,'F22 · F23','B48'],['BMW','230i',2022,2025,'G42','B48'],['BMW','228i Gran Coupe',2020,2024,'F44','B48'],['BMW','M235i Gran Coupe',2020,2024,'F44','B48'],
+    ['BMW','330i',2017,2018,'F30 · F31','B48'],['BMW','330i',2019,2025,'G20 · G21','B48'],['BMW','430i',2017,2020,'F32 · F33 · F36','B48'],['BMW','430i',2021,2025,'G22 · G23 · G26','B48'],['BMW','530i',2017,2023,'G30','B48'],
+    ['BMW','X1 xDrive28i',2016,2022,'F48','B48'],['BMW','X1 xDrive28i',2023,2025,'U11','B48'],['BMW','X2 xDrive28i / M35i',2018,2023,'F39','B48'],['BMW','X2 xDrive28i / M35i',2024,2025,'U10','B48'],
+    ['BMW','X3 xDrive30i',2018,2025,'G01','B48'],['BMW','X4 xDrive30i',2019,2025,'G02','B48'],['BMW','Z4 sDrive30i',2019,2025,'G29','B48'],
+    ['Mini','Cooper S',2015,2024,'F55 · F56 · F57','B48'],['Mini','John Cooper Works',2015,2024,'F56 · F57','B48'],['Mini','Clubman S / JCW',2016,2024,'F54','B48'],['Mini','Countryman S / JCW',2017,2024,'F60','B48'],
+    ['Toyota','GR Supra 2.0',2021,2025,'A90','B48'],
     ['Toyota','GR Supra 3.0',2020,2025,'A90 · J29','B58TU']
   ];
 
@@ -374,9 +381,10 @@ p{margin:0}
     N63:{whp:340,response:60,reliability:48,traction:70,sound:64},
     N63TU:{whp:385,response:62,reliability:52,traction:72,sound:66},
     N63TU2:{whp:395,response:64,reliability:56,traction:74,sound:66},
-    N63TU3:{whp:455,response:66,reliability:60,traction:76,sound:68}
+    N63TU3:{whp:455,response:66,reliability:60,traction:76,sound:68},
+    B48:{whp:225,response:64,reliability:74,traction:66,sound:40}
   };
-  var TURBO_I6=['N54','N55','B58','B58TU','S55','S58'],S63S=['S63','S63TU','S63TU2','S63TU4'],N63S=['N63','N63TU','N63TU2','N63TU3'],TURBO=TURBO_I6.concat(S63S,N63S),ALL=TURBO.concat(['S65']);
+  var TURBO_I6=['N54','N55','B58','B58TU','S55','S58'],TURBO_I4=['B48'],S63S=['S63','S63TU','S63TU2','S63TU4'],N63S=['N63','N63TU','N63TU2','N63TU3'],TURBO=TURBO_I6.concat(TURBO_I4,S63S,N63S),ALL=TURBO.concat(['S65']);
   var HPFP_ENG=['N55','B58','S55','S58'].concat(S63S,N63S); // a bigger high-pressure pump is the move here; the N54 and B58TU go to port injection instead
   var PARTS=[
     // tuning
@@ -386,11 +394,11 @@ p{margin:0}
     {id:'burble',cat:'Tuning',name:'Burble and pops map',sub:'Crackles on decel. All show, a little extra heat in the cats.',kind:'shop',fx:{sound:12,reliability:-3},req:['tune1'],eng:TURBO},
     {id:'trans',cat:'Tuning',name:'Transmission tune',sub:'ZF8 or DCT software: faster shifts, higher torque limits, launch control.',kind:'shop',fx:{traction:8,response:6},eng:ALL},
     // power adders
-    {id:'hybrid',cat:'Power adder',name:'Hybrid turbo(s)',sub:'Upgraded wheels in the stock housings. The big drop-in step, and it keeps most of the spool. Wants E85 to really wake up.',kind:'shop',engPart:'turbo',fx:{reliability:-10,response:-7,sound:3},req:['tune1','dp','fmic','lpfp'],reqEng:{N54:['pi'],B58TU:['pi'],'*':['hpfp']},excl:['topmount'],eng:TURBO},
+    {id:'hybrid',cat:'Power adder',name:'Hybrid turbo(s)',sub:'Upgraded wheels in the stock housings. The big drop-in step, and it keeps most of the spool. Wants E85 to really wake up.',kind:'shop',engPart:'turbo',fx:{reliability:-10,response:-7,sound:3},req:['tune1','dp','fmic','lpfp'],reqEng:{N54:['pi'],B58TU:['pi'],B48:['pi'],'*':['hpfp']},excl:['topmount'],eng:TURBO},
     {id:'topmount',cat:'Power adder',name:'Top-mount single turbo kit',sub:'One big turbo on a tubular manifold up top. The 600-plus route. Wants port injection, fuel and a custom tune, and you will feel the lag.',kind:'shop',engPart:'turbo',fx:{reliability:-18,response:-17,sound:8},req:['tune1','dp','fmic','lpfp','pi','custom'],excl:['hybrid'],eng:TURBO_I6},
     {id:'fmic',cat:'Power adder',name:'Intercooler upgrade',sub:'Bigger front-mount on N54/N55. Heat exchanger and chargecooler on the rest. Keeps the power from fading on the third pull.',kind:'shop',engPart:'cooler',fx:{reliability:8,response:2},eng:TURBO},
     {id:'intake',cat:'Power adder',name:'Intake',sub:'Eins intake on the B58, heat-shielded kits elsewhere. You hear the turbo. Matters most once the turbo is bigger than stock.',kind:'eins',engPart:'intake',fx:{sound:8,response:4},eng:ALL},
-    {id:'charge',cat:'Power adder',name:'Charge pipe',sub:'Eins aluminum pipe. Zero power, all reliability: the plastic one splits under boost.',kind:'eins',engPart:'charge',fx:{reliability:14},eng:['N54','N55','B58','B58TU']},
+    {id:'charge',cat:'Power adder',name:'Charge pipe',sub:'Eins aluminum pipe. Zero power, all reliability: the plastic one splits under boost.',kind:'eins',engPart:'charge',fx:{reliability:14},eng:['N54','N55','B58','B58TU','B48']},
     // fueling
     {id:'flex',cat:'Fueling',name:'Flex fuel kit + E85 tune',sub:'Our sensor and harness, plug-and-play into the tune. The biggest cheap power there is, and it is worth even more once the turbos grow.',kind:'eins',engPart:'flex',fx:{response:8,reliability:-6,sound:2},req:['tune1'],eng:TURBO},
     {id:'lpfp',cat:'Fueling',name:'Low-pressure fuel pump',sub:'Bucketless in-tank pump. E85 wants about a third more fuel than gas, and the stock pump is the first thing to run out.',kind:'shop',fx:{reliability:8},eng:TURBO},
@@ -433,8 +441,8 @@ p{margin:0}
     // drop parts that don't fit this engine
     Object.keys(state.sel).forEach(function(id){var p=byId(id);if(!p||p.eng.indexOf(car.eng)<0)delete state.sel[id];});
     var E=ENG[car.eng];
-    document.getElementById('badgeCar').textContent=car.quick?(E.code+' build'):(car.year+' '+car.make+' '+car.model);
-    document.getElementById('badgeSub').textContent=(car.quick?'':car.chassis+' · ')+E.code+' · '+E.sub;
+    document.getElementById('badgeCar').textContent=car.quick?((E.label||E.code)+' build'):(car.year+' '+car.make+' '+car.model);
+    document.getElementById('badgeSub').textContent=(car.quick?'':car.chassis+' · ')+(E.label||E.code)+' · '+E.sub;
     try{localStorage.setItem('eins-build-car',JSON.stringify(car));}catch(e){}
     if(stageApi)stageApi.setCar(E);
     renderParts();recalc();
@@ -446,21 +454,21 @@ p{margin:0}
   // Power is not additive. A build lands in a RANGE set by the combo it is running; the supporting mods decide where in that range.
   function R(o){return o;}
   var TIERS=[
-    {id:'stock',name:'Stock',req:[],r:{N54:[255,275],N55:[265,285],B58:[290,310],B58TU:[320,340],S55:[380,400],S58:[430,450],S65:[330,350],S63:[460,480],S63TU:[480,500],S63TU2:[480,500],S63TU4:[520,540],N63:[330,350],N63TU:[375,395],N63TU2:[385,405],N63TU3:[445,465]}},
-    {id:'st1',name:'Stage 1',req:['tune1'],r:{N54:[320,345],N55:[320,340],B58:[360,385],B58TU:[390,415],S55:[450,480],S58:[510,540],S65:[350,365],S63:[540,570],S63TU:[570,600],S63TU2:[570,600],S63TU4:[620,650],N63:[400,430],N63TU:[450,480],N63TU2:[460,490],N63TU3:[520,560]}},
+    {id:'stock',name:'Stock',req:[],r:{N54:[255,275],N55:[265,285],B58:[290,310],B58TU:[320,340],S55:[380,400],S58:[430,450],S65:[330,350],S63:[460,480],S63TU:[480,500],S63TU2:[480,500],S63TU4:[520,540],N63:[330,350],N63TU:[375,395],N63TU2:[385,405],N63TU3:[445,465],B48:[205,240]}},
+    {id:'st1',name:'Stage 1',req:['tune1'],r:{N54:[320,345],N55:[320,340],B58:[360,385],B58TU:[390,415],S55:[450,480],S58:[510,540],S65:[350,365],S63:[540,570],S63TU:[570,600],S63TU2:[570,600],S63TU4:[620,650],N63:[400,430],N63TU:[450,480],N63TU2:[460,490],N63TU3:[520,560],B48:[250,280]}},
     {id:'bolt',name:'Tune, intake and exhaust',req:['tune1','intake','exh'],r:{S65:[360,380]}},
-    {id:'st2',name:'Stage 2',req:['tune1','dp'],r:{N54:[350,380],N55:[345,375],B58:[400,430],B58TU:[430,460],S55:[490,530],S58:[540,580],S63:[570,610],S63TU:[610,650],S63TU2:[610,650],S63TU4:[660,700],N63:[430,460],N63TU:[480,515],N63TU2:[490,525],N63TU3:[560,600]}},
-    {id:'e85',name:'Stock turbos on E85',req:['tune1','dp','flex'],r:{N54:[420,470],N55:[400,440],B58:[470,520],B58TU:[490,540],S55:[540,600],S58:[600,660],S63:[640,700],S63TU:[680,740],S63TU2:[680,740],S63TU4:[730,790],N63:[480,530],N63TU:[540,590],N63TU2:[550,600],N63TU3:[620,680]}},
-    {id:'hybp',name:'Hybrid turbos, pump gas',req:['hybrid'],r:{N54:[450,500],N55:[430,480],B58:[500,560],B58TU:[520,580],S55:[600,660],S58:[650,720],S63:[700,760],S63TU:[740,800],S63TU2:[740,800],S63TU4:[800,860],N63:[520,570],N63TU:[580,630],N63TU2:[590,640],N63TU3:[660,720]}},
-    {id:'hyb',name:'Hybrid turbos on E85',req:['hybrid','flex'],r:{N54:[520,600],N55:[480,560],B58:[560,650],B58TU:[580,670],S55:[660,750],S58:[740,830],S63:[800,900],S63TU:[850,950],S63TU2:[850,950],S63TU4:[900,1000],N63:[580,660],N63TU:[650,730],N63TU2:[660,740],N63TU3:[740,830]}},
-    {id:'hybpi',name:'Hybrids, E85 and port injection',req:['hybrid','flex','pi'],r:{N54:[560,640],N55:[520,600],B58:[620,700],B58TU:[640,720],S55:[720,800],S58:[800,880],S63:[850,950],S63TU:[900,1000],S63TU2:[900,1000],S63TU4:[950,1050],N63:[620,700],N63TU:[690,770],N63TU2:[700,780],N63TU3:[780,870]}},
+    {id:'st2',name:'Stage 2',req:['tune1','dp'],r:{N54:[350,380],N55:[345,375],B58:[400,430],B58TU:[430,460],S55:[490,530],S58:[540,580],S63:[570,610],S63TU:[610,650],S63TU2:[610,650],S63TU4:[660,700],N63:[430,460],N63TU:[480,515],N63TU2:[490,525],N63TU3:[560,600],B48:[275,310]}},
+    {id:'e85',name:'Stock turbos on E85',req:['tune1','dp','flex'],r:{N54:[420,470],N55:[400,440],B58:[470,520],B58TU:[490,540],S55:[540,600],S58:[600,660],S63:[640,700],S63TU:[680,740],S63TU2:[680,740],S63TU4:[730,790],N63:[480,530],N63TU:[540,590],N63TU2:[550,600],N63TU3:[620,680],B48:[300,340]}},
+    {id:'hybp',name:'Hybrid turbos, pump gas',req:['hybrid'],r:{N54:[450,500],N55:[430,480],B58:[500,560],B58TU:[520,580],S55:[600,660],S58:[650,720],S63:[700,760],S63TU:[740,800],S63TU2:[740,800],S63TU4:[800,860],N63:[520,570],N63TU:[580,630],N63TU2:[590,640],N63TU3:[660,720],B48:[330,370]}},
+    {id:'hyb',name:'Hybrid turbos on E85',req:['hybrid','flex'],r:{N54:[520,600],N55:[480,560],B58:[560,650],B58TU:[580,670],S55:[660,750],S58:[740,830],S63:[800,900],S63TU:[850,950],S63TU2:[850,950],S63TU4:[900,1000],N63:[580,660],N63TU:[650,730],N63TU2:[660,740],N63TU3:[740,830],B48:[370,430]}},
+    {id:'hybpi',name:'Hybrids, E85 and port injection',req:['hybrid','flex','pi'],r:{N54:[560,640],N55:[520,600],B58:[620,700],B58TU:[640,720],S55:[720,800],S58:[800,880],S63:[850,950],S63TU:[900,1000],S63TU2:[900,1000],S63TU4:[950,1050],N63:[620,700],N63TU:[690,770],N63TU2:[700,780],N63TU3:[780,870],B48:[400,460]}},
     {id:'singlep',name:'Top-mount single, pump gas',req:['topmount'],r:{N54:[520,580],N55:[500,560],B58:[560,620],B58TU:[580,640],S55:[650,720],S58:[700,780]}},
     {id:'single',name:'Top-mount single on E85',req:['topmount','flex'],r:{N54:[650,800],N55:[600,750],B58:[700,900],B58TU:[720,920],S55:[800,1000],S58:[900,1100]}}
   ];
   // supporting mods: they do not change the tier, they move you up inside its range
   var LIFT={fmic:1,intake:1,exh:0.5,tune2:1,custom:1.5,lpfp:0.5,hpfp:0.5,plugs:0.5};
-  var FUELLIM={B58TU:520,S58:550};S63S.concat(N63S).forEach(function(e){FUELLIM[e]=550;});
-  function fuelFix(){return (state.eng==='N54'||state.eng==='B58TU')?['lpfp','pi']:['lpfp','hpfp'];}
+  var FUELLIM={B58TU:520,S58:550,B48:380};S63S.concat(N63S).forEach(function(e){FUELLIM[e]=550;});
+  function fuelFix(){return (state.eng==='N54'||state.eng==='B58TU'||state.eng==='B48')?['lpfp','pi']:['lpfp','hpfp'];}
   function tiersFor(){return TIERS.filter(function(t){return t.r[state.eng];});}
   function tierMet(t){return t.req.every(function(r){return state.sel[r];});}
   function currentTier(){var ts=tiersFor(),cur=ts[0];ts.forEach(function(t){if(tierMet(t))cur=t;});return cur;}
@@ -681,7 +689,7 @@ p{margin:0}
       // +z is the driver's side (intake manifold, throttle body, fuel rail).
       if(engine){if(engine.parent)engine.parent.remove(engine);engine.traverse(function(o){if(o.geometry)o.geometry.dispose();if(o.material&&o.material.dispose)o.material.dispose();});}
       engine=new THREE.Group();bay.add(engine);parts={};spinners=[];flows=[];anchors={};
-      var i6=E.layout==='i6',EX=-1,IN=1;
+      var i6=E.layout==='i6'||E.layout==='i4',i4=E.layout==='i4',ncyl=i4?4:6,sp=2.2/(ncyl-1),EX=-1,IN=1;if(i4)engine.scale.set(0.74,0.95,0.95);
       // --- core: block, head, cover, pan, pulleys, bell housing ----------------
       var core=part('core',[0,0,0]);
       if(i6){
@@ -689,7 +697,7 @@ p{margin:0}
         var cov=part('cover',[0,0.9,0]);
         var covMat=E.cover==='plastic'?M.plastic():M.alu();
         addAll(cov,[box(2.86,0.36,0.82,covMat,0,1.25,0),box(2.7,0.06,0.5,covMat,0,1.46,0)]);
-        for(var c=0;c<6;c++){cov.add(cyl(0.065,0.14,M.plastic(),-1.1+c*0.44,1.5,0.06,null));cov.add(box(0.12,0.16,0.08,M.plastic(),-1.1+c*0.44,1.5,-0.1));}
+        for(var c=0;c<ncyl;c++){cov.add(cyl(0.065,0.14,M.plastic(),-1.1+c*sp,1.5,0.06,null));cov.add(box(0.12,0.16,0.08,M.plastic(),-1.1+c*sp,1.5,-0.1));}
         for(var rb=0;rb<3;rb++)cov.add(box(2.6,0.025,0.06,covMat,0,1.44,-0.3+rb*0.3));
       }else{
         addAll(core,[box(2.6,0.9,1.3,M.block(),0,-0.15,0),box(2.2,0.62,1.1,M.cast(),0,-0.95,0)]);
@@ -774,12 +782,12 @@ p{margin:0}
         cac.add(box(2.3,0.44,0.98,M.alu(),0,1.72,0.08));cac.add(box(2.1,0.1,0.8,M.fin(),0,1.99,0.08));
         cac.add(cyl(0.055,0.5,M.rubber(),-1.2,1.75,0.3,XA));cac.add(cyl(0.055,0.5,M.rubber(),1.2,1.75,0.3,XA));
         for(var hb2=0;hb2<6;hb2++)cac.add(hex(0.025,0.03,M.steel(),-1.0+hb2*0.4,1.95,0.52,null));
-        for(var r7=0;r7<6;r7++)man.add(cyl(0.085,0.62,M.alu(),-1.1+r7*0.44,1.2,0.62*IN,new THREE.Vector3(0,1,0.3*IN)));
+        for(var r7=0;r7<ncyl;r7++)man.add(cyl(0.085,0.62,M.alu(),-1.1+r7*sp,1.2,0.62*IN,new THREE.Vector3(0,1,0.3*IN)));
         anchors.cooler=new THREE.Vector3(0,2.05,0.08);
       }else if(i6){
         man.add(box(2.5,awic?0.62:0.4,0.42,M.alu(),0,0.74,0.74*IN));
         if(awic){man.add(box(2.2,0.14,0.36,M.fin(),0,1.12,0.74*IN));man.add(cyl(0.05,0.9,M.rubber(),-1.1,1.0,0.74*IN,ZA));man.add(cyl(0.05,0.9,M.rubber(),1.1,1.0,0.74*IN,ZA));}
-        for(var r6=0;r6<6;r6++)man.add(cyl(0.085,0.5,M.alu(),-1.1+r6*0.44,0.74,0.52*IN,new THREE.Vector3(0,0.35,-IN)));
+        for(var r6=0;r6<ncyl;r6++)man.add(cyl(0.085,0.5,M.alu(),-1.1+r6*sp,0.74,0.52*IN,new THREE.Vector3(0,0.35,-IN)));
         if(!awic)man.add(cyl(0.17,0.16,M.alu(),-1.36,0.74,0.74*IN,XA));
       }
 
@@ -789,8 +797,8 @@ p{margin:0}
       if(variant.topmount&&E.turbos>0){turboX=[0.15];tR=0.42;ty=1.08;tz=0.8*EX;topmount=true;}else if(variant.hybrid){tR*=1.15;}
       var exh=part('exhaust',[0,0,0.8*EX]);
       if(i6){
-        for(var r=0;r<6;r++){
-          var x=-1.1+r*0.44,tx=turboX.length===2?(r<3?turboX[0]:turboX[1]):(turboX[0]!==undefined?turboX[0]:x);
+        for(var r=0;r<ncyl;r++){
+          var x=-1.1+r*sp,tx=turboX.length===2?(r<ncyl/2?turboX[0]:turboX[1]):(turboX[0]!==undefined?turboX[0]:x);
           exh.add(topmount?tube([[x,0.72,0.5*EX],[x,1.05,0.72*EX],[x*0.6+tx*0.4,1.5,0.85*EX],[tx+0.27,ty+tR*1.05,tz]],0.06,M.steel(),30):tube([[x,0.72,0.5*EX],[x,0.58,0.8*EX],[tx+0.27,ty+tR*1.05,tz]],0.06,M.cast(),24));
         }
       }else{
@@ -903,7 +911,7 @@ p{margin:0}
       // port injection: second rail and six injectors on the intake runners (shown when it's in the build)
       if(i6){var pi=part('pi',[0.2,0.5,0.8*IN]);var railY=E.cooler==='top'?1.3:0.96,railZ=E.cooler==='top'?0.66*IN:0.6*IN;
         pi.add(tube([[-1.35,railY,railZ],[1.35,railY,railZ]],0.035,M.alu(),8));pi.add(tube([[1.35,railY,railZ],[1.7,railY-0.2,railZ+0.25*IN]],0.02,M.steel(),8));
-        for(var pj=0;pj<6;pj++){pi.add(cyl(0.04,0.16,M.plastic(),-1.1+pj*0.44,railY-0.1,railZ-0.03*IN,new THREE.Vector3(0,1,0.25*IN)));pi.add(cyl(0.025,0.08,M.steel(),-1.1+pj*0.44,railY+0.03,railZ,null));}
+        for(var pj=0;pj<ncyl;pj++){pi.add(cyl(0.04,0.16,M.plastic(),-1.1+pj*sp,railY-0.1,railZ-0.03*IN,new THREE.Vector3(0,1,0.25*IN)));pi.add(cyl(0.025,0.08,M.steel(),-1.1+pj*0.44,railY+0.03,railZ,null));}
         anchors.pi=new THREE.Vector3(0,railY+0.1,railZ);}
       var flex=part('flex',[0.2,0.3,0.9*IN]);
       flex.add(tube([[1.9,0.5,1.02*IN],[0.9,0.5,1.04*IN],[-1.3,0.5,1.04*IN]],0.025,M.steel(),20));
@@ -919,7 +927,7 @@ p{margin:0}
 
     // ---- running engine on the stand -----------------------------------------------
     scene.add(bay);floor.position.y=-1.55;gridH.position.y=-1.549;camTarget.set(0.1,0.15,0.1);
-    var SPEC={N54:{cyl:6,redline:7000,idle:750,boost:8,lag:0.38},N55:{cyl:6,redline:7000,idle:700,boost:9,lag:0.3},B58:{cyl:6,redline:7000,idle:700,boost:11,lag:0.28},B58TU:{cyl:6,redline:7000,idle:700,boost:13,lag:0.26},S55:{cyl:6,redline:7500,idle:800,boost:17,lag:0.3},S58:{cyl:6,redline:7200,idle:800,boost:20,lag:0.3},S65:{cyl:8,redline:8400,idle:800,boost:0,lag:0},S63:{cyl:8,redline:7000,idle:700,boost:17,lag:0.25},S63TU:{cyl:8,redline:7200,idle:700,boost:21,lag:0.25},S63TU2:{cyl:8,redline:7200,idle:700,boost:21,lag:0.25},S63TU4:{cyl:8,redline:7200,idle:700,boost:22,lag:0.25},N63:{cyl:8,redline:6500,idle:650,boost:11,lag:0.3},N63TU:{cyl:8,redline:6500,idle:650,boost:13,lag:0.28},N63TU2:{cyl:8,redline:6500,idle:650,boost:14,lag:0.28},N63TU3:{cyl:8,redline:6800,idle:650,boost:16,lag:0.26}};
+    var SPEC={N54:{cyl:6,redline:7000,idle:750,boost:8,lag:0.38},N55:{cyl:6,redline:7000,idle:700,boost:9,lag:0.3},B58:{cyl:6,redline:7000,idle:700,boost:11,lag:0.28},B58TU:{cyl:6,redline:7000,idle:700,boost:13,lag:0.26},S55:{cyl:6,redline:7500,idle:800,boost:17,lag:0.3},S58:{cyl:6,redline:7200,idle:800,boost:20,lag:0.3},S65:{cyl:8,redline:8400,idle:800,boost:0,lag:0},S63:{cyl:8,redline:7000,idle:700,boost:17,lag:0.25},S63TU:{cyl:8,redline:7200,idle:700,boost:21,lag:0.25},S63TU2:{cyl:8,redline:7200,idle:700,boost:21,lag:0.25},S63TU4:{cyl:8,redline:7200,idle:700,boost:22,lag:0.25},N63:{cyl:8,redline:6500,idle:650,boost:11,lag:0.3},N63TU:{cyl:8,redline:6500,idle:650,boost:13,lag:0.28},N63TU2:{cyl:8,redline:6500,idle:650,boost:14,lag:0.28},N63TU3:{cyl:8,redline:6800,idle:650,boost:16,lag:0.26},B48:{cyl:4,redline:6500,idle:720,boost:15,lag:0.24}};
     var run={on:false,rpm:0,throttle:0,boost:0,load:0,cut:false,cutT:0,crank:0,flowT:0,idleWob:0};
     var build={whp:300,base:300,redline:7000,boostTarget:11,lag:0.3,exhaust:0,intake:0,whistle:1,big:false,huge:false,burble:false};
     var current=null,muted=false;
