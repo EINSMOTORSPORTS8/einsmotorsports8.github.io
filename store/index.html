@@ -221,7 +221,7 @@ p{margin:0}
       <div class="result result--none" id="result" aria-live="polite"><div class="result__car">No car picked yet</div><div class="result__eng">The engine on stage is a B58 while you look.</div></div>
       <p class="lede" style="font-size:16px"><a class="btn btn--ghost btn--sm" href="/store/build/">Spec a build in the Build Lab →</a></p>
       <div class="quick"><span class="eyebrow" style="color:var(--muted)">Know your engine? Skip ahead</span>
-        <div class="quick__row" id="quick"><button class="chipbtn" type="button" data-eng="N54">N54</button><button class="chipbtn" type="button" data-eng="N55">N55</button><button class="chipbtn" type="button" data-eng="B58">B58</button><button class="chipbtn" type="button" data-eng="S55">S55</button><button class="chipbtn" type="button" data-eng="S58">S58</button><button class="chipbtn" type="button" data-eng="S65">S65</button></div>
+        <div class="quick__row" id="quick"><button class="chipbtn" type="button" data-eng="N54">N54</button><button class="chipbtn" type="button" data-eng="N55">N55</button><button class="chipbtn" type="button" data-eng="B58">B58</button><button class="chipbtn" type="button" data-eng="S55">S55</button><button class="chipbtn" type="button" data-eng="S58">S58</button><button class="chipbtn" type="button" data-eng="S63TU4">S63</button><button class="chipbtn" type="button" data-eng="S65">S65</button></div>
       </div>
       </div>
     </div>
@@ -262,7 +262,7 @@ p{margin:0}
     <div><h4>Eins Motorsports</h4><ul><li>222 Park St</li><li>Bensenville, IL 60106</li><li><a href="https://www.google.com/maps/search/?api=1&query=Eins+Motorsports+222+Park+St+Bensenville+IL" target="_blank" rel="noopener">Open in Maps</a></li></ul></div>
     <div><h4>Reach us</h4><ul><li><b class="mono">(708) 707-9756</b></li><li><a href="sms:7087079756">Text the shop</a></li><li><a href="https://blueprintcatalogen.as.me/" target="_blank" rel="noopener">Book online</a></li><li><a href="https://www.instagram.com/einsmotorsports/" target="_blank" rel="noopener">Instagram @einsmotorsports</a></li></ul></div>
     <div><h4>Platforms</h4><ul><li><a href="/s55/">F80 / F82 M3 M4 · S55</a></li><li><a href="/s58/">G80 / G82 / G87 · S58</a></li><li><a href="/b58/">B58 &amp; N55</a></li><li><a href="/n54/">N54 · 335i 135i 1M</a></li><li><a href="/s65/">E90 / E92 M3 · S65</a></li></ul></div>
-    <div><h4>Work</h4><ul><li><a href="/flex-fuel/">Flex fuel &amp; E85</a></li><li><a href="/tuning/">Custom tuning</a></li><li><a href="/turbo/">Turbo &amp; bolt-ons</a></li><li><a href="/repair/">Repair &amp; diagnostics</a></li><li><a href="/exotic/">Lamborghini · McLaren · AMG</a></li></ul></div>
+    <div><h4>Work</h4><ul><li><a href="/flex-fuel/">Flex fuel &amp; E85</a></li><li><a href="/tuning/">Custom tuning</a></li><li><a href="/turbo/">Turbo &amp; bolt-ons</a></li><li><a href="/repair/">Repair &amp; diagnostics</a></li><li><a href="/exotic/">Lamborghini · McLaren · AMG</a></li><li><a href="/store/">Parts store</a></li><li><a href="/store/build/">Build Lab</a></li></ul></div>
   </div>
   <p class="fine">© 2026 Eins Motorsports · Independent shop. Not affiliated with BMW AG, Automobili Lamborghini, McLaren Automotive or Mercedes-Benz AG. Model names are used to identify the vehicles we work on.</p>
 </div></footer>
@@ -285,7 +285,11 @@ p{margin:0}
     B58:{code:'B58',sub:'3.0 single-turbo I6 · 2016–now',layout:'i6',turbos:1,cooler:'awic',cover:'plastic'},
     S55:{code:'S55',sub:'3.0 twin-turbo I6 · M3 M4 M2C · 2015–2021',layout:'i6',turbos:2,cooler:'top',cover:'alu'},
     S58:{code:'S58',sub:'3.0 twin-turbo I6 · M3 M4 M2 X3M · 2020–now',layout:'i6',turbos:2,cooler:'awic',cover:'alu'},
-    S65:{code:'S65',sub:'4.0 V8, naturally aspirated · E9X M3',layout:'v8',turbos:0,cooler:'none',cover:'alu'}
+    S65:{code:'S65',sub:'4.0 V8, naturally aspirated · E9X M3',layout:'v8',turbos:0,cooler:'none',cover:'alu'},
+    S63:{code:'S63',sub:'4.4 twin-turbo hot-V V8 · E70 X5 M · E71 X6 M · 2010–2014',layout:'v8',turbos:2,cooler:'hotv',cover:'alu'},
+    S63TU:{code:'S63TU',sub:'4.4 twin-turbo hot-V V8 · F10 M5 · F06 F12 F13 M6 · 2013–2018',layout:'v8',turbos:2,cooler:'hotv',cover:'alu'},
+    S63TU2:{code:'S63TU2',sub:'4.4 twin-turbo hot-V V8 · F85 X5 M · F86 X6 M · 2015–2019',layout:'v8',turbos:2,cooler:'hotv',cover:'alu'},
+    S63TU4:{code:'S63TU4',sub:'4.4 twin-turbo hot-V V8 · F90 M5 · M8 · F95 F96 X5 M X6 M · 2018–2025',layout:'v8',turbos:2,cooler:'hotv',cover:'alu'}
   };
   // make, model, first year, last year, chassis, engine
   var V=[
@@ -306,6 +310,10 @@ p{margin:0}
     ['BMW','X5 xDrive35i',2011,2018,'E70 · F15','N55'],['BMW','X5 xDrive40i',2019,2025,'G05','B58'],
     ['BMW','X6 xDrive35i',2008,2010,'E71','N54'],['BMW','X6 xDrive35i',2011,2019,'E71 · F16','N55'],['BMW','X6 xDrive40i',2020,2025,'G06','B58'],
     ['BMW','Z4 sDrive35i / 35is',2009,2016,'E89','N54'],['BMW','Z4 M40i',2019,2025,'G29','B58'],
+    ['BMW','X5 M',2010,2013,'E70','S63'],['BMW','X6 M',2010,2014,'E71','S63'],
+    ['BMW','M5',2013,2016,'F10','S63TU'],['BMW','M6',2013,2018,'F06 · F12 · F13','S63TU'],
+    ['BMW','X5 M',2015,2019,'F85','S63TU2'],['BMW','X6 M',2015,2019,'F86','S63TU2'],
+    ['BMW','M5',2018,2023,'F90','S63TU4'],['BMW','M8',2019,2025,'F91 · F92 · F93','S63TU4'],['BMW','X5 M',2020,2023,'F95','S63TU4'],['BMW','X6 M',2020,2023,'F96','S63TU4'],
     ['Toyota','GR Supra 3.0',2020,2025,'A90 · J29','B58']
   ];
   var CATS=[['all','All'],['intake','Intake'],['charge','Charge pipe'],['downpipe','Downpipe'],['occ','Catch can'],['flex','Flex fuel']];
@@ -556,8 +564,8 @@ p{margin:0}
           for(var c=0;c<4;c++)bank.add(cyl(0.06,0.12,M.plastic(),-0.95+c*0.63,1.14,sg*0.22,null));
           core.add(bank);
         });
-        core.add(box(2.0,0.28,0.9,M.alu(),0,1.35,0));
-        for(var t8=0;t8<8;t8++)core.add(cyl(0.08,0.3,M.alu(),-1.05+(t8%4)*0.63,1.1,(t8<4?-1:1)*0.28,null));
+        if(E.cooler!=='hotv'){core.add(box(2.0,0.28,0.9,M.alu(),0,1.35,0));
+        for(var t8=0;t8<8;t8++)core.add(cyl(0.08,0.3,M.alu(),-1.05+(t8%4)*0.63,1.1,(t8<4?-1:1)*0.28,null));}
       }
       if(realistic&&i6){
         for(var hb=0;hb<7;hb++){cov.add(hex(0.028,0.03,M.steel(),-1.32+hb*0.44,1.44,0.37,null));cov.add(hex(0.028,0.03,M.steel(),-1.32+hb*0.44,1.44,-0.37,null));}
@@ -569,6 +577,47 @@ p{margin:0}
       addAll(core,[cyl(0.34,0.12,M.cast(),-1.6,-0.22,0,XA),cyl(0.19,0.08,M.steel(),-1.62,0.5,0.32,XA),cyl(0.15,0.08,M.steel(),-1.62,0.25,-0.36,XA),
         torus(0.36,0.025,M.rubber(),-1.66,-0.22,0,XA),cyl(0.72,0.34,M.cast(),1.68,-0.1,0,XA),box(1.3,0.86,0.78,M.cast(),2.55,-0.22,0)]);
 
+
+      // --- hot-V twin turbo (S63): turbos in the valley, exhaust inside the V, intake and chargecoolers outside
+      var hotv=E.cooler==='hotv';
+      if(hotv){
+        var hR=0.22,hx=0.1,hy=1.2;
+        if(typeof variant!=='undefined'&&variant.hybrid)hR*=1.15;
+        [-1,1].forEach(function(sg){
+          // intake manifold + air-to-water chargecooler on the outside of each bank
+          var man=part('manifold',[0,0,1.0*sg]);
+          man.add(box(2.2,0.32,0.4,M.alu(),0,0.72,sg*0.9));
+          for(var r4=0;r4<4;r4++)man.add(cyl(0.085,0.4,M.alu(),-0.95+r4*0.63,0.8,sg*0.68,new THREE.Vector3(0,0.5,-sg)));
+          var cac=part('cooler',[0,0.6,0.9*sg]);
+          cac.add(box(2.1,0.24,0.5,M.alu(),0,1.0,sg*0.88));cac.add(box(1.9,0.08,0.42,M.fin(),0,1.16,sg*0.88));
+          cac.add(cyl(0.045,0.5,M.rubber(),-1.15,1.02,sg*0.95,XA));cac.add(cyl(0.045,0.5,M.rubber(),1.15,1.02,sg*0.95,XA));
+          // exhaust runners from the inner side of the bank up into the turbine on that side
+          var exh=part('exhaust',[0,0.5,0]);
+          for(var r=0;r<4;r++){var x=-0.95+r*0.63;exh.add(tube([[x,0.98,sg*0.3],[x*0.6+hx*0.4,1.3,sg*0.2],[hx+0.27,hy+hR*1.05,sg*0.2]],0.055,M.cast(),24));}
+          // the turbo
+          var tg=part('turbo',[0,0.9,0]);var tx=hx,ty=hy,tz=sg*0.2,tR=hR;
+          var comp=cyl(tR*0.95,0.14,M.alu(),tx-0.2,ty,tz,XA),cv=spiral(tx-0.27,ty,tz,tR*1.05,tR*0.5,sg,M.alu()),cout=cyl(tR*0.42,0.3,M.alu(),tx-0.27,ty+tR*1.15,tz,null);
+          var turbine=cyl(tR*0.85,0.14,M.cast(),tx+0.2,ty,tz,XA),tv=spiral(tx+0.27,ty,tz,tR*0.95,tR*0.46,-sg,M.cast()),tin=box(tR*1.1,0.06,tR*1.1,M.cast(),tx+0.27,ty+tR*1.05,tz);
+          var ctr=cyl(0.1,0.3,M.alu(),tx,ty,tz,XA),inlet=cyl(tR*0.5,0.16,M.alu(),tx-0.47,ty,tz,XA),outlet=cyl(tR*0.58,0.14,M.cast(),tx+0.46,ty,tz,XA);
+          addAll(tg,[comp,cv,cout,turbine,tv,tin,ctr,inlet,outlet,torus(tR*1.15,0.012,M.red(),tx-0.41,ty,tz,XA)]);
+          var cw=new THREE.Group();cw.position.set(tx-0.52,ty,tz);for(var b=0;b<9;b++){var bl=box(0.1,tR*0.9,0.012,M.steel(),0,0,0);bl.rotation.x=b*6.283/9;bl.rotation.y=0.35;cw.add(bl);}cw.add(cyl(tR*0.22,0.12,M.steel(),0,0,0,XA,tR*0.1));tg.add(cw);spinners.push(cw);
+          var tw=new THREE.Group();tw.position.set(tx+0.52,ty,tz);for(var b2=0;b2<11;b2++){var bl2=box(0.08,tR*0.95,0.012,M.cast(),0,0,0);bl2.rotation.x=b2*6.283/11;bl2.rotation.y=-0.3;tw.add(bl2);}tg.add(tw);spinners.push(tw);
+          // intake: airbox at each front corner, duct to the compressor inlet
+          var inG=part('intake',[-0.7,0.6,0.5*sg]);
+          inG.add(box(0.6,0.5,0.56,M.plastic(),-2.0,1.0,sg*0.78));inG.add(box(0.54,0.08,0.5,M.alu(),-2.0,1.28,sg*0.78));inG.add(cyl(0.15,0.3,M.plastic(),-2.35,0.95,sg*0.78,XA));
+          var it=tube([[-1.72,1.05,sg*0.78],[-1.2,1.32,sg*0.5],[tx-0.55,ty,tz]],0.1,M.plastic(),50);inG.add(it);flows.push(streams(it.userData.curve,4,0.06,0xf2c300,0xfff6d6,1.4));
+          // charge pipe: compressor outlet over to the chargecooler on the same side
+          var chg=part('charge',[0,0.7,0.4*sg]);
+          var hp=tube([[tx-0.27,ty+tR*1.3,tz],[tx-0.5,ty+0.42,sg*0.5],[-0.75,1.35,sg*0.82],[-0.9,1.17,sg*0.88]],0.09,M.alu(),50);chg.add(hp);flows.push(streams(hp.userData.curve,4,0.055,0xf2c300,0xfff6d6,1.5));
+          chg.add(torus(0.12,0.025,M.steel(),-0.9,1.15,sg*0.88,UP));
+          // downpipe: off the turbine, rearward and down the side
+          var dp=part('downpipe',[0.3,-0.4,0.9*sg]);
+          var d=tube([[tx+0.55,ty,tz],[1.2,1.0,sg*0.45],[1.6,0.3,sg*0.85],[1.9,-0.6,sg*0.9],[2.9,-1.1,sg*0.8]],0.085,M.steel(),60);dp.add(d);flows.push(streams(d.userData.curve,4,0.05,0xff5a12,0xffd2a6,1.7));
+          dp.add(cyl(0.16,0.55,M.steel(),2.45,-1.05,sg*0.82,new THREE.Vector3(1,-0.05,0)));
+        });
+        anchors.turbo=new THREE.Vector3(hx,hy+hR*1.9,0);anchors.intake=new THREE.Vector3(-2.0,1.35,-0.78);anchors.charge=new THREE.Vector3(-0.6,1.7,-0.7);anchors.cooler=new THREE.Vector3(0,1.3,0.88);anchors.downpipe=new THREE.Vector3(1.7,0.0,-1.05);
+      }
+      if(!hotv){
       // --- intake manifold: driver's side, throttle body at the front ---------
       var awic=E.cooler==='awic';
       var man=part('manifold',[0,0,1.1*IN]);
@@ -695,6 +744,7 @@ p{margin:0}
         anchors.downpipe=new THREE.Vector3(1.0,-0.95,1.2*EX);
       }
 
+      } // !hotv
       // --- catch can: driver's side, rear, fed from the valve cover ------------
       var occ=part('occ',[0.4,0.8,0.7*IN]);
       occ.add(cyl(0.15,0.42,M.alu(),1.3,1.5,0.98*IN,null));occ.add(cyl(0.165,0.06,M.cast(),1.3,1.74,0.98*IN,null));occ.add(box(0.06,0.3,0.2,M.steel(),1.5,1.4,0.98*IN));
