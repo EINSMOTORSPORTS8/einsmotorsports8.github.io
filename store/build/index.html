@@ -1065,6 +1065,12 @@ p{margin:0}
       yaw+=(yawT-yaw)*0.08;pitch+=(pitchT-pitch)*0.08;
       var tall=current&&current.cooler==='hotv',cd=dist*(tall?1.06:1),cty=camTarget.y+(tall?0.12:0);camera.position.set(camTarget.x+Math.sin(yaw)*Math.cos(pitch)*cd,cty+Math.sin(pitch)*cd,camTarget.z+Math.cos(yaw)*Math.cos(pitch)*cd);camera.lookAt(camTarget.x,cty,camTarget.z);
       tick(dt);audioUpdate();
+      if(!inView){
+        // model scrolled off-screen: keep the engine, sound, readouts and curve alive, skip the 3D render
+        var rt0=String(Math.round(run.rpm/10)*10),bt0=run.boost.toFixed(1);rpmEls.forEach(function(e){if(e.textContent!==rt0)e.textContent=rt0;});boostEls.forEach(function(e){if(e.textContent!==bt0)e.textContent=bt0;});
+        if(frameN%2===0)drawDyno();
+        return;
+      }
       if(engine){
         var S=current?SPEC[current.code]:SPEC.B58,x=run.rpm/build.redline;
         Object.keys(parts).forEach(function(name){parts[name].forEach(function(g){g.position.set(0,0,0);});});
@@ -1083,7 +1089,7 @@ p{margin:0}
     }
     resize();
     if('ResizeObserver' in window){new ResizeObserver(resize).observe(stage);}else{window.addEventListener('resize',resize);}
-    renderer.setAnimationLoop(function(){if(inView)frame();});
+    renderer.setAnimationLoop(frame);
   })();
 
   // ===== boot ==================================================================
