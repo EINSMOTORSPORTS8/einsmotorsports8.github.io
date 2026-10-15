@@ -111,7 +111,7 @@ p{margin:0}
 .hud{position:absolute;left:14px;bottom:54px;z-index:3;width:min(28%,270px);background:rgba(11,11,12,.38);border:1px solid rgba(42,42,46,.7);border-radius:4px;padding:6px 8px 4px;display:grid;gap:3px;pointer-events:none}
 .hud__head{display:flex;justify-content:space-between;gap:8px;font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
 .hud__head span:last-child{color:var(--yellow);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.hud canvas{width:100%;height:auto;display:block}
+.hud{grid-template-columns:minmax(0,1fr)}.hud>*{min-width:0}.hud canvas{width:100%;max-width:100%;min-width:0;height:auto;display:block}
 .ctl{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding-bottom:12px;border-bottom:1px solid var(--line)}
 .ctl__rpm{font-family:var(--mono);font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-left:auto;white-space:nowrap}
 .ctl__rpm b{font-family:var(--display);font-size:22px;color:var(--fg);font-weight:800;font-variant-numeric:tabular-nums;letter-spacing:0;display:inline-block;min-width:3.2ch;text-align:right}
@@ -122,14 +122,19 @@ p{margin:0}
 .revbar .pedal--bar{margin-left:auto;padding:13px 18px;font-size:16px;white-space:nowrap}
 .revbar .tool--start{white-space:nowrap;flex:none}
 .revbar .ctl__rpm{margin-left:0}
-@media (max-width:900px){.revbar{display:flex}.actbar{display:none!important}body{padding-bottom:76px}.side .ctl{display:none}}
+@media (max-width:900px){.revbar{display:flex}.actbar{display:none!important}body{padding-bottom:76px}.side .ctl{display:none}
+  /* phone: the rev bar carries start + pedal, so the stage only keeps curve and sound */
+  .stage #pedal,.stage #start,.stage #spin,.stage #full{display:none}.stage__tools{max-width:none}
+  .stage__badge{max-width:52%}.stage__badge span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .hud__head span:first-child{display:none}
+}
 @media (max-width:600px){.hud{width:46%;bottom:48px;left:10px;padding:5px 6px 3px}.revbar .ctl__rpm{font-size:11px}.revbar .ctl__rpm b{font-size:19px}}
 @media (max-width:480px){.revbar .ctl__psi{display:none}.revbar{gap:8px}.revbar .pedal--bar{padding:13px 14px;font-size:15px}}
 .dyno{display:grid;gap:6px}
 .dyno__head{display:flex;justify-content:space-between;font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
 .dyno__head span:last-child{color:var(--yellow)}
 .dyno canvas{width:100%;height:auto;display:block;background:var(--bg);border:1px solid var(--line);border-radius:4px}
-@media (max-width:600px){.pedal{width:92px;height:92px;font-size:15px}.gauge canvas{width:84px;height:84px}}
+@media (max-width:600px){.pedal{width:92px;height:92px;font-size:15px}.gauge canvas{width:84px;height:84px}.gauge__num b{font-size:34px}.gauge__num span{font-size:10px}.stage__badge b{font-size:22px}}
 .stage__hint{position:absolute;right:150px;bottom:12px;z-index:3;font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--dim);pointer-events:none}
 @media (max-width:600px){.stage{aspect-ratio:1/1}.stage__hint{display:none}}
 
@@ -152,9 +157,18 @@ p{margin:0}
 .item__sub em{font-style:normal;color:var(--ember)}
 .item__fx{font-family:var(--mono);font-size:12px;letter-spacing:.04em;color:var(--steel);text-align:right;white-space:nowrap;line-height:1.5}
 .item__fx b{color:var(--yellow);font-weight:500}
-.item__tier{display:inline-block;max-width:150px;white-space:normal;color:var(--muted);font-size:11px;line-height:1.3}
+.item__fx .fx{display:block}
+.fx--tier em{display:block;font-style:normal;color:var(--muted);font-size:11px;line-height:1.3;max-width:150px;white-space:normal;margin-left:auto}
+.item__needs{font-family:var(--mono);font-size:11px;letter-spacing:.04em;color:var(--dim);margin-top:4px}
 .item.is-off{opacity:.45}
 .item.is-off input{cursor:not-allowed}
+/* phone: parts stack instead of a three-column row */
+@media (max-width:900px){
+  .item{grid-template-columns:auto minmax(0,1fr);gap:10px 12px;padding:12px 12px}
+  .item__name{font-size:18px}.item__sub{font-size:14px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+  .item__fx{grid-column:2;display:flex;flex-wrap:wrap;gap:4px 12px;text-align:left;white-space:normal;line-height:1.4;margin-top:-2px}
+  .item__fx .fx{flex:none}.fx--tier em{display:inline;margin-left:6px;max-width:none}.fx--stat{color:var(--dim)}
+}
 
 /* stats */
 .stats{background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:18px 18px 16px;display:grid;gap:14px}
@@ -235,7 +249,7 @@ p{margin:0}
     <div class="pick__txt">
       <div class="kicker"><span class="stripe stripe--lg" aria-hidden="true"></span><span class="eyebrow">Eins Build Lab · Spec your car</span></div>
       <h1>Build it before<br>you bring it.</h1>
-      <p class="lede">Pick the car, paint it, pull the hood. Tick parts and watch the bars move. Set a power goal and we'll tell you what it takes to get there.</p>
+      <p class="lede">Pick your car, start the engine, hold to rev. Tick parts and watch the range, the curve and the bars move. Set a power goal and we'll tell you the combo that gets there.</p>
     </div>
     <form class="form" id="pickform">
       <div class="field"><label for="year">Year</label><div class="sel"><select id="year"><option value="">Select year</option></select></div></div>
@@ -493,13 +507,13 @@ p{margin:0}
       g.innerHTML='<div class="group__head">'+c+'<span>'+list.length+(list.length>1?' options':' option')+'</span></div>';
       list.forEach(function(p){
         var fx=[],tp=tierOfPart(p.id);
-        if(tp){var tr=tp.r[state.eng];fx.push('<b>'+tr[0]+'–'+tr[1]+' whp</b><br><span class="item__tier">'+tp.name+'</span>');}
-        else if(LIFT[p.id])fx.push('<b>↑ in range</b>');
-        Object.keys(p.fx).forEach(function(k){var v=p.fx[k];fx.push((v>0?'+':'')+v+' '+k.slice(0,4));});
+        if(tp){var tr=tp.r[state.eng];fx.push('<span class="fx fx--tier"><b>'+tr[0]+'–'+tr[1]+' whp</b><em>'+tp.name+'</em></span>');}
+        else if(LIFT[p.id])fx.push('<span class="fx"><b>↑ in range</b></span>');
+        Object.keys(p.fx).forEach(function(k){var v=p.fx[k];fx.push('<span class="fx fx--stat">'+(v>0?'+':'')+v+' '+k.slice(0,4)+'</span>');});
         var l=document.createElement('label');l.className='item';l.setAttribute('data-id',p.id);
         l.innerHTML='<input type="checkbox" id="p-'+p.id+'" '+(state.sel[p.id]?'checked':'')+'>'+
-          '<div><div class="item__name">'+p.name+'<span class="tag'+(p.kind==='shop'?' tag--shop':'')+'">'+(p.kind==='eins'?'Eins part':'Shop work')+'</span></div><div class="item__sub">'+p.sub+(reqOf(p).length?' <span class="mono" style="font-size:11px;color:var(--dim)">needs: '+reqOf(p).map(function(r){return byId(r).name;}).join(', ')+'</span>':'')+'</div></div>'+
-          '<div class="item__fx">'+fx.join('<br>')+'</div>';
+          '<div><div class="item__name">'+p.name+'<span class="tag'+(p.kind==='shop'?' tag--shop':'')+'">'+(p.kind==='eins'?'Eins part':'Shop work')+'</span></div><div class="item__sub">'+p.sub+'</div>'+(reqOf(p).length?'<div class="item__needs">needs: '+reqOf(p).map(function(r){return byId(r).name;}).join(', ')+'</div>':'')+'</div>'+
+          '<div class="item__fx">'+fx.join('')+'</div>';
         g.appendChild(l);
       });
       partsCol.appendChild(g);

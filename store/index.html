@@ -122,7 +122,9 @@ p{margin:0}
 .lbl.is-on button{color:var(--yellow);border-color:rgba(242,195,0,.6)}
 .lbl.is-off{opacity:.35}
 .lbl[hidden]{display:none}
-@media (max-width:600px){.stage{aspect-ratio:1/1;min-height:340px}.stage__badge b{font-size:30px}.lbl button,.lbl em{font-size:10px;padding:4px 7px}}
+@media (max-width:600px){.stage{aspect-ratio:1/1;min-height:340px}.stage__badge{max-width:80%}.stage__badge b{font-size:30px}.stage__badge span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.lbl button,.lbl em{font-size:10px;padding:4px 7px}
+  /* phone: resize and fullscreen don't mean much here */
+  #wide,#full,.stage__hint{display:none}}
 
 /* sections */
 .sec{padding-block:clamp(48px,7vw,96px);border-bottom:1px solid var(--line)}

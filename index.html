@@ -218,6 +218,22 @@ details p{color:var(--muted);margin-top:10px;max-width:66ch}
 .btn--lg{font-size:18px;padding:16px 26px}
 @media (max-width:860px){.promo__in{grid-template-columns:1fr}.promo__shot{order:-1}}
 @media (prefers-reduced-motion:reduce){.promo__play{animation:none}.promo__shot:hover img{transform:none}}
+
+/* phone: fewer things on screen at once; the action bar already carries text / call / book */
+@media (max-width:600px){
+  .hide-m{display:none!important}
+  .hero__codes,.phone-line{display:none}
+  .hero__in{gap:16px;padding-block:56px 40px}
+  .hero .cta-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}.hero .cta-row .btn{padding-inline:10px;font-size:16px;white-space:nowrap}
+  .lede{font-size:17px}
+  .sec{padding-block:44px}.sec__head{gap:10px}
+  .catalog{grid-template-columns:1fr 1fr;gap:10px}
+  .card{padding:14px 14px 12px;gap:8px}.card ul{display:none}
+  .card__code{font-size:38px}.card__chassis{font-size:10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.card__go{font-size:11px;white-space:nowrap}
+  .svc h3{font-size:22px}.svc>a,.svc>div{padding:18px 16px;gap:6px}
+  .steps{gap:12px}.step p{font-size:15px}
+  .promo__list{display:none}.promo__copy h2{font-size:32px}.promo .cta-row .btn--ghost{display:none}
+}
 </style></head><body><header class="top"><div class="wrap top__in">
   <a class="brand" href="/"><img class="brand__logo" src="/img/logo.png" alt="Eins Motorsports" width="900" height="260"></a>
   <button class="menu-btn" type="button" aria-expanded="false" aria-controls="nav">Menu</button>
@@ -228,9 +244,9 @@ details p{color:var(--muted);margin-top:10px;max-width:66ch}
   <div class="wrap hero__in">
     <div class="kicker"><span class="stripe stripe--lg" aria-hidden="true"></span><span class="eyebrow">Independent BMW performance &amp; repair · Bensenville, IL</span></div>
     <h1>We speak<br>fluent turbo.</h1>
-    <p class="lede">Flex fuel, custom tuning, turbo builds and the repairs that keep it all alive. A small crew that would rather be under your car than behind a desk. Twenty minutes from the Loop, five from O'Hare.</p>
+    <p class="lede">Flex fuel, custom tuning, turbo builds and the repairs that keep it all alive. <span class="hide-m">A small crew that would rather be under your car than behind a desk. </span>Twenty minutes from the Loop, five from O'Hare.</p>
     <div class="hero__codes"><span><b>S55</b> F80 M3 · M4</span><span><b>S58</b> G80 M3 · M4 · M2</span><span><b>B58</b> 340i · M340i · Supra</span><span><b>N54</b> 335i · 135i</span><span><b>S65</b> E92 M3</span></div>
-    <div class="cta-row"><a class="btn btn--red" href="sms:7087079756">Text the shop</a><a class="btn btn--ghost" href="https://blueprintcatalogen.as.me/" target="_blank" rel="noopener">Book a slot</a><a class="btn btn--ghost" href="/store/build/">Build Lab →</a></div>
+    <div class="cta-row"><a class="btn btn--red" href="sms:7087079756">Text the shop</a><a class="btn btn--ghost hide-m" href="https://blueprintcatalogen.as.me/" target="_blank" rel="noopener">Book a slot</a><a class="btn btn--ghost" href="/store/build/">Build Lab →</a></div>
     <div class="phone-line"><span>Text or call</span><b>(708) 707-9756</b><button class="copy" type="button" data-copy="(708) 707-9756">Copy</button></div>
   </div>
 </section>
