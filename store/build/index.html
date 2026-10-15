@@ -108,13 +108,30 @@ p{margin:0}
 .pedal[disabled]{opacity:.3;cursor:not-allowed}
 .tool--start{color:var(--fg);border-color:var(--red);background:rgba(226,35,26,.18)}
 .tool--start[aria-pressed="true"]{color:var(--yellow);border-color:rgba(242,195,0,.5);background:rgba(11,11,12,.7)}
+.hud{position:absolute;left:14px;bottom:54px;z-index:3;width:min(44%,400px);background:rgba(11,11,12,.72);border:1px solid var(--line);border-radius:4px;padding:8px 10px 6px;backdrop-filter:blur(6px);display:grid;gap:4px;pointer-events:none}
+.hud__head{display:flex;justify-content:space-between;gap:8px;font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.hud__head span:last-child{color:var(--yellow);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hud canvas{width:100%;height:auto;display:block}
+.ctl{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding-bottom:12px;border-bottom:1px solid var(--line)}
+.ctl__rpm{font-family:var(--mono);font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-left:auto;white-space:nowrap}
+.ctl__rpm b{font-family:var(--display);font-size:22px;color:var(--fg);font-weight:800;font-variant-numeric:tabular-nums;letter-spacing:0;display:inline-block;min-width:3.2ch;text-align:right}
+.ctl__rpm i{font-style:normal;color:var(--yellow)}
+.pedal.pedal--mini,.pedal.pedal--bar{position:static;width:auto;height:auto;border-radius:4px;padding:9px 14px;font-size:15px;box-shadow:none;line-height:1;transform:none}
+.pedal--mini.is-down,.pedal--bar.is-down{box-shadow:0 0 18px rgba(226,35,26,.5)}
+.revbar{display:none;position:fixed;left:0;right:0;bottom:0;z-index:55;gap:10px;align-items:center;padding:8px var(--gutter-r) calc(8px + env(safe-area-inset-bottom,0px)) var(--gutter);background:rgba(11,11,12,.92);backdrop-filter:blur(10px);border-top:1px solid var(--line)}
+.revbar .pedal--bar{margin-left:auto;padding:13px 18px;font-size:16px;white-space:nowrap}
+.revbar .tool--start{white-space:nowrap;flex:none}
+.revbar .ctl__rpm{margin-left:0}
+@media (max-width:900px){.revbar{display:flex}.actbar{display:none!important}body{padding-bottom:76px}.side .ctl{display:none}}
+@media (max-width:600px){.hud{width:calc(100% - 128px);bottom:48px;left:10px;padding:6px 8px 4px}.revbar .ctl__rpm{font-size:11px}.revbar .ctl__rpm b{font-size:19px}}
+@media (max-width:480px){.revbar .ctl__psi{display:none}.revbar{gap:8px}.revbar .pedal--bar{padding:13px 14px;font-size:15px}}
 .dyno{display:grid;gap:6px}
 .dyno__head{display:flex;justify-content:space-between;font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
 .dyno__head span:last-child{color:var(--yellow)}
 .dyno canvas{width:100%;height:auto;display:block;background:var(--bg);border:1px solid var(--line);border-radius:4px}
 @media (max-width:600px){.pedal{width:92px;height:92px;font-size:15px}.gauge canvas{width:84px;height:84px}}
 .stage__hint{position:absolute;right:150px;bottom:12px;z-index:3;font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--dim);pointer-events:none}
-@media (max-width:600px){.stage{aspect-ratio:4/3}.stage__hint{display:none}.stage__hp b{font-size:34px}}
+@media (max-width:600px){.stage{aspect-ratio:1/1}.stage__hint{display:none}}
 
 /* build sheet */
 .sheet{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(300px,0.9fr);gap:clamp(18px,3vw,40px);padding-block:clamp(28px,4vw,48px) clamp(48px,7vw,90px);align-items:start}
@@ -228,10 +245,11 @@ p{margin:0}
       <canvas id="gl" aria-hidden="true"></canvas>
       <div class="stage__veil" aria-hidden="true"></div>
       <div class="stage__badge"><span id="badgeSub">Sample · 2017 BMW M240i · B58</span><b id="badgeCar">Pick your car</b></div>
-      <div class="gauge"><div class="gauge__num"><b id="rpmNum">0</b><span>rpm · <i id="boostNum">0.0</i> psi</span></div><canvas id="tach" width="240" height="240" aria-hidden="true"></canvas></div>
-      <button class="pedal" type="button" id="pedal" disabled aria-label="Hold to rev">Hold<br>to rev</button>
+      <div class="gauge"><div class="gauge__num"><b class="js-rpm" id="rpmNum">0</b><span>rpm · <i class="js-boost" id="boostNum">0.0</i> psi</span></div><canvas id="tach" width="240" height="240" aria-hidden="true"></canvas></div>
+      <div class="hud" id="hud"><div class="hud__head"><span>Dyno · est.</span><span class="js-peak"></span></div><canvas id="dynoHud" width="480" height="220"></canvas></div>
+      <button class="pedal js-pedal" type="button" id="pedal" disabled aria-label="Hold to rev">Hold<br>to rev</button>
       <div class="stage__tools">
-        <button class="tool tool--start" type="button" id="start" aria-pressed="false">Start engine</button>
+        <button class="tool tool--start js-start" type="button" id="start" aria-pressed="false">Start engine</button><button class="tool" type="button" id="hudBtn" aria-pressed="true">Dyno</button>
         <button class="tool" type="button" id="mute" aria-pressed="true">Sound on</button>
         <button class="tool" type="button" id="spin" aria-pressed="true">Auto rotate</button>
         <button class="tool" type="button" id="full" aria-pressed="false">Full screen</button>
@@ -245,10 +263,11 @@ p{margin:0}
   <div class="col" id="partsCol"></div>
   <aside class="side">
     <div class="stats">
+      <div class="ctl"><button class="tool tool--start js-start" type="button" aria-pressed="false">Start engine</button><button class="pedal pedal--mini js-pedal" type="button" disabled>Hold to rev</button><span class="ctl__rpm"><b class="js-rpm">0</b> rpm · <i class="js-boost">0.0</i> psi</span></div>
       <div class="stats__head"><div><b id="hpNum">300</b><small>est. whp at the wheels</small></div><div style="text-align:right"><b id="hpDelta" style="font-size:22px;color:var(--yellow)">+0</b><small>over stock</small></div></div>
       <div class="hpbar"><div class="hpbar__fill" id="hpFill"></div><div class="hpbar__goal" id="hpGoalMark"></div></div>
       <div class="goal"><div class="goal__row"><span>Power goal</span><b id="goalVal">450 whp</b></div><input type="range" id="goal" min="250" max="850" step="10" value="450" aria-label="Power goal"></div>
-      <div class="dyno"><div class="dyno__head"><span>Dyno · est.</span><span id="dynoPeak">—</span></div><canvas id="dyno" width="640" height="300"></canvas></div>
+      <div class="dyno"><div class="dyno__head"><span>Dyno · est.</span><span class="js-peak" id="dynoPeak">—</span></div><canvas id="dyno" width="640" height="300"></canvas></div>
       <div id="bars"></div>
       <div class="notes" id="notes"></div>
     </div>
@@ -261,6 +280,8 @@ p{margin:0}
     </div>
   </aside>
 </section>
+
+<div class="revbar" id="revbar"><button class="tool tool--start js-start" type="button" aria-pressed="false">Start engine</button><span class="ctl__rpm"><b class="js-rpm">0</b> rpm<span class="ctl__psi"> · <i class="js-boost">0.0</i> psi</span></span><button class="pedal pedal--bar js-pedal" type="button" disabled>Hold to rev</button></div>
 
 <footer class="foot"><div class="wrap">
   <div class="foot__grid">
@@ -771,8 +792,9 @@ p{margin:0}
     var run={on:false,rpm:0,throttle:0,boost:0,load:0,cut:false,cutT:0,crank:0,flowT:0,idleWob:0};
     var build={whp:300,base:300,redline:7000,boostTarget:11,lag:0.3,exhaust:0,intake:0,whistle:1,big:false,huge:false,burble:false};
     var current=null,muted=false;
-    var tachC=document.getElementById('tach'),tachX=tachC.getContext('2d'),rpmNum=document.getElementById('rpmNum'),boostNum=document.getElementById('boostNum');
-    var dynoC=document.getElementById('dyno'),dynoX=dynoC.getContext('2d'),dynoPeak=document.getElementById('dynoPeak');
+    var tachC=document.getElementById('tach'),tachX=tachC.getContext('2d');
+    var rpmEls=[].slice.call(document.querySelectorAll('.js-rpm')),boostEls=[].slice.call(document.querySelectorAll('.js-boost')),peakEls=[].slice.call(document.querySelectorAll('.js-peak'));
+    var dynoC=document.getElementById('dyno'),dynoX=dynoC.getContext('2d'),hudC=document.getElementById('dynoHud'),hudX=hudC.getContext('2d'),hud=document.getElementById('hud');
 
     function torqueNorm(r,S,big){
       var rl=S.redline;
@@ -791,8 +813,8 @@ p{margin:0}
     }
 
     // ---- dyno chart ----
-    function drawDyno(){
-      if(!current)return;var S=SPEC[current.code],W=dynoC.width,H=dynoC.height,pad={l:44,r:14,t:16,b:30},rl=build.redline;
+    function drawDynoTo(dynoX,dynoC,compact){
+      if(!current)return;var S=SPEC[current.code],W=dynoC.width,H=dynoC.height,pad=compact?{l:34,r:10,t:14,b:22}:{l:44,r:14,t:16,b:30},rl=build.redline,fs=compact?'13px':'11px';
       var N=80,pw=[],tq=[],maxP=0;
       for(var i=0;i<=N;i++){var r=S.idle+(rl-S.idle)*i/N;var t=torqueNorm(r,S,build.big);var pp=t*r/5252;if(pp>maxP)maxP=pp;pw.push(pp);tq.push(t);}
       var tscale=build.whp/maxP;var peakT=tscale;var peakP=build.whp;
@@ -801,7 +823,7 @@ p{margin:0}
       var cBg=css.getPropertyValue('--bg').trim()||'#0b0b0c',cLine=css.getPropertyValue('--line').trim(),cMuted=css.getPropertyValue('--muted').trim(),cY=css.getPropertyValue('--yellow').trim(),cE=css.getPropertyValue('--ember').trim(),cFg=css.getPropertyValue('--fg').trim(),cRed=css.getPropertyValue('--red').trim();
       dynoX.clearRect(0,0,W,H);dynoX.fillStyle=cBg;dynoX.fillRect(0,0,W,H);
       function X(r){return pad.l+(r-S.idle)/(rl-S.idle)*(W-pad.l-pad.r);}function Y(v){return H-pad.b-(v/yMax)*(H-pad.t-pad.b);}
-      dynoX.strokeStyle=cLine;dynoX.lineWidth=1;dynoX.font='11px JetBrains Mono, monospace';dynoX.fillStyle=cMuted;dynoX.textAlign='right';
+      dynoX.strokeStyle=cLine;dynoX.lineWidth=1;dynoX.font=fs+' JetBrains Mono, monospace';dynoX.fillStyle=cMuted;dynoX.textAlign='right';
       var step=yMax>600?200:(yMax>300?100:50);
       for(var v=0;v<=yMax;v+=step){dynoX.beginPath();dynoX.moveTo(pad.l,Y(v));dynoX.lineTo(W-pad.r,Y(v));dynoX.stroke();dynoX.fillText(v,pad.l-6,Y(v)+4);}
       dynoX.textAlign='center';for(var rr=1000;rr<=rl;rr+=1000){dynoX.fillText(rr/1000+'k',X(rr),H-pad.b+16);}
@@ -812,12 +834,14 @@ p{margin:0}
       // stock power for reference
       var stockScale=build.base/maxP;dynoX.setLineDash([4,4]);curve(pw,stockScale,cMuted,1);dynoX.setLineDash([]);
       // legend
-      dynoX.textAlign='left';dynoX.fillStyle=cY;dynoX.fillText('whp',pad.l+6,pad.t+10);dynoX.fillStyle=cE;dynoX.fillText('lb-ft',pad.l+40,pad.t+10);dynoX.fillStyle=cMuted;dynoX.fillText('stock',pad.l+78,pad.t+10);
+      dynoX.textAlign='left';dynoX.fillStyle=cY;dynoX.fillText('whp',pad.l+6,pad.t+10);dynoX.fillStyle=cE;dynoX.fillText('lb-ft',pad.l+(compact?50:40),pad.t+10);dynoX.fillStyle=cMuted;dynoX.fillText('stock',pad.l+(compact?104:78),pad.t+10);
       // rpm marker
       if(run.on&&run.rpm>S.idle){var xr=X(Math.min(run.rpm,rl));dynoX.strokeStyle=cFg;dynoX.lineWidth=1.5;dynoX.beginPath();dynoX.moveTo(xr,pad.t);dynoX.lineTo(xr,H-pad.b);dynoX.stroke();
         var k=Math.max(0,Math.min(N,Math.round((run.rpm-S.idle)/(rl-S.idle)*N)));dynoX.fillStyle=cY;dynoX.beginPath();dynoX.arc(xr,Y(pw[k]*tscale),4,0,6.283);dynoX.fill();}
-      dynoPeak.textContent=Math.round(peakP)+' whp · '+Math.round(peakT)+' lb-ft peak';
+      return Math.round(peakP)+' whp · '+Math.round(peakT)+' lb-ft peak';
     }
+    function drawDyno(){var txt=drawDynoTo(dynoX,dynoC,false);if(!hud.hidden)drawDynoTo(hudX,hudC,true);peakEls.forEach(function(e){e.textContent=txt||'';});}
+
     function drawTach(){
       var S=current?SPEC[current.code]:SPEC.B58,W=tachC.width,cx=W/2,cy=W/2,R=W/2-14,rl=build.redline,a0=Math.PI*0.75,a1=Math.PI*2.25;
       tachX.clearRect(0,0,W,W);
@@ -894,21 +918,24 @@ p{margin:0}
     }
 
     // ---- controls ----
-    var pedal=document.getElementById('pedal'),startBtn=document.getElementById('start'),muteBtn=document.getElementById('mute');
-    function setThrottle(v){if(!run.on)v=0;if(run.throttle>0.5&&v<0.5&&run.boost>3)burst(3200,500,0.35,0.35,1.1);run.throttle=v;pedal.classList.toggle('is-down',v>0.5);}
-    pedal.addEventListener('pointerdown',function(e){e.preventDefault();try{pedal.setPointerCapture(e.pointerId);}catch(err){}setThrottle(1);});
-    ['pointerup','pointercancel'].forEach(function(ev){pedal.addEventListener(ev,function(){setThrottle(0);});});
+    var pedals=[].slice.call(document.querySelectorAll('.js-pedal')),starts=[].slice.call(document.querySelectorAll('.js-start')),muteBtn=document.getElementById('mute'),hudBtn=document.getElementById('hudBtn');
+    hudBtn.addEventListener('click',function(){hud.hidden=!hud.hidden;hudBtn.setAttribute('aria-pressed',hud.hidden?'false':'true');});
+    function setThrottle(v){if(!run.on)v=0;if(run.throttle>0.5&&v<0.5&&run.boost>3)burst(3200,500,0.35,0.35,1.1);run.throttle=v;pedals.forEach(function(p){p.classList.toggle('is-down',v>0.5);});}
+    pedals.forEach(function(pedal){
+      pedal.addEventListener('pointerdown',function(e){e.preventDefault();try{pedal.setPointerCapture(e.pointerId);}catch(err){}setThrottle(1);});
+      ['pointerup','pointercancel'].forEach(function(ev){pedal.addEventListener(ev,function(){setThrottle(0);});});
+      pedal.addEventListener('contextmenu',function(e){e.preventDefault();});
+    });
     window.addEventListener('pointerup',function(){if(run.throttle>0)setThrottle(0);});
-    pedal.addEventListener('contextmenu',function(e){e.preventDefault();});
     window.addEventListener('keydown',function(e){if(e.code==='Space'&&!e.repeat&&run.on&&!/input|select|textarea/i.test(document.activeElement.tagName)){e.preventDefault();setThrottle(1);}});
     window.addEventListener('keyup',function(e){if(e.code==='Space'){setThrottle(0);}});
     window.addEventListener('blur',function(){setThrottle(0);});
     function startEngine(){
       initAudio();if(AC&&AC.state==='suspended')AC.resume();
-      run.on=true;run.crank=0.9;run.rpm=220;run.boost=0;pedal.disabled=false;startBtn.textContent='Shut off';startBtn.setAttribute('aria-pressed','true');
+      run.on=true;run.crank=0.9;run.rpm=220;run.boost=0;pedals.forEach(function(p){p.disabled=false;});starts.forEach(function(b){b.textContent='Shut off';b.setAttribute('aria-pressed','true');});
     }
-    function stopEngine(){run.on=false;setThrottle(0);pedal.disabled=true;startBtn.textContent='Start engine';startBtn.setAttribute('aria-pressed','false');}
-    startBtn.addEventListener('click',function(){if(run.on)stopEngine();else startEngine();});
+    function stopEngine(){run.on=false;setThrottle(0);pedals.forEach(function(p){p.disabled=true;});starts.forEach(function(b){b.textContent='Start engine';b.setAttribute('aria-pressed','false');});}
+    starts.forEach(function(b){b.addEventListener('click',function(){if(run.on)stopEngine();else startEngine();});});
     muteBtn.addEventListener('click',function(){muted=!muted;muteBtn.textContent=muted?'Sound off':'Sound on';muteBtn.setAttribute('aria-pressed',muted?'false':'true');});
     document.addEventListener('visibilitychange',function(){if(document.hidden)setThrottle(0);});
 
@@ -938,7 +965,7 @@ p{margin:0}
     }
     var yaw=3.95,pitch=0.48,yawT=3.95,pitchT=0.48,dist=10.0,autoSpin=true,userDrag=null;
     function resize(){var w=stage.clientWidth,h=stage.clientHeight;if(!w||!h)return;renderer.setSize(w,h,false);camera.aspect=w/h;if(composer)composer.setSize(w,h);var a=w/h,fov=30;if(a<1.3333)fov=2*Math.atan(Math.tan(15*Math.PI/180)*(1.3333/a))*180/Math.PI;camera.fov=fov;camera.updateProjectionMatrix();dist=w<600?10.8:10.0;}
-    stage.addEventListener('pointerdown',function(e){if(e.target.closest('button'))return;userDrag={x:e.clientX,y:e.clientY,yaw:yawT,pitch:pitchT};});
+    stage.addEventListener('pointerdown',function(e){if(e.target.closest('button,.hud'))return;userDrag={x:e.clientX,y:e.clientY,yaw:yawT,pitch:pitchT};});
     window.addEventListener('pointermove',function(e){if(!userDrag)return;yawT=userDrag.yaw+(e.clientX-userDrag.x)*0.008;pitchT=Math.max(0.05,Math.min(1.2,userDrag.pitch+(e.clientY-userDrag.y)*0.005));});
     window.addEventListener('pointerup',function(){userDrag=null;});window.addEventListener('pointercancel',function(){userDrag=null;});
     var spinBtn=document.getElementById('spin');spinBtn.addEventListener('click',function(){autoSpin=!autoSpin;spinBtn.setAttribute('aria-pressed',autoSpin?'true':'false');});
@@ -985,7 +1012,7 @@ p{margin:0}
         engine.updateMatrixWorld();
         dpMats.forEach(function(m){m.emissive.setHex(0xff5a12);m.emissiveIntensity=run.load*0.9;});
         if(anchors.turbo){glowLight.intensity=run.on?(0.25+2.2*run.load):0;glowLight.position.copy(anchors.turbo).applyMatrix4(engine.matrixWorld);}else{glowLight.intensity=0;}
-        rpmNum.textContent=Math.round(run.rpm/10)*10;boostNum.textContent=run.boost.toFixed(1);
+        var rt=String(Math.round(run.rpm/10)*10),bt=run.boost.toFixed(1);rpmEls.forEach(function(e){if(e.textContent!==rt)e.textContent=rt;});boostEls.forEach(function(e){if(e.textContent!==bt)e.textContent=bt;});
         drawTach();if(frameN%2===0)drawDyno();
       }
       if(composer)composer.render();else renderer.render(scene,camera);
