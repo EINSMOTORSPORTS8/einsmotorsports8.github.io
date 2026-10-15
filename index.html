@@ -202,6 +202,22 @@ details p{color:var(--muted);margin-top:10px;max-width:66ch}
 .ig-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:6px}
 .ig-grid figure{aspect-ratio:1}
 .note{font-family:var(--mono);font-size:12px;color:var(--dim);border-left:2px solid var(--yellow);padding-left:10px}
+
+/* build lab promo */
+.promo{background:radial-gradient(90% 80% at 80% 50%,rgba(242,195,0,.07),transparent 60%),var(--panel)}
+.promo__in{display:grid;grid-template-columns:1fr 1.25fr;gap:clamp(24px,5vw,64px);align-items:center}
+.promo__copy{display:grid;gap:18px}
+.promo__copy h2{font-size:clamp(34px,4.6vw,56px)}
+.promo__list{margin:0;padding:0;list-style:none;display:grid;gap:7px;font-family:var(--mono);font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--steel)}
+.promo__list li::before{content:"// ";color:var(--yellow)}
+.promo__shot{position:relative;display:block;border:1px solid var(--line);border-radius:8px;overflow:hidden;background:#0b0b0c;box-shadow:0 30px 80px rgba(0,0,0,.5);min-width:0}
+.promo__shot img{display:block;width:100%;height:auto;transition:transform .6s cubic-bezier(.2,.8,.2,1)}
+.promo__shot:hover img{transform:scale(1.025)}
+.promo__play{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font-family:var(--display);font-weight:800;letter-spacing:.1em;text-transform:uppercase;font-size:16px;color:#fff;background:var(--red);border:2px solid #ff8a7a;border-radius:999px;padding:16px 26px;white-space:nowrap;animation:promo-pulse 2.2s ease-in-out infinite}
+@keyframes promo-pulse{0%,100%{box-shadow:0 0 0 8px rgba(227,30,36,.22),0 10px 30px rgba(0,0,0,.5)}50%{box-shadow:0 0 0 20px rgba(227,30,36,.06),0 10px 30px rgba(0,0,0,.5)}}
+.btn--lg{font-size:18px;padding:16px 26px}
+@media (max-width:860px){.promo__in{grid-template-columns:1fr}.promo__shot{order:-1}}
+@media (prefers-reduced-motion:reduce){.promo__play{animation:none}.promo__shot:hover img{transform:none}}
 </style></head><body><header class="top"><div class="wrap top__in">
   <a class="brand" href="/"><img class="brand__logo" src="/img/logo.png" alt="Eins Motorsports" width="900" height="260"></a>
   <button class="menu-btn" type="button" aria-expanded="false" aria-controls="nav">Menu</button>
@@ -214,10 +230,21 @@ details p{color:var(--muted);margin-top:10px;max-width:66ch}
     <h1>We speak<br>fluent turbo.</h1>
     <p class="lede">Flex fuel, custom tuning, turbo builds and the repairs that keep it all alive. A small crew that would rather be under your car than behind a desk. Twenty minutes from the Loop, five from O'Hare.</p>
     <div class="hero__codes"><span><b>S55</b> F80 M3 · M4</span><span><b>S58</b> G80 M3 · M4 · M2</span><span><b>B58</b> 340i · M340i · Supra</span><span><b>N54</b> 335i · 135i</span><span><b>S65</b> E92 M3</span></div>
-    <div class="cta-row"><a class="btn btn--red" href="sms:7087079756">Text the shop</a><a class="btn btn--ghost" href="https://blueprintcatalogen.as.me/" target="_blank" rel="noopener">Book a slot</a></div>
+    <div class="cta-row"><a class="btn btn--red" href="sms:7087079756">Text the shop</a><a class="btn btn--ghost" href="https://blueprintcatalogen.as.me/" target="_blank" rel="noopener">Book a slot</a><a class="btn btn--ghost" href="/store/build/">Build Lab →</a></div>
     <div class="phone-line"><span>Text or call</span><b>(708) 707-9756</b><button class="copy" type="button" data-copy="(708) 707-9756">Copy</button></div>
   </div>
 </section>
+
+<section class="sec promo" id="build-lab"><div class="wrap promo__in">
+  <div class="promo__copy">
+    <span class="eyebrow">New · the Build Lab</span>
+    <h2>Spec your build.<br>Hear it before you buy it.</h2>
+    <p class="lede">Pick your car, start the engine, hold to rev. Tick the parts and watch the power range, the curve and the reliability bar move. Set a goal and it tells you exactly which combo gets you there, then text us the build.</p>
+    <ul class="promo__list"><li>N54 · N55 · B46/B48 · B58 · S55 · S58 · S65 · N63 · S63</li><li>Real combos and real ranges, not Lego math</li><li>Works on your phone, no download</li></ul>
+    <div class="cta-row"><a class="btn btn--red btn--lg" href="/store/build/">Open the Build Lab →</a><a class="btn btn--ghost" href="/store/">Shop by your car</a></div>
+  </div>
+  <a class="promo__shot" href="/store/build/" aria-label="Open the Build Lab"><img src="/img/build-lab.jpg" alt="The Eins Build Lab: a 3D S58 engine at redline with its power curve and tach" width="1148" height="647" loading="lazy"><span class="promo__play">Start engine</span></a>
+</div></section>
 
 <section class="sec"><div class="wrap">
   <div class="sec__head"><span class="eyebrow">Pick your engine</span><h2>Platform specialists, not generalists.</h2><p class="lede">Every one of these has its own failure points, its own tuning quirks, and its own parts that are worth the money. We know them by heart, because they're what's on the lifts every day.</p></div>
