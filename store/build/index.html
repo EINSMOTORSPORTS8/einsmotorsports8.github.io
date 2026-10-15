@@ -152,6 +152,7 @@ p{margin:0}
 .item__sub em{font-style:normal;color:var(--ember)}
 .item__fx{font-family:var(--mono);font-size:12px;letter-spacing:.04em;color:var(--steel);text-align:right;white-space:nowrap;line-height:1.5}
 .item__fx b{color:var(--yellow);font-weight:500}
+.item__tier{display:inline-block;max-width:150px;white-space:normal;color:var(--muted);font-size:11px;line-height:1.3}
 .item.is-off{opacity:.45}
 .item.is-off input{cursor:not-allowed}
 
@@ -167,6 +168,9 @@ p{margin:0}
 .hpbar{position:relative;height:14px;background:var(--panel-2);border:1px solid var(--line);border-radius:3px;overflow:hidden}
 .hpbar__fill{position:absolute;left:0;top:0;bottom:0;background:linear-gradient(90deg,var(--yellow),var(--ember));transition:width .5s cubic-bezier(.2,.8,.2,1)}
 .hpbar__goal{position:absolute;top:-2px;bottom:-2px;width:2px;background:var(--fg);transition:left .3s}
+.hpbar__range{position:absolute;top:0;bottom:0;background:rgba(242,195,0,.16);border-left:1px solid rgba(242,195,0,.6);border-right:1px solid rgba(242,195,0,.6);transition:left .4s,width .4s}
+.chipbtn--note{display:inline-block;margin-top:8px;font-size:13px;padding:5px 9px;color:var(--fg);border-color:var(--yellow)}
+.note b{color:var(--fg);font-weight:600}
 .bar{display:grid;grid-template-columns:104px minmax(0,1fr) 38px;gap:10px;align-items:center}
 .bar__name{font-family:var(--display);font-weight:700;font-size:17px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
 .bar__segs{display:grid;grid-template-columns:repeat(10,1fr);gap:3px}
@@ -264,9 +268,9 @@ p{margin:0}
   <aside class="side">
     <div class="stats">
       <div class="ctl"><button class="tool tool--start js-start" type="button" aria-pressed="false">Start engine</button><button class="pedal pedal--mini js-pedal" type="button" disabled>Hold to rev</button><span class="ctl__rpm"><b class="js-rpm">0</b> rpm · <i class="js-boost">0.0</i> psi</span></div>
-      <div class="stats__head"><div><b id="hpNum">300</b><small>est. whp at the wheels</small></div><div style="text-align:right"><b id="hpDelta" style="font-size:22px;color:var(--yellow)">+0</b><small>over stock</small></div></div>
-      <div class="hpbar"><div class="hpbar__fill" id="hpFill"></div><div class="hpbar__goal" id="hpGoalMark"></div></div>
-      <div class="goal"><div class="goal__row"><span>Power goal</span><b id="goalVal">450 whp</b></div><input type="range" id="goal" min="250" max="850" step="10" value="450" aria-label="Power goal"></div>
+      <div class="stats__head"><div><b id="hpNum">300</b><small id="hpRangeLbl">est. whp at the wheels</small></div><div style="text-align:right"><b id="hpDelta" style="font-size:22px;color:var(--yellow)">+0</b><small>over stock</small></div></div>
+      <div class="hpbar"><div class="hpbar__fill" id="hpFill"></div><div class="hpbar__range" id="hpRange"></div><div class="hpbar__goal" id="hpGoalMark"></div></div>
+      <div class="goal"><div class="goal__row"><span>Power goal</span><b id="goalVal">450 whp</b></div><input type="range" id="goal" min="250" max="1050" step="10" value="450" aria-label="Power goal"></div>
       <div class="dyno"><div class="dyno__head"><span>Power curve · est.</span><span class="js-peak" id="dynoPeak">—</span></div><canvas id="dyno" width="640" height="300"></canvas></div>
       <div id="bars"></div>
       <div class="notes" id="notes"></div>
@@ -427,15 +431,36 @@ p{margin:0}
     renderParts();recalc();
   }
   function byId(id){return PARTS.filter(function(p){return p.id===id;})[0];}
-  // what a part is worth in THIS build: base gain, plus combo bonuses for other parts that are in, minus most of it if there's no tune
-  function gainOf(p,sel){
-    var eng=state.eng,g=p.whp[eng]||0,combo=0;
-    if(p.combo)Object.keys(p.combo).forEach(function(k){if(sel[k]){var c=p.combo[k];combo+=(typeof c==='number')?c:(c[eng]||0);}});
-    g+=combo;
-    if(p.needsTune&&!sel.tune1)g=Math.round(g*0.4);
-    return {whp:g,combo:combo>0};
+
+  // ===== power ladder ==========================================================
+  // Power is not additive. A build lands in a RANGE set by the combo it is running; the supporting mods decide where in that range.
+  function R(o){return o;}
+  var TIERS=[
+    {id:'stock',name:'Stock',req:[],r:{N54:[255,275],N55:[265,285],B58:[290,310],S55:[380,400],S58:[430,450],S65:[330,350],S63:[460,480],S63TU:[480,500],S63TU2:[480,500],S63TU4:[520,540],N63:[330,350],N63TU:[375,395],N63TU2:[385,405],N63TU3:[445,465]}},
+    {id:'st1',name:'Stage 1',req:['tune1'],r:{N54:[320,345],N55:[320,340],B58:[360,385],S55:[450,480],S58:[510,540],S65:[350,365],S63:[540,570],S63TU:[570,600],S63TU2:[570,600],S63TU4:[620,650],N63:[400,430],N63TU:[450,480],N63TU2:[460,490],N63TU3:[520,560]}},
+    {id:'bolt',name:'Tune, intake and exhaust',req:['tune1','intake','exh'],r:{S65:[360,380]}},
+    {id:'st2',name:'Stage 2',req:['tune1','dp'],r:{N54:[350,380],N55:[345,375],B58:[400,430],S55:[490,530],S58:[540,580],S63:[570,610],S63TU:[610,650],S63TU2:[610,650],S63TU4:[660,700],N63:[430,460],N63TU:[480,515],N63TU2:[490,525],N63TU3:[560,600]}},
+    {id:'e85',name:'Stock turbos on E85',req:['tune1','dp','flex'],r:{N54:[420,470],N55:[400,440],B58:[470,520],S55:[540,600],S58:[600,660],S63:[640,700],S63TU:[680,740],S63TU2:[680,740],S63TU4:[730,790],N63:[480,530],N63TU:[540,590],N63TU2:[550,600],N63TU3:[620,680]}},
+    {id:'hybp',name:'Hybrid turbos, pump gas',req:['hybrid'],r:{N54:[450,500],N55:[430,480],B58:[500,560],S55:[600,660],S58:[650,720],S63:[700,760],S63TU:[740,800],S63TU2:[740,800],S63TU4:[800,860],N63:[520,570],N63TU:[580,630],N63TU2:[590,640],N63TU3:[660,720]}},
+    {id:'hyb',name:'Hybrid turbos on E85',req:['hybrid','flex'],r:{N54:[520,600],N55:[480,560],B58:[560,650],S55:[660,750],S58:[740,830],S63:[800,900],S63TU:[850,950],S63TU2:[850,950],S63TU4:[900,1000],N63:[580,660],N63TU:[650,730],N63TU2:[660,740],N63TU3:[740,830]}},
+    {id:'hybpi',name:'Hybrids, E85 and port injection',req:['hybrid','flex','pi'],r:{N54:[560,640],N55:[520,600],B58:[620,700],S55:[720,800],S58:[800,880],S63:[850,950],S63TU:[900,1000],S63TU2:[900,1000],S63TU4:[950,1050],N63:[620,700],N63TU:[690,770],N63TU2:[700,780],N63TU3:[780,870]}},
+    {id:'singlep',name:'Top-mount single, pump gas',req:['topmount'],r:{N54:[520,580],N55:[500,560],B58:[560,620],S55:[650,720],S58:[700,780]}},
+    {id:'single',name:'Top-mount single on E85',req:['topmount','flex'],r:{N54:[650,800],N55:[600,750],B58:[700,900],S55:[800,1000],S58:[900,1100]}}
+  ];
+  // supporting mods: they do not change the tier, they move you up inside its range
+  var LIFT={fmic:1,intake:1,exh:0.5,tune2:1,custom:1.5,fuel:0.5,plugs:0.5};
+  function tiersFor(){return TIERS.filter(function(t){return t.r[state.eng];});}
+  function tierMet(t){return t.req.every(function(r){return state.sel[r];});}
+  function currentTier(){var ts=tiersFor(),cur=ts[0];ts.forEach(function(t){if(tierMet(t))cur=t;});return cur;}
+  function estimate(){
+    var t=currentTier(),r=t.r[state.eng],lift=0;
+    Object.keys(LIFT).forEach(function(k){if(state.sel[k]&&t.req.indexOf(k)<0)lift+=LIFT[k];});
+    var pos=clamp(0.25+0.15*lift,0,1);
+    return {tier:t,lo:r[0],hi:r[1],est:Math.round((r[0]+(r[1]-r[0])*pos)/5)*5,lift:lift};
   }
-  function pctOf(p,sel){var pc=p.pct||0;if(p.pctCombo)Object.keys(p.pctCombo).forEach(function(k){if(sel[k])pc+=p.pctCombo[k];});return pc;}
+  function tierForGoal(goal){var ts=tiersFor();for(var i=0;i<ts.length;i++){if(ts[i].r[state.eng][1]>=goal)return ts[i];}return null;}
+  function tierOfPart(id){var ts=tiersFor();for(var i=0;i<ts.length;i++){if(ts[i].req.indexOf(id)>=0)return ts[i];}return null;}
+  function clamp(v,a,b){return Math.max(a,Math.min(b,v));}
 
   // ===== parts list ============================================================
   var partsCol=document.getElementById('partsCol');
@@ -447,8 +472,9 @@ p{margin:0}
       var list=PARTS.filter(function(p){return p.cat===c&&p.eng.indexOf(state.eng)>=0;});
       g.innerHTML='<div class="group__head">'+c+'<span>'+list.length+(list.length>1?' options':' option')+'</span></div>';
       list.forEach(function(p){
-        var gi=gainOf(p,state.sel),whp=gi.whp,fx=[];
-        if(whp)fx.push('<b>+'+whp+' whp</b>'+(gi.combo?'<br><span style="color:var(--green)">combo</span>':''));if(p.pct)fx.push('<b>+'+Math.round(pctOf(p,state.sel)*100)+'% whp</b>');
+        var fx=[],tp=tierOfPart(p.id);
+        if(tp){var tr=tp.r[state.eng];fx.push('<b>'+tr[0]+'–'+tr[1]+' whp</b><br><span class="item__tier">'+tp.name+'</span>');}
+        else if(LIFT[p.id])fx.push('<b>↑ in range</b>');
         Object.keys(p.fx).forEach(function(k){var v=p.fx[k];fx.push((v>0?'+':'')+v+' '+k.slice(0,4));});
         var l=document.createElement('label');l.className='item';l.setAttribute('data-id',p.id);
         l.innerHTML='<input type="checkbox" id="p-'+p.id+'" '+(state.sel[p.id]?'checked':'')+'>'+
@@ -473,13 +499,11 @@ p{margin:0}
   STATS.forEach(function(st){var d=document.createElement('div');d.className='bar';d.innerHTML='<div class="bar__name">'+st[1]+'</div><div class="bar__segs" id="segs-'+st[0]+'">'+'<i></i>'.repeat(10)+'</div><div class="bar__val" id="val-'+st[0]+'">0</div>';barsEl.appendChild(d);});
   var goalEl=document.getElementById('goal');
   goalEl.addEventListener('input',function(){state.goal=+goalEl.value;recalc();});
-  function clamp(v,a,b){return Math.max(a,Math.min(b,v));}
   function recalc(){
-    var B=BASE[state.eng],whp=B.whp,s={response:B.response,reliability:B.reliability,traction:B.traction,sound:B.sound},notes=[];
+    var B=BASE[state.eng],s={response:B.response,reliability:B.reliability,traction:B.traction,sound:B.sound},notes=[];
     var sel=PARTS.filter(function(p){return state.sel[p.id];});
-    sel.forEach(function(p){whp+=gainOf(p,state.sel).whp;Object.keys(p.fx).forEach(function(k){s[k]+=p.fx[k];});});
-    sel.forEach(function(p){if(p.pct)whp=Math.round(whp*(1+pctOf(p,state.sel)));});
-    var gain=whp-B.whp;
+    sel.forEach(function(p){Object.keys(p.fx).forEach(function(k){s[k]+=p.fx[k];});});
+    var E=estimate(),whp=E.est,ts=tiersFor(),sr=ts[0].r[state.eng],stock=Math.round((sr[0]+(sr[1]-sr[0])*0.25)/5)*5,gain=whp-stock;E.stock=stock;
     // more power than grip
     var slip=Math.max(0,(gain-60)/14);s.traction-=slip;
     if(state.sel.flex&&!state.sel.fuel&&whp>450){s.reliability-=12;notes.push(['warn','Past about 450 whp on E85 the stock pumps run out of fuel. Add the fuel system or reliability takes the hit.']);}
@@ -487,35 +511,42 @@ p{margin:0}
     if(state.sel.topmount&&!state.sel.flex){notes.push(['','A top-mount on pump gas is leaving a lot on the table. Flex fuel is the cheap half of that power.']);}
     if(gain>120&&!state.sel.tires&&!state.sel.susp){notes.push(['','You will smoke the tires in third. Tires and suspension are where the next real gain is.']);}
     if(state.sel.charge&&(state.eng==='N54'||state.eng==='N55'))notes.push(['good','Charge pipe is the right first part on a tuned '+state.eng+'. The plastic one is the thing that strands people.']);
-    if(whp>=state.goal)notes.push(['good','Goal hit: '+whp+' whp against a '+state.goal+' whp target.']);
-    else{var short=state.goal-whp,next=nextStep(whp);notes.push(['',short+' whp short of your goal.'+(next?' Next step: '+next+'.':' That goal needs a bigger conversation. Text us.')]);}
+    var need=tierForGoal(state.goal);
+    if(whp>=state.goal)notes.push(['good','Goal hit. '+E.tier.name+' on a '+state.eng+' lands '+E.lo+'–'+E.hi+' whp; this build should sit around '+whp+'.']);
+    else if(need&&ts.indexOf(need)<=ts.indexOf(E.tier)){
+      var lifts=Object.keys(LIFT).filter(function(k){var q=byId(k);return !state.sel[k]&&q&&q.eng.indexOf(state.eng)>=0&&E.tier.req.indexOf(k)<0&&!(q.req||[]).some(function(r){return !state.sel[r]&&E.tier.req.indexOf(r)<0;});});
+      notes.push(['','Your goal is inside the '+E.tier.name+' range ('+E.lo+'–'+E.hi+' whp). Where you land in it is down to the supporting mods'+(lifts.length?': '+lifts.map(function(k){return byId(k).name.toLowerCase();}).join(', ')+'.':'.')]);
+    }else if(need){
+      var miss=need.req.filter(function(r){return !state.sel[r];}),nr=need.r[state.eng];
+      notes.push(['','For '+state.goal+' whp on a '+state.eng+' you need <b>'+need.name+'</b> ('+nr[0]+'–'+nr[1]+' whp): '+miss.map(function(r){return byId(r).name;}).join(' + ')+'. <button class="chipbtn chipbtn--note" type="button" data-add="'+miss.join(',')+'">Add to build</button>']);
+    }else notes.push(['warn','Past what we would put on a street '+state.eng+'. Text us and we will talk about it.']);
     Object.keys(s).forEach(function(k){s[k]=clamp(Math.round(s[k]),0,100);});
     // paint UI
     document.getElementById('hpNum').textContent=whp;
+    document.getElementById('hpRangeLbl').textContent=E.tier.name+' · '+E.lo+'–'+E.hi+' whp';
     document.getElementById('hpDelta').textContent=(gain>=0?'+':'')+gain;
     document.getElementById('goalVal').textContent=state.goal+' whp';
-    var lo=200,hi=900;document.getElementById('hpFill').style.width=clamp((whp-lo)/(hi-lo)*100,0,100)+'%';document.getElementById('hpGoalMark').style.left=clamp((state.goal-lo)/(hi-lo)*100,0,100)+'%';
+    var lo=200,hi=Math.max(900,ts[ts.length-1].r[state.eng][1]+50),pc=function(v){return clamp((v-lo)/(hi-lo)*100,0,100);};
+    document.getElementById('hpFill').style.width=pc(whp)+'%';document.getElementById('hpGoalMark').style.left=pc(state.goal)+'%';
+    var rb=document.getElementById('hpRange');rb.style.left=pc(E.lo)+'%';rb.style.width=(pc(E.hi)-pc(E.lo))+'%';
+    goalEl.max=hi-50;
     STATS.forEach(function(st){var v=s[st[0]],segs=document.getElementById('segs-'+st[0]).children,base=B[st[0]];for(var i=0;i<10;i++){var on=v>=(i+1)*10-5;segs[i].className=on?(v<40?'low':(i>=8?'hot':'on')):'';}
       var d=v-base;document.getElementById('val-'+st[0]).innerHTML=v+(d?'<br><span class="bar__delta'+(d<0?' neg':'')+'">'+(d>0?'+':'')+d+'</span>':'');});
     notesEl.innerHTML=notes.map(function(n){return '<div class="note'+(n[0]?' note--'+n[0]:'')+'">'+n[1]+'</div>';}).join('');
-    renderCart(sel,whp);
+    renderCart(sel,whp,E);
     if(stageApi)stageApi.setBuild(state.sel,gain,whp);
     try{localStorage.setItem('eins-build-sel',JSON.stringify({sel:state.sel,goal:state.goal}));}catch(e){}
   }
-  function nextStep(whp){
-    var order=['tune1','dp','fmic','tune2','flex','fuel','custom','pi','hybrid','topmount'];
-    for(var i=0;i<order.length;i++){var p=byId(order[i]);if(state.sel[order[i]]||p.eng.indexOf(state.eng)<0)continue;if((p.excl||[]).some(function(x){return state.sel[x];}))continue;if(p.pct)return p.name+' (+'+Math.round(pctOf(p,state.sel)*100)+'%)';var gw=gainOf(p,Object.assign({},state.sel,{tune1:true})).whp;if(gw>0)return p.name+' (+'+gw+' whp)';}
-    return null;
-  }
+  notesEl.addEventListener('click',function(e){var b=e.target.closest('[data-add]');if(!b)return;b.getAttribute('data-add').split(',').forEach(select);renderParts();recalc();});
 
   // ===== cart ==================================================================
   var cartList=document.getElementById('cartList'),summaryEl=document.getElementById('summary');
-  function renderCart(sel,whp){
+  function renderCart(sel,whp,E){
     var eins=sel.filter(function(p){return p.kind==='eins';}),shop=sel.filter(function(p){return p.kind==='shop';});
     document.getElementById('cartCount').textContent=sel.length+(sel.length===1?' item':' items');
     cartList.innerHTML=sel.length?sel.map(function(p){return '<li>'+p.name+'<span>'+(p.kind==='eins'?'Eins part':'Shop work')+'</span></li>';}).join(''):'<li class="empty">Nothing yet. Tick parts on the left.</li>';
     var car=state.car?(state.car.quick?(state.eng+' build'):(state.car.year+' '+state.car.make+' '+state.car.model+' ('+state.car.chassis+' · '+state.eng+')')):'No car picked';
-    var txt='Eins build — '+car+'\nGoal: '+state.goal+' whp · Est: '+whp+' whp (stock '+BASE[state.eng].whp+')\n'+
+    var txt='Eins build — '+car+'\nGoal: '+state.goal+' whp · '+E.tier.name+': '+E.lo+'–'+E.hi+' whp, likely around '+whp+' (stock '+E.stock+')\n'+
       'Eins parts: '+(eins.length?eins.map(function(p){return p.name;}).join(', '):'none')+'\nShop work: '+(shop.length?shop.map(function(p){return p.name;}).join(', '):'none')+'\n— built at einsmotorsports.net/store/build';
     summaryEl.textContent=txt;
   }
