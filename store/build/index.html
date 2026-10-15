@@ -241,7 +241,7 @@ p{margin:0}
       <div class="field"><label for="year">Year</label><div class="sel"><select id="year"><option value="">Select year</option></select></div></div>
       <div class="field"><label for="make">Make</label><div class="sel"><select id="make" disabled><option value="">Select make</option></select></div></div>
       <div class="field"><label for="model">Model</label><div class="sel"><select id="model" disabled><option value="">Select model</option></select></div></div>
-      <div class="quick"><span class="eyebrow">Or jump to</span><span id="quick"><button class="chipbtn" type="button" data-eng="N54">N54</button> <button class="chipbtn" type="button" data-eng="N55">N55</button> <button class="chipbtn" type="button" data-eng="B58">B58</button> <button class="chipbtn" type="button" data-eng="S55">S55</button> <button class="chipbtn" type="button" data-eng="S58">S58</button> <button class="chipbtn" type="button" data-eng="S63TU4">S63</button> <button class="chipbtn" type="button" data-eng="N63TU3">N63</button> <button class="chipbtn" type="button" data-eng="S65">S65</button></span></div>
+      <div class="quick"><span class="eyebrow">Or jump to</span><span id="quick"><button class="chipbtn" type="button" data-eng="N54">N54</button> <button class="chipbtn" type="button" data-eng="N55">N55</button> <button class="chipbtn" type="button" data-eng="B58">B58</button> <button class="chipbtn" type="button" data-eng="B58TU">B58TU</button> <button class="chipbtn" type="button" data-eng="S55">S55</button> <button class="chipbtn" type="button" data-eng="S58">S58</button> <button class="chipbtn" type="button" data-eng="S63TU4">S63</button> <button class="chipbtn" type="button" data-eng="N63TU3">N63</button> <button class="chipbtn" type="button" data-eng="S65">S65</button></span></div>
     </form>
   </div>
   <div class="wrap stagewrap">
@@ -314,7 +314,8 @@ p{margin:0}
   var ENG={
     N54:{code:'N54',sub:'3.0 twin-turbo I6 · 2007–2016',layout:'i6',turbos:2,cooler:'fmic',cover:'plastic',years:'2007–2016'},
     N55:{code:'N55',sub:'3.0 twin-scroll turbo I6 · 2011–2019',layout:'i6',turbos:1,cooler:'fmic',cover:'plastic'},
-    B58:{code:'B58',sub:'3.0 single-turbo I6 · 2016–now',layout:'i6',turbos:1,cooler:'awic',cover:'plastic'},
+    B58:{code:'B58',sub:'3.0 single-turbo I6 · 340i 440i M240i 540i 740i · X3 X4 M40i · 2016–2019',layout:'i6',turbos:1,cooler:'awic',cover:'plastic'},
+    B58TU:{code:'B58TU',sub:'3.0 single-turbo I6 · M340i M440i M240i Z4 M40i Supra · X3 X4 X5 X6 X7 · 2019–now',layout:'i6',turbos:1,cooler:'awic',cover:'plastic'},
     S55:{code:'S55',sub:'3.0 twin-turbo I6 · M3 M4 M2C · 2015–2021',layout:'i6',turbos:2,cooler:'top',cover:'alu'},
     S58:{code:'S58',sub:'3.0 twin-turbo I6 · M3 M4 M2 X3M · 2020–now',layout:'i6',turbos:2,cooler:'awic',cover:'alu'},
     S65:{code:'S65',sub:'4.0 V8, naturally aspirated · E9X M3',layout:'v8',turbos:0,cooler:'none',cover:'alu'},
@@ -330,22 +331,22 @@ p{margin:0}
   // make, model, first year, last year, chassis, engine
   var V=[
     ['BMW','135i',2008,2010,'E82 · E88','N54'],['BMW','135i',2011,2013,'E82 · E88','N55'],['BMW','1M',2011,2011,'E82','N54'],
-    ['BMW','M235i',2014,2016,'F22 · F23','N55'],['BMW','M240i',2017,2021,'F22 · F23','B58'],['BMW','M240i',2022,2025,'G42','B58'],
+    ['BMW','M235i',2014,2016,'F22 · F23','N55'],['BMW','M240i',2017,2021,'F22 · F23','B58'],['BMW','M240i',2022,2025,'G42','B58TU'],
     ['BMW','M2',2016,2018,'F87','N55'],['BMW','M2 Competition / CS',2019,2021,'F87','S55'],['BMW','M2',2023,2025,'G87','S58'],
     ['BMW','335i sedan',2007,2010,'E90','N54'],['BMW','335i sedan',2011,2011,'E90','N55'],
     ['BMW','335i coupe / convertible',2007,2010,'E92 · E93','N54'],['BMW','335i coupe / convertible',2011,2013,'E92 · E93','N55'],
     ['BMW','335i sedan / wagon',2012,2015,'F30 · F31','N55'],['BMW','435i',2014,2016,'F32 · F33 · F36','N55'],
     ['BMW','340i',2016,2018,'F30','B58'],['BMW','440i',2017,2020,'F32 · F33 · F36','B58'],
-    ['BMW','M340i',2019,2025,'G20 · G21','B58'],['BMW','M440i',2021,2025,'G22 · G23 · G26','B58'],
+    ['BMW','M340i',2019,2025,'G20 · G21','B58TU'],['BMW','M440i',2021,2025,'G22 · G23 · G26','B58TU'],
     ['BMW','M3',2008,2013,'E90 · E92 · E93','S65'],['BMW','M3',2015,2018,'F80','S55'],['BMW','M3',2021,2025,'G80','S58'],
     ['BMW','M4',2015,2020,'F82 · F83','S55'],['BMW','M4',2021,2025,'G82 · G83','S58'],
-    ['BMW','535i',2008,2010,'E60 · E61','N54'],['BMW','535i',2011,2016,'F10 · F11','N55'],['BMW','540i',2017,2023,'G30','B58'],
-    ['BMW','640i',2012,2018,'F12 · F13 · F06','N55'],['BMW','740i',2011,2012,'F01','N54'],['BMW','740i',2013,2015,'F01','N55'],['BMW','740i',2016,2019,'G11','B58'],
-    ['BMW','X1 xDrive35i',2013,2015,'E84','N55'],['BMW','X3 xDrive35i',2011,2017,'F25','N55'],['BMW','X3 M40i',2018,2025,'G01','B58'],['BMW','X3 M',2020,2025,'F97','S58'],
-    ['BMW','X4 M40i',2016,2018,'F26','N55'],['BMW','X4 M40i',2019,2025,'G02','B58'],['BMW','X4 M',2020,2025,'F98','S58'],
-    ['BMW','X5 xDrive35i',2011,2018,'E70 · F15','N55'],['BMW','X5 xDrive40i',2019,2025,'G05','B58'],
-    ['BMW','X6 xDrive35i',2008,2010,'E71','N54'],['BMW','X6 xDrive35i',2011,2019,'E71 · F16','N55'],['BMW','X6 xDrive40i',2020,2025,'G06','B58'],
-    ['BMW','Z4 sDrive35i / 35is',2009,2016,'E89','N54'],['BMW','Z4 M40i',2019,2025,'G29','B58'],
+    ['BMW','535i',2008,2010,'E60 · E61','N54'],['BMW','535i',2011,2016,'F10 · F11','N55'],['BMW','540i',2017,2020,'G30','B58'],['BMW','540i',2021,2023,'G30','B58TU'],
+    ['BMW','640i',2012,2018,'F12 · F13 · F06','N55'],['BMW','740i',2011,2012,'F01','N54'],['BMW','740i',2013,2015,'F01','N55'],['BMW','740i',2016,2019,'G11','B58'],['BMW','740i',2020,2022,'G11','B58TU'],['BMW','740i',2023,2025,'G70','B58TU'],
+    ['BMW','X1 xDrive35i',2013,2015,'E84','N55'],['BMW','X3 xDrive35i',2011,2017,'F25','N55'],['BMW','X3 M40i',2018,2019,'G01','B58'],['BMW','X3 M40i',2020,2025,'G01','B58TU'],['BMW','X3 M',2020,2025,'F97','S58'],
+    ['BMW','X4 M40i',2016,2018,'F26','N55'],['BMW','X4 M40i',2019,2019,'G02','B58'],['BMW','X4 M40i',2020,2025,'G02','B58TU'],['BMW','X4 M',2020,2025,'F98','S58'],
+    ['BMW','X5 xDrive35i',2011,2018,'E70 · F15','N55'],['BMW','X5 xDrive40i',2019,2025,'G05','B58TU'],['BMW','X7 xDrive40i',2019,2025,'G07','B58TU'],
+    ['BMW','X6 xDrive35i',2008,2010,'E71','N54'],['BMW','X6 xDrive35i',2011,2019,'E71 · F16','N55'],['BMW','X6 xDrive40i',2020,2025,'G06','B58TU'],
+    ['BMW','Z4 sDrive35i / 35is',2009,2016,'E89','N54'],['BMW','Z4 M40i',2019,2025,'G29','B58TU'],
     ['BMW','X5 M',2010,2013,'E70','S63'],['BMW','X6 M',2010,2014,'E71','S63'],
     ['BMW','M5',2013,2016,'F10','S63TU'],['BMW','M6',2013,2018,'F06 · F12 · F13','S63TU'],
     ['BMW','X5 M',2015,2019,'F85','S63TU2'],['BMW','X6 M',2015,2019,'F86','S63TU2'],
@@ -354,7 +355,7 @@ p{margin:0}
     ['BMW','550i',2014,2016,'F10','N63TU'],['BMW','550i GT',2014,2017,'F07','N63TU'],['BMW','650i',2013,2019,'F06 · F12 · F13','N63TU'],['BMW','750i / 750Li',2013,2015,'F01 · F02','N63TU'],['BMW','X5 xDrive50i',2014,2018,'F15','N63TU'],['BMW','X6 xDrive50i',2015,2019,'F16','N63TU'],
     ['BMW','750i / 750Li',2016,2019,'G11 · G12','N63TU2'],['BMW','M550i',2018,2019,'G30','N63TU2'],['BMW','X5 xDrive50i',2019,2019,'G05','N63TU2'],['BMW','X7 xDrive50i',2019,2019,'G07','N63TU2'],
     ['BMW','M550i',2020,2023,'G30','N63TU3'],['BMW','M850i',2019,2025,'G14 · G15 · G16','N63TU3'],['BMW','750i / 750Li',2020,2022,'G11 · G12','N63TU3'],['BMW','760i',2023,2025,'G70','N63TU3'],['BMW','X5 M50i / M60i',2020,2025,'G05','N63TU3'],['BMW','X6 M50i / M60i',2020,2025,'G06','N63TU3'],['BMW','X7 M50i / M60i',2020,2025,'G07','N63TU3'],
-    ['Toyota','GR Supra 3.0',2020,2025,'A90 · J29','B58']
+    ['Toyota','GR Supra 3.0',2020,2025,'A90 · J29','B58TU']
   ];
 
   // ---- the numbers. Edit these. whp = estimated gain at the wheels per engine; fx = stat points (0-100 scale)
@@ -362,6 +363,7 @@ p{margin:0}
     N54:{whp:265,response:52,reliability:50,traction:58,sound:48},
     N55:{whp:275,response:60,reliability:62,traction:60,sound:50},
     B58:{whp:300,response:66,reliability:76,traction:62,sound:50},
+    B58TU:{whp:330,response:68,reliability:76,traction:64,sound:50},
     S55:{whp:390,response:64,reliability:70,traction:66,sound:58},
     S58:{whp:440,response:70,reliability:76,traction:70,sound:60},
     S65:{whp:340,response:85,reliability:62,traction:64,sound:80},
@@ -374,28 +376,35 @@ p{margin:0}
     N63TU2:{whp:395,response:64,reliability:56,traction:74,sound:66},
     N63TU3:{whp:455,response:66,reliability:60,traction:76,sound:68}
   };
-  var TURBO_I6=['N54','N55','B58','S55','S58'],S63S=['S63','S63TU','S63TU2','S63TU4'],N63S=['N63','N63TU','N63TU2','N63TU3'],TURBO=TURBO_I6.concat(S63S,N63S),ALL=TURBO.concat(['S65']);
+  var TURBO_I6=['N54','N55','B58','B58TU','S55','S58'],S63S=['S63','S63TU','S63TU2','S63TU4'],N63S=['N63','N63TU','N63TU2','N63TU3'],TURBO=TURBO_I6.concat(S63S,N63S),ALL=TURBO.concat(['S65']);
+  var HPFP_ENG=['N55','B58','S55','S58'].concat(S63S,N63S); // a bigger high-pressure pump is the move here; the N54 and B58TU go to port injection instead
   var PARTS=[
-    {id:'tune1',cat:'Tuning',name:'Stage 1 tune',sub:'MHD or bootmod3 on pump gas. Where every build starts.',kind:'shop',whp:{N54:55,N55:50,B58:60,S55:70,S58:80,S65:15,S63:80,S63TU:90,S63TU2:90,S63TU4:95,N63:70,N63TU:75,N63TU2:75,N63TU3:80},fx:{response:8,reliability:-4,sound:3},eng:ALL},
-    {id:'tune2',cat:'Tuning',name:'Stage 2 tune',sub:'Needs downpipes and an intercooler. More timing, more boost.',kind:'shop',whp:{N54:25,N55:25,B58:30,S55:35,S58:40,S63:45,S63TU:50,S63TU2:50,S63TU4:55,N63:40,N63TU:45,N63TU2:45,N63TU3:50},fx:{response:4,reliability:-4},req:['tune1','dp','fmic'],eng:TURBO},
-    {id:'custom',cat:'Tuning',name:'Custom tune',sub:'Built for your fuel, your parts and your car, logged and refined on the road. Replaces the off-the-shelf map and finds what it left on the table. Worth more the bigger the turbo.',kind:'shop',whp:{},pct:0.05,pctCombo:{hybrid:0.02,topmount:0.03},fx:{response:7,reliability:5},req:['tune1'],eng:ALL},
-    {id:'burble',cat:'Tuning',name:'Burble and pops map',sub:'Crackles on decel. All show, a little extra heat in the cats.',kind:'shop',whp:{},fx:{sound:12,reliability:-3},req:['tune1'],eng:TURBO},
-    {id:'flex',cat:'Fuel',name:'Flex fuel kit + E85 tune',sub:'Our sensor and harness, plug-and-play into the tune. The biggest cheap power there is, and it is worth even more once the turbos grow.',kind:'eins',engPart:'flex',combo:{hybrid:{N54:30,N55:25,B58:30,S55:30,S58:30,S63:40,S63TU:40,S63TU2:40,S63TU4:40,N63:40,N63TU:40,N63TU2:40,N63TU3:40},topmount:{N54:40,N55:35,B58:40,S55:40,S58:40},pi:10},whp:{N54:60,N55:45,B58:55,S55:60,S58:60,S63:80,S63TU:90,S63TU2:90,S63TU4:95,N63:70,N63TU:75,N63TU2:75,N63TU3:80},fx:{response:8,reliability:-6,sound:2},req:['tune1'],eng:TURBO},
-    {id:'fuel',cat:'Fuel',name:'Fuel system upgrade',sub:'Upgraded high and low pressure pumps. Needed past about <em>450 whp</em> on E85.',kind:'shop',whp:{},fx:{reliability:14},eng:TURBO},
-    {id:'pi',cat:'Fuel',name:'Port injection kit',sub:'A second rail with six injectors on the intake side. On its own it adds nothing; with E85 and big turbos it is what lets the rest make power.',kind:'shop',engPart:'pi',whp:{},combo:{flex:15,hybrid:10,topmount:20},fx:{reliability:10,response:2},req:['tune1'],eng:TURBO},
-    {id:'dp',cat:'Exhaust',name:'Downpipes',sub:'High-flow catted. Spool, sound, and the gateway to stage 2. Needs a tune to be worth much.',kind:'shop',engPart:'downpipe',needsTune:true,whp:{N54:25,N55:20,B58:20,S55:30,S58:30,S63:35,S63TU:35,S63TU2:35,S63TU4:35,N63:30,N63TU:30,N63TU2:30,N63TU3:30},fx:{sound:18,response:3,reliability:-3},eng:TURBO},
-    {id:'exh',cat:'Exhaust',name:'Cat-back exhaust',sub:'Mostly sound. A little weight off the back.',kind:'shop',needsTune:true,whp:{N54:5,N55:5,B58:5,S55:8,S58:8,S65:10,S63:12,S63TU:12,S63TU2:12,S63TU4:12,N63:10,N63TU:10,N63TU2:10,N63TU3:10},fx:{sound:22},eng:ALL},
-    {id:'intake',cat:'Intake',name:'Intake',sub:'Eins intake on the B58, heat-shielded kits elsewhere. You hear the turbo. Matters most once the turbo is bigger than stock.',kind:'eins',engPart:'intake',needsTune:true,combo:{hybrid:6,topmount:10},whp:{N54:8,N55:8,B58:8,S55:10,S58:10,S65:6,S63:12,S63TU:12,S63TU2:12,S63TU4:12,N63:10,N63TU:10,N63TU2:10,N63TU3:10},fx:{sound:8,response:4},eng:ALL},
-    {id:'charge',cat:'Charge air',name:'Charge pipe',sub:'Eins aluminum pipe. Zero power, all reliability: the plastic one splits under boost.',kind:'eins',engPart:'charge',whp:{},fx:{reliability:14},eng:['N54','N55','B58']},
-    {id:'fmic',cat:'Charge air',name:'Intercooler upgrade',sub:'Bigger front-mount on N54/N55. Heat exchanger and chargecooler on the rest. Keeps the power from fading on the third pull.',kind:'shop',engPart:'cooler',needsTune:true,combo:{hybrid:10,topmount:10},whp:{N54:12,N55:12,B58:10,S55:12,S58:12,S63:15,S63TU:15,S63TU2:15,S63TU4:15,N63:15,N63TU:15,N63TU2:15,N63TU3:15},fx:{reliability:8,response:2},eng:TURBO},
-    {id:'occ',cat:'Engine',name:'Catch can kit',sub:'Keeps oil out of the intake. Your valves stay clean, your tune stays consistent.',kind:'eins',engPart:'occ',whp:{},fx:{reliability:8},eng:TURBO},
-    {id:'plugs',cat:'Engine',name:'Plugs and coils',sub:'One step colder, fresh coils. Cheap insurance on any tuned car.',kind:'shop',whp:{},fx:{reliability:6,response:2},eng:ALL},
-    {id:'hybrid',cat:'Turbo',name:'Hybrid turbo(s)',sub:'Upgraded wheels in the stock housings. The big drop-in step, and it keeps most of the spool. Wants E85 to really wake up.',kind:'shop',engPart:'turbo',whp:{N54:100,N55:95,B58:110,S55:110,S58:115,S63:150,S63TU:160,S63TU2:160,S63TU4:170,N63:140,N63TU:150,N63TU2:150,N63TU3:160},fx:{reliability:-10,response:-7,sound:3},req:['tune1','fuel','fmic','dp'],excl:['topmount'],eng:TURBO},
-    {id:'topmount',cat:'Turbo',name:'Top-mount single turbo kit',sub:'One big turbo on a tubular manifold up top. The 600-plus route. Wants port injection, fuel and a custom tune, and you will feel the lag.',kind:'shop',engPart:'turbo',whp:{N54:150,N55:140,B58:160,S55:150,S58:160},fx:{reliability:-18,response:-17,sound:8},req:['tune1','fuel','fmic','dp','pi','custom'],excl:['hybrid'],eng:TURBO_I6},
-    {id:'clutch',cat:'Drivetrain',name:'Clutch upgrade',sub:'Holds the power you just added. For the manuals.',kind:'shop',whp:{},fx:{traction:10,reliability:6},eng:ALL},
-    {id:'trans',cat:'Drivetrain',name:'Transmission tune',sub:'ZF8 or DCT software: faster shifts, higher torque limits, launch control.',kind:'shop',whp:{},fx:{traction:8,response:6},eng:ALL},
-    {id:'tires',cat:'Chassis',name:'Sticky tires',sub:'The cheapest tenth you will ever buy.',kind:'shop',whp:{},fx:{traction:18},eng:ALL},
-    {id:'susp',cat:'Chassis',name:'Coilovers and sway bars',sub:'Flatter, more planted, puts the power down out of a corner.',kind:'shop',whp:{},fx:{traction:10,response:4},eng:ALL}
+    // tuning
+    {id:'tune1',cat:'Tuning',name:'Stage 1 tune',sub:'MHD or bootmod3 on pump gas. Where every build starts.',kind:'shop',fx:{response:8,reliability:-4,sound:3},eng:ALL},
+    {id:'tune2',cat:'Tuning',name:'Stage 2 tune',sub:'The map for downpipes and a cooler. More timing, more boost.',kind:'shop',fx:{response:4,reliability:-4},req:['tune1','dp','fmic'],eng:TURBO},
+    {id:'custom',cat:'Tuning',name:'Custom tune',sub:'Built for your fuel, your parts and your car, logged and refined on the road. Replaces the off-the-shelf map and finds what it left on the table.',kind:'shop',fx:{response:7,reliability:5},req:['tune1'],eng:ALL},
+    {id:'burble',cat:'Tuning',name:'Burble and pops map',sub:'Crackles on decel. All show, a little extra heat in the cats.',kind:'shop',fx:{sound:12,reliability:-3},req:['tune1'],eng:TURBO},
+    {id:'trans',cat:'Tuning',name:'Transmission tune',sub:'ZF8 or DCT software: faster shifts, higher torque limits, launch control.',kind:'shop',fx:{traction:8,response:6},eng:ALL},
+    // power adders
+    {id:'hybrid',cat:'Power adder',name:'Hybrid turbo(s)',sub:'Upgraded wheels in the stock housings. The big drop-in step, and it keeps most of the spool. Wants E85 to really wake up.',kind:'shop',engPart:'turbo',fx:{reliability:-10,response:-7,sound:3},req:['tune1','dp','fmic','lpfp'],reqEng:{N54:['pi'],B58TU:['pi'],'*':['hpfp']},excl:['topmount'],eng:TURBO},
+    {id:'topmount',cat:'Power adder',name:'Top-mount single turbo kit',sub:'One big turbo on a tubular manifold up top. The 600-plus route. Wants port injection, fuel and a custom tune, and you will feel the lag.',kind:'shop',engPart:'turbo',fx:{reliability:-18,response:-17,sound:8},req:['tune1','dp','fmic','lpfp','pi','custom'],excl:['hybrid'],eng:TURBO_I6},
+    {id:'fmic',cat:'Power adder',name:'Intercooler upgrade',sub:'Bigger front-mount on N54/N55. Heat exchanger and chargecooler on the rest. Keeps the power from fading on the third pull.',kind:'shop',engPart:'cooler',fx:{reliability:8,response:2},eng:TURBO},
+    {id:'intake',cat:'Power adder',name:'Intake',sub:'Eins intake on the B58, heat-shielded kits elsewhere. You hear the turbo. Matters most once the turbo is bigger than stock.',kind:'eins',engPart:'intake',fx:{sound:8,response:4},eng:ALL},
+    {id:'charge',cat:'Power adder',name:'Charge pipe',sub:'Eins aluminum pipe. Zero power, all reliability: the plastic one splits under boost.',kind:'eins',engPart:'charge',fx:{reliability:14},eng:['N54','N55','B58','B58TU']},
+    // fueling
+    {id:'flex',cat:'Fueling',name:'Flex fuel kit + E85 tune',sub:'Our sensor and harness, plug-and-play into the tune. The biggest cheap power there is, and it is worth even more once the turbos grow.',kind:'eins',engPart:'flex',fx:{response:8,reliability:-6,sound:2},req:['tune1'],eng:TURBO},
+    {id:'lpfp',cat:'Fueling',name:'Low-pressure fuel pump',sub:'Bucketless in-tank pump. E85 wants about a third more fuel than gas, and the stock pump is the first thing to run out.',kind:'shop',fx:{reliability:8},eng:TURBO},
+    {id:'hpfp',cat:'Fueling',name:'High-pressure fuel pump',sub:'Bigger pump for the direct injection. The move on the S55, S58, B58, N55 and the V8s once E85 and boost climb.',kind:'shop',fx:{reliability:8},eng:HPFP_ENG},
+    {id:'pi',cat:'Fueling',name:'Port injection kit',sub:'A second injector rail on the intake side. Where direct injection runs out this is the fix, and on the N54 and B58TU it is the fix instead of a bigger pump.',kind:'shop',engPart:'pi',fx:{reliability:10,response:2},req:['tune1'],eng:TURBO},
+    // exhaust
+    {id:'dp',cat:'Exhaust',name:'Downpipes',sub:'High-flow catted. Spool, sound, and the gateway to stage 2. Needs a tune to be worth much.',kind:'shop',engPart:'downpipe',fx:{sound:18,response:3,reliability:-3},eng:TURBO},
+    {id:'exh',cat:'Exhaust',name:'Cat-back exhaust',sub:'Mostly sound. A little weight off the back.',kind:'shop',fx:{sound:22},eng:ALL},
+    // supporting
+    {id:'occ',cat:'Supporting',name:'Catch can kit',sub:'Keeps oil out of the intake. Your valves stay clean, your tune stays consistent.',kind:'eins',engPart:'occ',fx:{reliability:8},eng:TURBO},
+    {id:'plugs',cat:'Supporting',name:'Plugs and coils',sub:'One step colder, fresh coils. Cheap insurance on any tuned car.',kind:'shop',fx:{reliability:6,response:2},eng:ALL},
+    {id:'clutch',cat:'Supporting',name:'Clutch upgrade',sub:'Holds the power you just added. For the manuals.',kind:'shop',fx:{traction:10,reliability:6},eng:ALL},
+    {id:'tires',cat:'Supporting',name:'Sticky tires',sub:'The cheapest tenth you will ever buy.',kind:'shop',fx:{traction:18},eng:ALL},
+    {id:'susp',cat:'Supporting',name:'Coilovers and sway bars',sub:'Flatter, more planted, puts the power down out of a corner.',kind:'shop',fx:{traction:10,response:4},eng:ALL}
   ];
   var STATS=[['response','Response'],['reliability','Reliability'],['traction','Traction'],['sound','Sound']];
   var PAINT=[['Alpine White',0xf2f3f1,0],['Black Sapphire',0x0a0c12,0],['Estoril Blue',0x1e4fa3,0],['Yas Marina Blue',0x2c6fd1,0],['Austin Yellow',0xe8c21b,0],['Melbourne Red',0xb3161b,0],['Mineral Grey',0x6c7076,0],['Isle of Man Green',0x1a5a3a,0],['Sunset Orange',0xe1601e,0],['Tanzanite Blue',0x1c2457,0],['Frozen Dark Grey',0x4a4e55,1],['Frozen White',0xd9dbd6,1]];
@@ -431,24 +440,27 @@ p{margin:0}
     renderParts();recalc();
   }
   function byId(id){return PARTS.filter(function(p){return p.id===id;})[0];}
+  function reqOf(p){var r=(p.req||[]).concat(p.reqEng?(p.reqEng[state.eng]||p.reqEng['*']||[]):[]);return r.filter(function(id){var q=byId(id);return q&&q.eng.indexOf(state.eng)>=0;});}
 
   // ===== power ladder ==========================================================
   // Power is not additive. A build lands in a RANGE set by the combo it is running; the supporting mods decide where in that range.
   function R(o){return o;}
   var TIERS=[
-    {id:'stock',name:'Stock',req:[],r:{N54:[255,275],N55:[265,285],B58:[290,310],S55:[380,400],S58:[430,450],S65:[330,350],S63:[460,480],S63TU:[480,500],S63TU2:[480,500],S63TU4:[520,540],N63:[330,350],N63TU:[375,395],N63TU2:[385,405],N63TU3:[445,465]}},
-    {id:'st1',name:'Stage 1',req:['tune1'],r:{N54:[320,345],N55:[320,340],B58:[360,385],S55:[450,480],S58:[510,540],S65:[350,365],S63:[540,570],S63TU:[570,600],S63TU2:[570,600],S63TU4:[620,650],N63:[400,430],N63TU:[450,480],N63TU2:[460,490],N63TU3:[520,560]}},
+    {id:'stock',name:'Stock',req:[],r:{N54:[255,275],N55:[265,285],B58:[290,310],B58TU:[320,340],S55:[380,400],S58:[430,450],S65:[330,350],S63:[460,480],S63TU:[480,500],S63TU2:[480,500],S63TU4:[520,540],N63:[330,350],N63TU:[375,395],N63TU2:[385,405],N63TU3:[445,465]}},
+    {id:'st1',name:'Stage 1',req:['tune1'],r:{N54:[320,345],N55:[320,340],B58:[360,385],B58TU:[390,415],S55:[450,480],S58:[510,540],S65:[350,365],S63:[540,570],S63TU:[570,600],S63TU2:[570,600],S63TU4:[620,650],N63:[400,430],N63TU:[450,480],N63TU2:[460,490],N63TU3:[520,560]}},
     {id:'bolt',name:'Tune, intake and exhaust',req:['tune1','intake','exh'],r:{S65:[360,380]}},
-    {id:'st2',name:'Stage 2',req:['tune1','dp'],r:{N54:[350,380],N55:[345,375],B58:[400,430],S55:[490,530],S58:[540,580],S63:[570,610],S63TU:[610,650],S63TU2:[610,650],S63TU4:[660,700],N63:[430,460],N63TU:[480,515],N63TU2:[490,525],N63TU3:[560,600]}},
-    {id:'e85',name:'Stock turbos on E85',req:['tune1','dp','flex'],r:{N54:[420,470],N55:[400,440],B58:[470,520],S55:[540,600],S58:[600,660],S63:[640,700],S63TU:[680,740],S63TU2:[680,740],S63TU4:[730,790],N63:[480,530],N63TU:[540,590],N63TU2:[550,600],N63TU3:[620,680]}},
-    {id:'hybp',name:'Hybrid turbos, pump gas',req:['hybrid'],r:{N54:[450,500],N55:[430,480],B58:[500,560],S55:[600,660],S58:[650,720],S63:[700,760],S63TU:[740,800],S63TU2:[740,800],S63TU4:[800,860],N63:[520,570],N63TU:[580,630],N63TU2:[590,640],N63TU3:[660,720]}},
-    {id:'hyb',name:'Hybrid turbos on E85',req:['hybrid','flex'],r:{N54:[520,600],N55:[480,560],B58:[560,650],S55:[660,750],S58:[740,830],S63:[800,900],S63TU:[850,950],S63TU2:[850,950],S63TU4:[900,1000],N63:[580,660],N63TU:[650,730],N63TU2:[660,740],N63TU3:[740,830]}},
-    {id:'hybpi',name:'Hybrids, E85 and port injection',req:['hybrid','flex','pi'],r:{N54:[560,640],N55:[520,600],B58:[620,700],S55:[720,800],S58:[800,880],S63:[850,950],S63TU:[900,1000],S63TU2:[900,1000],S63TU4:[950,1050],N63:[620,700],N63TU:[690,770],N63TU2:[700,780],N63TU3:[780,870]}},
-    {id:'singlep',name:'Top-mount single, pump gas',req:['topmount'],r:{N54:[520,580],N55:[500,560],B58:[560,620],S55:[650,720],S58:[700,780]}},
-    {id:'single',name:'Top-mount single on E85',req:['topmount','flex'],r:{N54:[650,800],N55:[600,750],B58:[700,900],S55:[800,1000],S58:[900,1100]}}
+    {id:'st2',name:'Stage 2',req:['tune1','dp'],r:{N54:[350,380],N55:[345,375],B58:[400,430],B58TU:[430,460],S55:[490,530],S58:[540,580],S63:[570,610],S63TU:[610,650],S63TU2:[610,650],S63TU4:[660,700],N63:[430,460],N63TU:[480,515],N63TU2:[490,525],N63TU3:[560,600]}},
+    {id:'e85',name:'Stock turbos on E85',req:['tune1','dp','flex'],r:{N54:[420,470],N55:[400,440],B58:[470,520],B58TU:[490,540],S55:[540,600],S58:[600,660],S63:[640,700],S63TU:[680,740],S63TU2:[680,740],S63TU4:[730,790],N63:[480,530],N63TU:[540,590],N63TU2:[550,600],N63TU3:[620,680]}},
+    {id:'hybp',name:'Hybrid turbos, pump gas',req:['hybrid'],r:{N54:[450,500],N55:[430,480],B58:[500,560],B58TU:[520,580],S55:[600,660],S58:[650,720],S63:[700,760],S63TU:[740,800],S63TU2:[740,800],S63TU4:[800,860],N63:[520,570],N63TU:[580,630],N63TU2:[590,640],N63TU3:[660,720]}},
+    {id:'hyb',name:'Hybrid turbos on E85',req:['hybrid','flex'],r:{N54:[520,600],N55:[480,560],B58:[560,650],B58TU:[580,670],S55:[660,750],S58:[740,830],S63:[800,900],S63TU:[850,950],S63TU2:[850,950],S63TU4:[900,1000],N63:[580,660],N63TU:[650,730],N63TU2:[660,740],N63TU3:[740,830]}},
+    {id:'hybpi',name:'Hybrids, E85 and port injection',req:['hybrid','flex','pi'],r:{N54:[560,640],N55:[520,600],B58:[620,700],B58TU:[640,720],S55:[720,800],S58:[800,880],S63:[850,950],S63TU:[900,1000],S63TU2:[900,1000],S63TU4:[950,1050],N63:[620,700],N63TU:[690,770],N63TU2:[700,780],N63TU3:[780,870]}},
+    {id:'singlep',name:'Top-mount single, pump gas',req:['topmount'],r:{N54:[520,580],N55:[500,560],B58:[560,620],B58TU:[580,640],S55:[650,720],S58:[700,780]}},
+    {id:'single',name:'Top-mount single on E85',req:['topmount','flex'],r:{N54:[650,800],N55:[600,750],B58:[700,900],B58TU:[720,920],S55:[800,1000],S58:[900,1100]}}
   ];
   // supporting mods: they do not change the tier, they move you up inside its range
-  var LIFT={fmic:1,intake:1,exh:0.5,tune2:1,custom:1.5,fuel:0.5,plugs:0.5};
+  var LIFT={fmic:1,intake:1,exh:0.5,tune2:1,custom:1.5,lpfp:0.5,hpfp:0.5,plugs:0.5};
+  var FUELLIM={B58TU:520,S58:550};S63S.concat(N63S).forEach(function(e){FUELLIM[e]=550;});
+  function fuelFix(){return (state.eng==='N54'||state.eng==='B58TU')?['lpfp','pi']:['lpfp','hpfp'];}
   function tiersFor(){return TIERS.filter(function(t){return t.r[state.eng];});}
   function tierMet(t){return t.req.every(function(r){return state.sel[r];});}
   function currentTier(){var ts=tiersFor(),cur=ts[0];ts.forEach(function(t){if(tierMet(t))cur=t;});return cur;}
@@ -478,7 +490,7 @@ p{margin:0}
         Object.keys(p.fx).forEach(function(k){var v=p.fx[k];fx.push((v>0?'+':'')+v+' '+k.slice(0,4));});
         var l=document.createElement('label');l.className='item';l.setAttribute('data-id',p.id);
         l.innerHTML='<input type="checkbox" id="p-'+p.id+'" '+(state.sel[p.id]?'checked':'')+'>'+
-          '<div><div class="item__name">'+p.name+'<span class="tag'+(p.kind==='shop'?' tag--shop':'')+'">'+(p.kind==='eins'?'Eins part':'Shop work')+'</span></div><div class="item__sub">'+p.sub+(p.req?' <span class="mono" style="font-size:11px;color:var(--dim)">needs: '+p.req.map(function(r){return byId(r).name;}).join(', ')+'</span>':'')+'</div></div>'+
+          '<div><div class="item__name">'+p.name+'<span class="tag'+(p.kind==='shop'?' tag--shop':'')+'">'+(p.kind==='eins'?'Eins part':'Shop work')+'</span></div><div class="item__sub">'+p.sub+(reqOf(p).length?' <span class="mono" style="font-size:11px;color:var(--dim)">needs: '+reqOf(p).map(function(r){return byId(r).name;}).join(', ')+'</span>':'')+'</div></div>'+
           '<div class="item__fx">'+fx.join('<br>')+'</div>';
         g.appendChild(l);
       });
@@ -491,8 +503,8 @@ p{margin:0}
     if(cb.checked){select(id);}else{deselect(id);}
     renderParts();recalc();
   });
-  function select(id){var p=byId(id);if(!p||p.eng.indexOf(state.eng)<0)return;(p.excl||[]).forEach(function(x){if(state.sel[x])deselect(x);});state.sel[id]=true;(p.req||[]).forEach(select);}
-  function deselect(id){delete state.sel[id];PARTS.forEach(function(p){if(state.sel[p.id]&&(p.req||[]).indexOf(id)>=0)deselect(p.id);});}
+  function select(id){var p=byId(id);if(!p||p.eng.indexOf(state.eng)<0)return;(p.excl||[]).forEach(function(x){if(state.sel[x])deselect(x);});state.sel[id]=true;reqOf(p).forEach(select);}
+  function deselect(id){delete state.sel[id];PARTS.forEach(function(p){if(state.sel[p.id]&&reqOf(p).indexOf(id)>=0)deselect(p.id);});}
 
   // ===== stats =================================================================
   var barsEl=document.getElementById('bars'),notesEl=document.getElementById('notes');
@@ -506,7 +518,8 @@ p{margin:0}
     var E=estimate(),whp=E.est,ts=tiersFor(),sr=ts[0].r[state.eng],stock=Math.round((sr[0]+(sr[1]-sr[0])*0.25)/5)*5,gain=whp-stock;E.stock=stock;
     // more power than grip
     var slip=Math.max(0,(gain-60)/14);s.traction-=slip;
-    if(state.sel.flex&&!state.sel.fuel&&whp>450){s.reliability-=12;notes.push(['warn','Past about 450 whp on E85 the stock pumps run out of fuel. Add the fuel system or reliability takes the hit.']);}
+    var fl=FUELLIM[state.eng]||450,fmiss=fuelFix().filter(function(id){return !state.sel[id];});
+    if(state.sel.flex&&fmiss.length&&whp>fl){s.reliability-=12;notes.push(['warn','Past about '+fl+' whp on E85 the stock fuel system runs out. On a '+state.eng+' that means '+fmiss.map(function(id){return byId(id).name.toLowerCase();}).join(' and ')+(state.eng==='B58TU'?', not a bigger high-pressure pump.':'.')+' <button class="chipbtn chipbtn--note" type="button" data-add="'+fmiss.join(',')+'">Add to build</button>']);}
     if((state.sel.hybrid||state.sel.topmount)&&!state.sel.clutch&&!state.sel.trans){notes.push(['warn','Big turbo, stock clutch and software. It will slip. A clutch or a transmission tune belongs in this cart.']);}
     if(state.sel.topmount&&!state.sel.flex){notes.push(['','A top-mount on pump gas is leaving a lot on the table. Flex fuel is the cheap half of that power.']);}
     if(gain>120&&!state.sel.tires&&!state.sel.susp){notes.push(['','You will smoke the tires in third. Tires and suspension are where the next real gain is.']);}
@@ -514,7 +527,7 @@ p{margin:0}
     var need=tierForGoal(state.goal);
     if(whp>=state.goal)notes.push(['good','Goal hit. '+E.tier.name+' on a '+state.eng+' lands '+E.lo+'–'+E.hi+' whp; this build should sit around '+whp+'.']);
     else if(need&&ts.indexOf(need)<=ts.indexOf(E.tier)){
-      var lifts=Object.keys(LIFT).filter(function(k){var q=byId(k);return !state.sel[k]&&q&&q.eng.indexOf(state.eng)>=0&&E.tier.req.indexOf(k)<0&&!(q.req||[]).some(function(r){return !state.sel[r]&&E.tier.req.indexOf(r)<0;});});
+      var lifts=Object.keys(LIFT).filter(function(k){var q=byId(k);return !state.sel[k]&&q&&q.eng.indexOf(state.eng)>=0&&E.tier.req.indexOf(k)<0&&!reqOf(q).some(function(r){return !state.sel[r]&&E.tier.req.indexOf(r)<0;});});
       notes.push(['','Your goal is inside the '+E.tier.name+' range ('+E.lo+'–'+E.hi+' whp). Where you land in it is down to the supporting mods'+(lifts.length?': '+lifts.map(function(k){return byId(k).name.toLowerCase();}).join(', ')+'.':'.')]);
     }else if(need){
       var miss=need.req.filter(function(r){return !state.sel[r];}),nr=need.r[state.eng];
@@ -906,7 +919,7 @@ p{margin:0}
 
     // ---- running engine on the stand -----------------------------------------------
     scene.add(bay);floor.position.y=-1.55;gridH.position.y=-1.549;camTarget.set(0.1,0.15,0.1);
-    var SPEC={N54:{cyl:6,redline:7000,idle:750,boost:8,lag:0.38},N55:{cyl:6,redline:7000,idle:700,boost:9,lag:0.3},B58:{cyl:6,redline:7000,idle:700,boost:11,lag:0.28},S55:{cyl:6,redline:7500,idle:800,boost:17,lag:0.3},S58:{cyl:6,redline:7200,idle:800,boost:20,lag:0.3},S65:{cyl:8,redline:8400,idle:800,boost:0,lag:0},S63:{cyl:8,redline:7000,idle:700,boost:17,lag:0.25},S63TU:{cyl:8,redline:7200,idle:700,boost:21,lag:0.25},S63TU2:{cyl:8,redline:7200,idle:700,boost:21,lag:0.25},S63TU4:{cyl:8,redline:7200,idle:700,boost:22,lag:0.25},N63:{cyl:8,redline:6500,idle:650,boost:11,lag:0.3},N63TU:{cyl:8,redline:6500,idle:650,boost:13,lag:0.28},N63TU2:{cyl:8,redline:6500,idle:650,boost:14,lag:0.28},N63TU3:{cyl:8,redline:6800,idle:650,boost:16,lag:0.26}};
+    var SPEC={N54:{cyl:6,redline:7000,idle:750,boost:8,lag:0.38},N55:{cyl:6,redline:7000,idle:700,boost:9,lag:0.3},B58:{cyl:6,redline:7000,idle:700,boost:11,lag:0.28},B58TU:{cyl:6,redline:7000,idle:700,boost:13,lag:0.26},S55:{cyl:6,redline:7500,idle:800,boost:17,lag:0.3},S58:{cyl:6,redline:7200,idle:800,boost:20,lag:0.3},S65:{cyl:8,redline:8400,idle:800,boost:0,lag:0},S63:{cyl:8,redline:7000,idle:700,boost:17,lag:0.25},S63TU:{cyl:8,redline:7200,idle:700,boost:21,lag:0.25},S63TU2:{cyl:8,redline:7200,idle:700,boost:21,lag:0.25},S63TU4:{cyl:8,redline:7200,idle:700,boost:22,lag:0.25},N63:{cyl:8,redline:6500,idle:650,boost:11,lag:0.3},N63TU:{cyl:8,redline:6500,idle:650,boost:13,lag:0.28},N63TU2:{cyl:8,redline:6500,idle:650,boost:14,lag:0.28},N63TU3:{cyl:8,redline:6800,idle:650,boost:16,lag:0.26}};
     var run={on:false,rpm:0,throttle:0,boost:0,load:0,cut:false,cutT:0,crank:0,flowT:0,idleWob:0};
     var build={whp:300,base:300,redline:7000,boostTarget:11,lag:0.3,exhaust:0,intake:0,whistle:1,big:false,huge:false,burble:false};
     var current=null,muted=false;

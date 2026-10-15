@@ -221,7 +221,7 @@ p{margin:0}
       <div class="result result--none" id="result" aria-live="polite"><div class="result__car">No car picked yet</div><div class="result__eng">The engine on stage is a B58 while you look.</div></div>
       <p class="lede" style="font-size:16px"><a class="btn btn--ghost btn--sm" href="/store/build/">Spec a build in the Build Lab →</a></p>
       <div class="quick"><span class="eyebrow" style="color:var(--muted)">Know your engine? Skip ahead</span>
-        <div class="quick__row" id="quick"><button class="chipbtn" type="button" data-eng="N54">N54</button><button class="chipbtn" type="button" data-eng="N55">N55</button><button class="chipbtn" type="button" data-eng="B58">B58</button><button class="chipbtn" type="button" data-eng="S55">S55</button><button class="chipbtn" type="button" data-eng="S58">S58</button><button class="chipbtn" type="button" data-eng="S63TU4">S63</button> <button class="chipbtn" type="button" data-eng="N63TU3">N63</button><button class="chipbtn" type="button" data-eng="S65">S65</button></div>
+        <div class="quick__row" id="quick"><button class="chipbtn" type="button" data-eng="N54">N54</button><button class="chipbtn" type="button" data-eng="N55">N55</button><button class="chipbtn" type="button" data-eng="B58">B58</button> <button class="chipbtn" type="button" data-eng="B58TU">B58TU</button><button class="chipbtn" type="button" data-eng="S55">S55</button><button class="chipbtn" type="button" data-eng="S58">S58</button><button class="chipbtn" type="button" data-eng="S63TU4">S63</button> <button class="chipbtn" type="button" data-eng="N63TU3">N63</button><button class="chipbtn" type="button" data-eng="S65">S65</button></div>
       </div>
       </div>
     </div>
@@ -282,7 +282,8 @@ p{margin:0}
   var ENG={
     N54:{code:'N54',sub:'3.0 twin-turbo I6 · 2007–2016',layout:'i6',turbos:2,cooler:'fmic',cover:'plastic',years:'2007–2016'},
     N55:{code:'N55',sub:'3.0 twin-scroll turbo I6 · 2011–2019',layout:'i6',turbos:1,cooler:'fmic',cover:'plastic'},
-    B58:{code:'B58',sub:'3.0 single-turbo I6 · 2016–now',layout:'i6',turbos:1,cooler:'awic',cover:'plastic'},
+    B58:{code:'B58',sub:'3.0 single-turbo I6 · 340i 440i M240i 540i 740i · X3 X4 M40i · 2016–2019',layout:'i6',turbos:1,cooler:'awic',cover:'plastic'},
+    B58TU:{code:'B58TU',sub:'3.0 single-turbo I6 · M340i M440i M240i Z4 M40i Supra · X3 X4 X5 X6 X7 · 2019–now',layout:'i6',turbos:1,cooler:'awic',cover:'plastic'},
     S55:{code:'S55',sub:'3.0 twin-turbo I6 · M3 M4 M2C · 2015–2021',layout:'i6',turbos:2,cooler:'top',cover:'alu'},
     S58:{code:'S58',sub:'3.0 twin-turbo I6 · M3 M4 M2 X3M · 2020–now',layout:'i6',turbos:2,cooler:'awic',cover:'alu'},
     S65:{code:'S65',sub:'4.0 V8, naturally aspirated · E9X M3',layout:'v8',turbos:0,cooler:'none',cover:'alu'},
@@ -298,22 +299,22 @@ p{margin:0}
   // make, model, first year, last year, chassis, engine
   var V=[
     ['BMW','135i',2008,2010,'E82 · E88','N54'],['BMW','135i',2011,2013,'E82 · E88','N55'],['BMW','1M',2011,2011,'E82','N54'],
-    ['BMW','M235i',2014,2016,'F22 · F23','N55'],['BMW','M240i',2017,2021,'F22 · F23','B58'],['BMW','M240i',2022,2025,'G42','B58'],
+    ['BMW','M235i',2014,2016,'F22 · F23','N55'],['BMW','M240i',2017,2021,'F22 · F23','B58'],['BMW','M240i',2022,2025,'G42','B58TU'],
     ['BMW','M2',2016,2018,'F87','N55'],['BMW','M2 Competition / CS',2019,2021,'F87','S55'],['BMW','M2',2023,2025,'G87','S58'],
     ['BMW','335i sedan',2007,2010,'E90','N54'],['BMW','335i sedan',2011,2011,'E90','N55'],
     ['BMW','335i coupe / convertible',2007,2010,'E92 · E93','N54'],['BMW','335i coupe / convertible',2011,2013,'E92 · E93','N55'],
     ['BMW','335i sedan / wagon',2012,2015,'F30 · F31','N55'],['BMW','435i',2014,2016,'F32 · F33 · F36','N55'],
     ['BMW','340i',2016,2018,'F30','B58'],['BMW','440i',2017,2020,'F32 · F33 · F36','B58'],
-    ['BMW','M340i',2019,2025,'G20 · G21','B58'],['BMW','M440i',2021,2025,'G22 · G23 · G26','B58'],
+    ['BMW','M340i',2019,2025,'G20 · G21','B58TU'],['BMW','M440i',2021,2025,'G22 · G23 · G26','B58TU'],
     ['BMW','M3',2008,2013,'E90 · E92 · E93','S65'],['BMW','M3',2015,2018,'F80','S55'],['BMW','M3',2021,2025,'G80','S58'],
     ['BMW','M4',2015,2020,'F82 · F83','S55'],['BMW','M4',2021,2025,'G82 · G83','S58'],
-    ['BMW','535i',2008,2010,'E60 · E61','N54'],['BMW','535i',2011,2016,'F10 · F11','N55'],['BMW','540i',2017,2023,'G30','B58'],
-    ['BMW','640i',2012,2018,'F12 · F13 · F06','N55'],['BMW','740i',2011,2012,'F01','N54'],['BMW','740i',2013,2015,'F01','N55'],['BMW','740i',2016,2019,'G11','B58'],
-    ['BMW','X1 xDrive35i',2013,2015,'E84','N55'],['BMW','X3 xDrive35i',2011,2017,'F25','N55'],['BMW','X3 M40i',2018,2025,'G01','B58'],['BMW','X3 M',2020,2025,'F97','S58'],
-    ['BMW','X4 M40i',2016,2018,'F26','N55'],['BMW','X4 M40i',2019,2025,'G02','B58'],['BMW','X4 M',2020,2025,'F98','S58'],
-    ['BMW','X5 xDrive35i',2011,2018,'E70 · F15','N55'],['BMW','X5 xDrive40i',2019,2025,'G05','B58'],
-    ['BMW','X6 xDrive35i',2008,2010,'E71','N54'],['BMW','X6 xDrive35i',2011,2019,'E71 · F16','N55'],['BMW','X6 xDrive40i',2020,2025,'G06','B58'],
-    ['BMW','Z4 sDrive35i / 35is',2009,2016,'E89','N54'],['BMW','Z4 M40i',2019,2025,'G29','B58'],
+    ['BMW','535i',2008,2010,'E60 · E61','N54'],['BMW','535i',2011,2016,'F10 · F11','N55'],['BMW','540i',2017,2020,'G30','B58'],['BMW','540i',2021,2023,'G30','B58TU'],
+    ['BMW','640i',2012,2018,'F12 · F13 · F06','N55'],['BMW','740i',2011,2012,'F01','N54'],['BMW','740i',2013,2015,'F01','N55'],['BMW','740i',2016,2019,'G11','B58'],['BMW','740i',2020,2022,'G11','B58TU'],['BMW','740i',2023,2025,'G70','B58TU'],
+    ['BMW','X1 xDrive35i',2013,2015,'E84','N55'],['BMW','X3 xDrive35i',2011,2017,'F25','N55'],['BMW','X3 M40i',2018,2019,'G01','B58'],['BMW','X3 M40i',2020,2025,'G01','B58TU'],['BMW','X3 M',2020,2025,'F97','S58'],
+    ['BMW','X4 M40i',2016,2018,'F26','N55'],['BMW','X4 M40i',2019,2019,'G02','B58'],['BMW','X4 M40i',2020,2025,'G02','B58TU'],['BMW','X4 M',2020,2025,'F98','S58'],
+    ['BMW','X5 xDrive35i',2011,2018,'E70 · F15','N55'],['BMW','X5 xDrive40i',2019,2025,'G05','B58TU'],['BMW','X7 xDrive40i',2019,2025,'G07','B58TU'],
+    ['BMW','X6 xDrive35i',2008,2010,'E71','N54'],['BMW','X6 xDrive35i',2011,2019,'E71 · F16','N55'],['BMW','X6 xDrive40i',2020,2025,'G06','B58TU'],
+    ['BMW','Z4 sDrive35i / 35is',2009,2016,'E89','N54'],['BMW','Z4 M40i',2019,2025,'G29','B58TU'],
     ['BMW','X5 M',2010,2013,'E70','S63'],['BMW','X6 M',2010,2014,'E71','S63'],
     ['BMW','M5',2013,2016,'F10','S63TU'],['BMW','M6',2013,2018,'F06 · F12 · F13','S63TU'],
     ['BMW','X5 M',2015,2019,'F85','S63TU2'],['BMW','X6 M',2015,2019,'F86','S63TU2'],
@@ -322,16 +323,16 @@ p{margin:0}
     ['BMW','550i',2014,2016,'F10','N63TU'],['BMW','550i GT',2014,2017,'F07','N63TU'],['BMW','650i',2013,2019,'F06 · F12 · F13','N63TU'],['BMW','750i / 750Li',2013,2015,'F01 · F02','N63TU'],['BMW','X5 xDrive50i',2014,2018,'F15','N63TU'],['BMW','X6 xDrive50i',2015,2019,'F16','N63TU'],
     ['BMW','750i / 750Li',2016,2019,'G11 · G12','N63TU2'],['BMW','M550i',2018,2019,'G30','N63TU2'],['BMW','X5 xDrive50i',2019,2019,'G05','N63TU2'],['BMW','X7 xDrive50i',2019,2019,'G07','N63TU2'],
     ['BMW','M550i',2020,2023,'G30','N63TU3'],['BMW','M850i',2019,2025,'G14 · G15 · G16','N63TU3'],['BMW','750i / 750Li',2020,2022,'G11 · G12','N63TU3'],['BMW','760i',2023,2025,'G70','N63TU3'],['BMW','X5 M50i / M60i',2020,2025,'G05','N63TU3'],['BMW','X6 M50i / M60i',2020,2025,'G06','N63TU3'],['BMW','X7 M50i / M60i',2020,2025,'G07','N63TU3'],
-    ['Toyota','GR Supra 3.0',2020,2025,'A90 · J29','B58']
+    ['Toyota','GR Supra 3.0',2020,2025,'A90 · J29','B58TU']
   ];
   var CATS=[['all','All'],['intake','Intake'],['charge','Charge pipe'],['downpipe','Downpipe'],['occ','Catch can'],['flex','Flex fuel']];
   var P=[
     {code:'N54',fitTag:'E82 · E9X',title:'Charge pipe',cat:'charge',eng:['N54'],status:'spec',fit:'335i · 335xi · 135i · 1M · Z4 35i',pts:['2.5 in 6061 aluminum, TIG welded','BOV flange, two 1/8 NPT bungs','Silicone couplers and T-bolt clamps included','Replaces the plastic pipe that splits at the throttle body'],foot:'Ships or installs here'},
     {code:'N55',fitTag:'F2X · F3X · F87',title:'Charge pipe',cat:'charge',eng:['N55'],status:'spec',fit:'335i · 435i · M235i · M2 · X3 35i',pts:['2.5 in 6061 aluminum, TIG welded','F-chassis routing, BOV flange, meth bung','Silicone couplers and T-bolt clamps included','Keeps the factory BOV and sensor'],foot:'Ships or installs here'},
-    {code:'B58',fitTag:'G2X · G42 · A90',title:'Charge pipe',cat:'charge',eng:['B58'],status:'spec',fit:'M340i · M440i · M240i · 540i · Supra 3.0',pts:['Aluminum, TIG welded, bead-rolled ends','Meth bung and sensor port','Silicone coupler to the chargecooler inlet','Holds boost on flex fuel and bigger-turbo cars'],foot:'Ships or installs here'},
-    {code:'B58',fitTag:'G2X · G42 · A90',title:'Intake',cat:'intake',eng:['B58'],status:'design',fit:'M340i · M440i · M240i · Supra 3.0',pts:['Heat-shielded airbox, 4 in inlet','Keeps the factory cold-air duct','Dry filter, no oiling','Sized for the turbo we actually put on these'],foot:'Sampling next'},
-    {code:'OCC',fitTag:'N54 · N55 · B58',title:'Catch can kit',cat:'occ',eng:['N54','N55','B58'],status:'design',fit:'Platform-specific bracket and lines',pts:['Baffled billet can with dipstick','Platform bracket, no drilling','-10AN lines and fittings','Drain it at the oil change, done'],foot:'Sampling next'},
-    {code:'E85',fitTag:'N54 · N55 · B58',title:'Flex fuel kit',cat:'flex',eng:['N54','N55','B58'],status:'design',fit:'Plug-and-play with MHD and bootmod3',pts:['Ethanol content sensor, shop-built harness','Plugs into the factory connector','Reads straight into the tune','Pairs with our flex fuel tuning'],foot:'Sampling next'}
+    {code:'B58',fitTag:'G2X · G42 · A90',title:'Charge pipe',cat:'charge',eng:['B58','B58TU'],status:'spec',fit:'M340i · M440i · M240i · 540i · Supra 3.0',pts:['Aluminum, TIG welded, bead-rolled ends','Meth bung and sensor port','Silicone coupler to the chargecooler inlet','Holds boost on flex fuel and bigger-turbo cars'],foot:'Ships or installs here'},
+    {code:'B58',fitTag:'G2X · G42 · A90',title:'Intake',cat:'intake',eng:['B58','B58TU'],status:'design',fit:'M340i · M440i · M240i · Supra 3.0',pts:['Heat-shielded airbox, 4 in inlet','Keeps the factory cold-air duct','Dry filter, no oiling','Sized for the turbo we actually put on these'],foot:'Sampling next'},
+    {code:'OCC',fitTag:'N54 · N55 · B58',title:'Catch can kit',cat:'occ',eng:['N54','N55','B58','B58TU'],status:'design',fit:'Platform-specific bracket and lines',pts:['Baffled billet can with dipstick','Platform bracket, no drilling','-10AN lines and fittings','Drain it at the oil change, done'],foot:'Sampling next'},
+    {code:'E85',fitTag:'N54 · N55 · B58',title:'Flex fuel kit',cat:'flex',eng:['N54','N55','B58','B58TU'],status:'design',fit:'Plug-and-play with MHD and bootmod3',pts:['Ethanol content sensor, shop-built harness','Plugs into the factory connector','Reads straight into the tune','Pairs with our flex fuel tuning'],foot:'Sampling next'}
   ];
 
   // ===== page chrome ============================================================
