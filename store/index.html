@@ -1,0 +1,843 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>Store · Eins Motorsports</title><meta name="claude:viewport-fit-sides" content="cover"><meta name="description" content="Shop by your car. Pick year, make and model, see the engine, and find the parts Eins makes for it: charge pipes, intakes, catch cans and flex fuel kits for N54, N55, B58, S55 and S58."><link rel="canonical" href="https://einsmotorsports.net/store/"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Barlow:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap"><style>
+/* Layout concept: pick the car, the engine assembles on a black studio stage, the parts
+   we sell light up on it. Below, the shop's dense catalog style, filtered to that engine.
+   Tokens are the einsmotorsports.net system plus --ember for exhaust heat. */
+:root{
+  --bg:#0b0b0c; --panel:#141416; --panel-2:#1b1b1e; --line:#2a2a2e;
+  --fg:#f2f2f0; --muted:#a3a39e; --dim:#6f6f6b;
+  --red:#e2231a; --red-deep:#b3160f; --yellow:#f2c300; --steel:#b8bcc2;
+  --ember:#ff7a1a;
+  --display:"Barlow Condensed","Arial Narrow","Helvetica Neue",Arial,sans-serif;
+  --body:"Barlow","Helvetica Neue",Arial,sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+  --gutter:max(16px,env(safe-area-inset-left,0px));
+  --gutter-r:max(16px,env(safe-area-inset-right,0px));
+  --max:1180px;
+  color-scheme:dark;
+}
+*,*::before,*::after{box-sizing:border-box}
+[hidden]{display:none!important}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto} *{animation:none!important;transition:none!important}}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--body);font-size:17px;line-height:1.55;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+img{max-width:100%;display:block}
+a{color:inherit}
+h1,h2,h3,h4{font-family:var(--display);text-transform:uppercase;line-height:.95;margin:0;text-wrap:balance;letter-spacing:.005em}
+h1{font-size:clamp(44px,6.4vw,84px);font-weight:800}
+h2{font-size:clamp(34px,5.2vw,64px);font-weight:800}
+h3{font-size:clamp(22px,3vw,30px);font-weight:700}
+p{margin:0}
+.wrap{max-width:var(--max);margin-inline:auto;padding-left:var(--gutter);padding-right:var(--gutter-r)}
+.eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--yellow)}
+.lede{font-size:clamp(17px,2vw,21px);line-height:1.45;color:var(--muted);max-width:56ch}
+.mono{font-family:var(--mono)}
+.stripe{display:inline-block;width:38px;height:22px;flex:none;background:
+  linear-gradient(115deg,transparent 0 18%,var(--red) 18% 42%,transparent 42% 48%,var(--yellow) 48% 72%,transparent 72% 78%,var(--steel) 78% 100%)}
+.stripe--lg{width:64px;height:36px}
+
+/* header (mirrors the main site) */
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:40;background:rgba(11,11,12,.82);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.top__in{display:flex;align-items:center;gap:18px;min-height:64px}
+.brand{display:flex;align-items:center;gap:12px;text-decoration:none;font-family:var(--display);font-weight:800;font-size:24px;letter-spacing:.02em;text-transform:uppercase;line-height:1}
+.brand small{display:block;font-size:10px;letter-spacing:.22em;color:var(--muted);font-weight:600;margin-top:4px}
+.nav{display:flex;gap:4px;margin-left:auto;align-items:center}
+.nav a{text-decoration:none;font-family:var(--display);font-weight:600;font-size:17px;letter-spacing:.05em;text-transform:uppercase;padding:10px 9px;color:var(--muted);border-radius:4px;white-space:nowrap}
+.nav a:hover,.nav a[aria-current]{color:var(--fg)}
+.nav a[aria-current]{box-shadow:inset 0 -3px 0 var(--red)}
+.nav .btn{margin-left:8px}
+.menu-btn{margin-left:auto;display:none;background:none;border:1px solid var(--line);color:var(--fg);font-family:var(--display);font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:9px 14px;border-radius:4px;font-size:15px;cursor:pointer}
+@media (max-width:860px){
+  .nav{display:none;position:absolute;left:0;right:0;top:100%;background:var(--panel);border-bottom:1px solid var(--line);flex-direction:column;align-items:stretch;padding:8px var(--gutter) 16px var(--gutter)}
+  .nav.open{display:flex}
+  .nav a{padding:12px 8px;font-size:20px}
+  .nav .btn{margin:8px 0 0}
+  .menu-btn{display:block}
+}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;text-decoration:none;font-family:var(--display);font-weight:700;letter-spacing:.08em;text-transform:uppercase;font-size:18px;padding:14px 22px;border-radius:4px;border:1px solid transparent;cursor:pointer;text-align:center;max-width:100%;min-width:0;background:none;color:var(--fg)}
+.btn--red{background:var(--red);color:#fff}
+.btn--red:hover{background:var(--red-deep)}
+.btn--red:disabled{background:var(--panel-2);color:var(--dim);cursor:not-allowed}
+.btn--ghost{border-color:var(--steel)}
+.btn--ghost:hover{background:rgba(255,255,255,.06)}
+.btn--sm{font-size:15px;padding:10px 14px}
+.btn:focus-visible,a:focus-visible,button:focus-visible,select:focus-visible{outline:2px solid var(--yellow);outline-offset:3px}
+
+/* picker + stage */
+.pick{border-bottom:1px solid var(--line);position:relative;isolation:isolate;overflow:hidden}
+.pick__in{display:grid;grid-template-columns:minmax(280px,360px) 1fr;gap:clamp(20px,3vw,40px);padding-block:clamp(36px,5vw,64px) clamp(36px,5vw,56px);align-items:start}
+@media (min-width:961px){.stage{position:sticky;top:calc(env(safe-area-inset-top,0px) + 80px)}}
+@media (max-width:960px){.pick__in{grid-template-columns:1fr}}
+.pick__copy{display:grid;gap:18px;align-content:start;min-width:0}
+.kicker{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.form{display:grid;gap:10px;margin-top:6px}
+.field{display:grid;gap:6px}
+.field label{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.sel{position:relative}
+.sel select{width:100%;appearance:none;-webkit-appearance:none;background:var(--panel);border:1px solid var(--line);color:var(--fg);font-family:var(--display);font-weight:600;font-size:20px;letter-spacing:.03em;text-transform:uppercase;padding:12px 40px 12px 14px;border-radius:4px;cursor:pointer}
+.sel select:disabled{color:var(--dim);cursor:not-allowed}
+.sel::after{content:"";position:absolute;right:16px;top:50%;width:9px;height:9px;border-right:2px solid var(--muted);border-bottom:2px solid var(--muted);transform:translateY(-70%) rotate(45deg);pointer-events:none}
+.quick{display:grid;gap:8px;margin-top:8px}
+.quick__row{display:flex;flex-wrap:wrap;gap:6px}
+.chipbtn{font-family:var(--display);font-weight:700;font-size:16px;letter-spacing:.06em;text-transform:uppercase;padding:7px 12px;border:1px solid var(--line);border-radius:4px;background:none;color:var(--muted);cursor:pointer}
+.chipbtn:hover{color:var(--fg);border-color:var(--steel)}
+.chipbtn[aria-pressed="true"]{color:var(--fg);border-color:var(--yellow);box-shadow:inset 0 -3px 0 var(--yellow)}
+.result{display:grid;gap:4px;padding:14px 16px;border:1px solid var(--line);border-left:4px solid var(--yellow);background:var(--panel);border-radius:4px;min-height:74px}
+.result__car{font-family:var(--display);font-weight:700;font-size:22px;text-transform:uppercase;letter-spacing:.03em;line-height:1.05}
+.result__eng{font-family:var(--mono);font-size:12.5px;letter-spacing:.08em;color:var(--steel);line-height:1.5}
+.result--none{border-left-color:var(--line);color:var(--muted)}
+.result--none .result__car{color:var(--muted);font-size:19px}
+
+.stage{position:relative;background:var(--panel);border:1px solid var(--line);border-radius:6px;overflow:hidden;min-height:420px;aspect-ratio:4/3;max-width:100%;max-height:96vh;min-width:280px;isolation:isolate;cursor:grab;touch-action:pan-y;resize:both}
+.stage::after{content:"";position:absolute;right:3px;bottom:3px;width:16px;height:16px;z-index:4;pointer-events:none;background:linear-gradient(135deg,transparent 0 42%,var(--steel) 42% 48%,transparent 48% 62%,var(--steel) 62% 68%,transparent 68% 82%,var(--steel) 82% 88%,transparent 88%)}
+.stage--full::after,.stage:fullscreen::after{display:none}
+.stage--full{position:fixed!important;inset:0;z-index:60;border-radius:0;border:0;aspect-ratio:auto;max-height:none;height:100%;width:100%;resize:none}
+.stage:fullscreen{border-radius:0;border:0;resize:none}
+.pick__txt,.pick__ctl{display:grid;gap:18px;min-width:0}
+.pick--wide .pick__in{grid-template-columns:1fr;max-width:none}
+.pick--wide .stage{order:-1;aspect-ratio:16/9;min-height:360px;max-height:96vh;position:relative;top:auto;justify-self:center;width:100%}
+.pick--wide .pick__copy{grid-template-columns:minmax(0,1fr) minmax(0,1.3fr);gap:24px 48px;align-items:start;max-width:var(--max);width:100%;margin-inline:auto}
+.pick--wide .form{grid-template-columns:repeat(3,minmax(0,1fr))}
+.pick--wide h1{font-size:clamp(36px,4.5vw,60px)}
+@media (max-width:860px){.pick--wide .pick__copy{grid-template-columns:1fr}.pick--wide .form{grid-template-columns:1fr}}
+.stage:active{cursor:grabbing}
+.stage canvas{position:absolute;inset:0;width:100%;height:100%;display:block;z-index:0}
+.stage__veil{position:absolute;inset:0;pointer-events:none;z-index:1;background:radial-gradient(70% 60% at 50% 55%,transparent 0 55%,rgba(11,11,12,.55) 100%)}
+.stage__badge{position:absolute;left:14px;top:14px;z-index:3;display:grid;gap:3px;pointer-events:none}
+.stage__badge b{font-family:var(--display);font-weight:800;font-size:clamp(34px,4vw,48px);line-height:.9;letter-spacing:.01em}
+.stage__badge span{font-family:var(--mono);font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--yellow)}
+.stage__hint{position:absolute;right:30px;bottom:12px;z-index:3;font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--dim);pointer-events:none}
+.stage__tools{position:absolute;left:14px;bottom:12px;z-index:3;display:flex;gap:6px;flex-wrap:wrap}
+.tool{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;padding:7px 10px;border:1px solid var(--line);border-radius:3px;background:rgba(11,11,12,.7);color:var(--muted);cursor:pointer;backdrop-filter:blur(6px)}
+.tool:hover{color:var(--fg);border-color:var(--steel)}
+.tool[aria-pressed="true"]{color:var(--yellow);border-color:rgba(242,195,0,.5)}
+.stage__idle{position:absolute;inset:0;z-index:2;display:grid;place-items:end center;text-align:center;pointer-events:none;padding:24px 24px 58px}
+.stage__idle p{font-family:var(--display);font-weight:700;font-size:clamp(22px,3vw,30px);text-transform:uppercase;letter-spacing:.04em;color:var(--muted);text-wrap:balance;max-width:18ch}
+.stage--static canvas{display:none}
+.stage--static .stage__veil{background:radial-gradient(45% 40% at 50% 50%,rgba(255,122,26,.18),transparent 70%),radial-gradient(60% 50% at 50% 50%,rgba(184,188,194,.1),transparent 70%)}
+.lbl{position:absolute;z-index:2;transform:translate(-4px,-50%);display:flex;align-items:center;gap:8px;pointer-events:none;transition:opacity .2s}
+.lbl i{width:7px;height:7px;border-radius:50%;background:var(--yellow);box-shadow:0 0 0 3px rgba(242,195,0,.18);flex:none}
+.lbl button,.lbl em{pointer-events:auto;font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;padding:5px 9px;border:1px solid var(--line);border-radius:3px;background:rgba(11,11,12,.78);color:var(--fg);cursor:pointer;white-space:nowrap;font-style:normal;backdrop-filter:blur(6px)}
+.lbl em{color:var(--muted);cursor:default}
+.lbl button:hover{border-color:var(--steel)}
+.lbl.is-on button{color:var(--yellow);border-color:rgba(242,195,0,.6)}
+.lbl.is-off{opacity:.35}
+.lbl[hidden]{display:none}
+@media (max-width:600px){.stage{aspect-ratio:1/1;min-height:340px}.stage__badge b{font-size:30px}.lbl button,.lbl em{font-size:10px;padding:4px 7px}}
+
+/* sections */
+.sec{padding-block:clamp(48px,7vw,96px);border-bottom:1px solid var(--line)}
+.sec--panel{background:var(--panel)}
+.sec__head{display:grid;gap:14px;margin-bottom:clamp(24px,3vw,36px);max-width:820px}
+.sec__head .lede{max-width:60ch}
+.cats{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:22px}
+.cat{font-family:var(--display);font-weight:700;font-size:17px;letter-spacing:.06em;text-transform:uppercase;padding:9px 14px;border:1px solid var(--line);border-radius:4px;background:none;color:var(--muted);cursor:pointer;display:inline-flex;gap:8px;align-items:center}
+.cat small{font-family:var(--mono);font-size:11px;letter-spacing:.08em;color:var(--dim);font-weight:500}
+.cat:hover{color:var(--fg);border-color:var(--steel)}
+.cat[aria-pressed="true"]{color:var(--fg);border-color:var(--red);box-shadow:inset 0 -3px 0 var(--red)}
+.cat[aria-pressed="true"] small{color:var(--muted)}
+.legend{display:flex;gap:16px;flex-wrap:wrap;font-family:var(--mono);font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:14px}
+.legend span{display:flex;align-items:center;gap:8px}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--dim);flex:none}
+.dot--spec{background:var(--yellow)}
+.dot--design{background:var(--steel)}
+
+/* product grid */
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px}
+.part{background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:22px 22px 20px;display:grid;gap:14px;position:relative;overflow:hidden;min-width:0;text-decoration:none;align-content:start}
+.part:hover{border-color:var(--steel)}
+.part::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--red);transform:scaleY(0);transform-origin:top;transition:transform .2s}
+.part:hover::before{transform:scaleY(1)}
+.part__top{display:flex;justify-content:space-between;align-items:start;gap:12px}
+.part__code{font-family:var(--display);font-weight:800;font-size:clamp(40px,4.6vw,54px);line-height:.9;letter-spacing:.01em}
+.part__code small{display:block;font-family:var(--mono);font-size:11px;letter-spacing:.14em;color:var(--yellow);font-weight:500;margin-bottom:8px}
+.chip{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;padding:5px 9px;border-radius:3px;border:1px solid var(--line);color:var(--muted);white-space:nowrap;display:inline-flex;align-items:center;gap:7px;flex:none}
+.chip--spec{color:var(--yellow);border-color:rgba(242,195,0,.45)}
+.part__title{font-family:var(--display);font-weight:700;font-size:24px;text-transform:uppercase;letter-spacing:.03em;line-height:1}
+.part__fit{font-family:var(--mono);font-size:12px;letter-spacing:.08em;color:var(--steel);line-height:1.6}
+.part ul{margin:0;padding:0;list-style:none;display:grid;gap:6px;color:var(--muted);font-size:15.5px}
+.part ul li::before{content:"— ";color:var(--dim)}
+.part__foot{display:flex;justify-content:space-between;align-items:center;gap:12px;border-top:1px solid var(--line);padding-top:14px;margin-top:4px;font-family:var(--display);font-weight:700;letter-spacing:.08em;text-transform:uppercase;font-size:15px}
+.part__foot span{color:var(--muted);font-weight:600}
+.empty{grid-column:1/-1;border:1px dashed var(--line);border-radius:6px;padding:28px 22px;display:grid;gap:8px;color:var(--muted)}
+.empty b{font-family:var(--display);font-weight:700;font-size:22px;text-transform:uppercase;letter-spacing:.03em;color:var(--fg)}
+.empty .mono{font-size:13px}
+.empty .mono b{font-family:var(--mono);font-size:13px;color:var(--fg);font-weight:500;user-select:all}
+
+/* why ours */
+.why{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1px;background:var(--line);border:1px solid var(--line)}
+.why>div{background:var(--panel);padding:26px 22px;display:grid;gap:10px;min-width:0;align-content:start}
+.why .mono{font-size:12px;letter-spacing:.12em;color:var(--yellow);text-transform:uppercase}
+.why p{color:var(--muted);font-size:15.5px}
+
+/* footer */
+.foot{padding-block:40px 48px;color:var(--muted);font-size:15px}
+.foot__in{display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap;align-items:center}
+.foot a{color:var(--fg)}
+.fine{font-size:13px;color:var(--dim);max-width:70ch;margin-top:18px}
+
+/* site chrome */
+.brand__logo{height:34px;width:auto;display:block}
+@media (min-width:900px){.brand__logo{height:40px}}
+/* mobile action bar */
+.actbar{position:fixed;left:0;right:0;bottom:0;z-index:50;display:none;grid-template-columns:1fr 1fr 1fr;gap:1px;background:var(--line);border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom,0px);padding-left:env(safe-area-inset-left,0px);padding-right:env(safe-area-inset-right,0px)}
+.actbar a{background:var(--panel);color:var(--fg);text-decoration:none;font-family:var(--display);font-weight:700;letter-spacing:.08em;text-transform:uppercase;font-size:16px;padding:15px 8px;text-align:center}
+.actbar a.red{background:var(--red);color:#fff}
+@media (max-width:860px){.actbar{display:grid}}
+
+/* footer */
+.foot{padding-block:48px 120px;color:var(--muted);font-size:15px}
+.foot__grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:28px}
+.foot h4{font-size:16px;letter-spacing:.1em;color:var(--fg);margin-bottom:10px}
+.foot a{color:var(--muted);text-decoration:none}
+.foot a:hover{color:var(--fg)}
+.foot ul{list-style:none;margin:0;padding:0;display:grid;gap:6px}
+.foot .fine{margin-top:34px;font-family:var(--mono);font-size:12px;color:var(--dim)}
+@media (min-width:861px){.foot{padding-bottom:48px}}
+
+.foot .fine{margin-top:34px;font-family:var(--mono);font-size:12px;color:var(--dim);max-width:none}
+@media (max-width:860px){body{padding-bottom:56px}}
+</style></head>
+<body>
+<header class="top"><div class="wrap top__in">
+  <a class="brand" href="/"><img class="brand__logo" src="/img/logo.png" alt="Eins Motorsports" width="900" height="260"></a>
+  <button class="menu-btn" type="button" aria-expanded="false" aria-controls="nav">Menu</button>
+  <nav class="nav" id="nav" aria-label="Main"><a href="/">Home</a><a href="/platforms/">Platforms</a><a href="/services/">Services</a><a href="/store/" aria-current="page">Store</a><a href="/exotic/">Exotic &amp; AMG</a><a href="/builds/">Builds</a><a href="/about/">About</a><a href="/contact/">Contact</a><a class="btn btn--red btn--sm" href="sms:7087079756">Text us</a></nav>
+</div></header>
+
+<section class="pick" id="top">
+  <div class="wrap pick__in">
+    <div class="pick__copy">
+      <div class="pick__txt">
+      <div class="kicker"><span class="stripe stripe--lg" aria-hidden="true"></span><span class="eyebrow">Eins Store · Shop by your car</span></div>
+      <h1>Start with<br>your car.</h1>
+      <p class="lede">Pick the year, make and model. We'll show you the engine, what's on it, and the parts we make for it.</p>
+      </div>
+      <div class="pick__ctl">
+      <form class="form" id="pickform">
+        <div class="field"><label for="year">Year</label><div class="sel"><select id="year"><option value="">Select year</option></select></div></div>
+        <div class="field"><label for="make">Make</label><div class="sel"><select id="make" disabled><option value="">Select make</option></select></div></div>
+        <div class="field"><label for="model">Model</label><div class="sel"><select id="model" disabled><option value="">Select model</option></select></div></div>
+      </form>
+      <div class="result result--none" id="result" aria-live="polite"><div class="result__car">No car picked yet</div><div class="result__eng">The engine on stage is a B58 while you look.</div></div>
+      <p class="lede" style="font-size:16px"><a class="btn btn--ghost btn--sm" href="/store/build/">Spec a build in the Build Lab →</a></p>
+      <div class="quick"><span class="eyebrow" style="color:var(--muted)">Know your engine? Skip ahead</span>
+        <div class="quick__row" id="quick"><button class="chipbtn" type="button" data-eng="N54">N54</button><button class="chipbtn" type="button" data-eng="N55">N55</button><button class="chipbtn" type="button" data-eng="B58">B58</button><button class="chipbtn" type="button" data-eng="S55">S55</button><button class="chipbtn" type="button" data-eng="S58">S58</button><button class="chipbtn" type="button" data-eng="S65">S65</button></div>
+      </div>
+      </div>
+    </div>
+    <div class="stage" id="stage">
+      <canvas id="gl" aria-hidden="true"></canvas>
+      <div class="stage__veil" aria-hidden="true"></div>
+      <div class="stage__badge" id="badge"><span id="badgeSub">Browsing · 3.0 single-turbo I6</span><b id="badgeCode">B58</b></div>
+      <div class="stage__idle" id="idle"><p>Pick your car and the engine builds here</p></div>
+      <div id="labels"></div>
+      <div class="stage__tools"><button class="tool" type="button" id="explode" aria-pressed="false">Exploded view</button><button class="tool" type="button" id="spin" aria-pressed="true">Auto rotate</button><button class="tool" type="button" id="wide" aria-pressed="false">Bigger</button><button class="tool" type="button" id="full" aria-pressed="false">Full screen</button></div>
+      <div class="stage__hint">Drag to orbit</div>
+    </div>
+  </div>
+</section>
+
+<section class="sec" id="parts">
+  <div class="wrap">
+    <div class="sec__head"><span class="eyebrow" id="partsEyebrow">All platforms</span><h2 id="partsTitle">Parts for every car we build on.</h2><p class="lede" id="partsLede">Pick your car above and this narrows to what fits. Everything here starts as a problem we see on the lift.</p></div>
+    <div class="cats" id="cats"></div>
+    <div class="legend"><span><i class="dot dot--spec"></i>Spec'd</span><span><i class="dot dot--design"></i>In design</span></div>
+    <div class="grid" id="grid"></div>
+  </div>
+</section>
+
+<section class="sec sec--panel">
+  <div class="wrap">
+    <div class="sec__head"><span class="eyebrow">Why ours</span><h2>Designed on the lift, not in a catalog.</h2></div>
+    <div class="why">
+      <div><span class="mono">Drawn from the car</span><h3>Measured on the platform</h3><p>Every part is drawn off a real chassis on our lift, with the sensors, brackets and hoses it has to live next to.</p></div>
+      <div><span class="mono">Checked before boxed</span><h3>Test-fit on customer cars</h3><p>Samples go on cars in the shop first. Flange fit, clamp bite, clearance to the fan shroud. If it fights us, it doesn't ship.</p></div>
+      <div><span class="mono">Ship or install</span><h3>Bensenville, either way</h3><p>Order it and it leaves the shop in two days. Or book the install and drive it home the same afternoon, tune included.</p></div>
+    </div>
+  </div>
+</section>
+
+<footer class="foot"><div class="wrap">
+  <div class="foot__grid">
+    <div><h4>Eins Motorsports</h4><ul><li>222 Park St</li><li>Bensenville, IL 60106</li><li><a href="https://www.google.com/maps/search/?api=1&query=Eins+Motorsports+222+Park+St+Bensenville+IL" target="_blank" rel="noopener">Open in Maps</a></li></ul></div>
+    <div><h4>Reach us</h4><ul><li><b class="mono">(708) 707-9756</b></li><li><a href="sms:7087079756">Text the shop</a></li><li><a href="https://blueprintcatalogen.as.me/" target="_blank" rel="noopener">Book online</a></li><li><a href="https://www.instagram.com/einsmotorsports/" target="_blank" rel="noopener">Instagram @einsmotorsports</a></li></ul></div>
+    <div><h4>Platforms</h4><ul><li><a href="/s55/">F80 / F82 M3 M4 · S55</a></li><li><a href="/s58/">G80 / G82 / G87 · S58</a></li><li><a href="/b58/">B58 &amp; N55</a></li><li><a href="/n54/">N54 · 335i 135i 1M</a></li><li><a href="/s65/">E90 / E92 M3 · S65</a></li></ul></div>
+    <div><h4>Work</h4><ul><li><a href="/flex-fuel/">Flex fuel &amp; E85</a></li><li><a href="/tuning/">Custom tuning</a></li><li><a href="/turbo/">Turbo &amp; bolt-ons</a></li><li><a href="/repair/">Repair &amp; diagnostics</a></li><li><a href="/exotic/">Lamborghini · McLaren · AMG</a></li></ul></div>
+  </div>
+  <p class="fine">© 2026 Eins Motorsports · Independent shop. Not affiliated with BMW AG, Automobili Lamborghini, McLaren Automotive or Mercedes-Benz AG. Model names are used to identify the vehicles we work on.</p>
+</div></footer>
+<nav class="actbar" aria-label="Quick actions"><a href="sms:7087079756" class="red">Text</a><a href="tel:+17087079756">Call</a><a href="https://blueprintcatalogen.as.me/" target="_blank" rel="noopener">Book</a></nav>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/shaders/CopyShader.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/shaders/LuminosityHighPassShader.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/shaders/GammaCorrectionShader.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/EffectComposer.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/RenderPass.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/ShaderPass.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/UnrealBloomPass.js"></script>
+<script>
+(function(){
+  // ===== data =================================================================
+  var ENG={
+    N54:{code:'N54',sub:'3.0 twin-turbo I6 · 2007–2016',layout:'i6',turbos:2,cooler:'fmic',cover:'plastic',years:'2007–2016'},
+    N55:{code:'N55',sub:'3.0 twin-scroll turbo I6 · 2011–2019',layout:'i6',turbos:1,cooler:'fmic',cover:'plastic'},
+    B58:{code:'B58',sub:'3.0 single-turbo I6 · 2016–now',layout:'i6',turbos:1,cooler:'awic',cover:'plastic'},
+    S55:{code:'S55',sub:'3.0 twin-turbo I6 · M3 M4 M2C · 2015–2021',layout:'i6',turbos:2,cooler:'top',cover:'alu'},
+    S58:{code:'S58',sub:'3.0 twin-turbo I6 · M3 M4 M2 X3M · 2020–now',layout:'i6',turbos:2,cooler:'awic',cover:'alu'},
+    S65:{code:'S65',sub:'4.0 V8, naturally aspirated · E9X M3',layout:'v8',turbos:0,cooler:'none',cover:'alu'}
+  };
+  // make, model, first year, last year, chassis, engine
+  var V=[
+    ['BMW','135i',2008,2010,'E82 · E88','N54'],['BMW','135i',2011,2013,'E82 · E88','N55'],['BMW','1M',2011,2011,'E82','N54'],
+    ['BMW','M235i',2014,2016,'F22 · F23','N55'],['BMW','M240i',2017,2021,'F22 · F23','B58'],['BMW','M240i',2022,2025,'G42','B58'],
+    ['BMW','M2',2016,2018,'F87','N55'],['BMW','M2 Competition / CS',2019,2021,'F87','S55'],['BMW','M2',2023,2025,'G87','S58'],
+    ['BMW','335i sedan',2007,2010,'E90','N54'],['BMW','335i sedan',2011,2011,'E90','N55'],
+    ['BMW','335i coupe / convertible',2007,2010,'E92 · E93','N54'],['BMW','335i coupe / convertible',2011,2013,'E92 · E93','N55'],
+    ['BMW','335i sedan / wagon',2012,2015,'F30 · F31','N55'],['BMW','435i',2014,2016,'F32 · F33 · F36','N55'],
+    ['BMW','340i',2016,2018,'F30','B58'],['BMW','440i',2017,2020,'F32 · F33 · F36','B58'],
+    ['BMW','M340i',2019,2025,'G20 · G21','B58'],['BMW','M440i',2021,2025,'G22 · G23 · G26','B58'],
+    ['BMW','M3',2008,2013,'E90 · E92 · E93','S65'],['BMW','M3',2015,2018,'F80','S55'],['BMW','M3',2021,2025,'G80','S58'],
+    ['BMW','M4',2015,2020,'F82 · F83','S55'],['BMW','M4',2021,2025,'G82 · G83','S58'],
+    ['BMW','535i',2008,2010,'E60 · E61','N54'],['BMW','535i',2011,2016,'F10 · F11','N55'],['BMW','540i',2017,2023,'G30','B58'],
+    ['BMW','640i',2012,2018,'F12 · F13 · F06','N55'],['BMW','740i',2011,2012,'F01','N54'],['BMW','740i',2013,2015,'F01','N55'],['BMW','740i',2016,2019,'G11','B58'],
+    ['BMW','X1 xDrive35i',2013,2015,'E84','N55'],['BMW','X3 xDrive35i',2011,2017,'F25','N55'],['BMW','X3 M40i',2018,2025,'G01','B58'],['BMW','X3 M',2020,2025,'F97','S58'],
+    ['BMW','X4 M40i',2016,2018,'F26','N55'],['BMW','X4 M40i',2019,2025,'G02','B58'],['BMW','X4 M',2020,2025,'F98','S58'],
+    ['BMW','X5 xDrive35i',2011,2018,'E70 · F15','N55'],['BMW','X5 xDrive40i',2019,2025,'G05','B58'],
+    ['BMW','X6 xDrive35i',2008,2010,'E71','N54'],['BMW','X6 xDrive35i',2011,2019,'E71 · F16','N55'],['BMW','X6 xDrive40i',2020,2025,'G06','B58'],
+    ['BMW','Z4 sDrive35i / 35is',2009,2016,'E89','N54'],['BMW','Z4 M40i',2019,2025,'G29','B58'],
+    ['Toyota','GR Supra 3.0',2020,2025,'A90 · J29','B58']
+  ];
+  var CATS=[['all','All'],['intake','Intake'],['charge','Charge pipe'],['downpipe','Downpipe'],['occ','Catch can'],['flex','Flex fuel']];
+  var P=[
+    {code:'N54',fitTag:'E82 · E9X',title:'Charge pipe',cat:'charge',eng:['N54'],status:'spec',fit:'335i · 335xi · 135i · 1M · Z4 35i',pts:['2.5 in 6061 aluminum, TIG welded','BOV flange, two 1/8 NPT bungs','Silicone couplers and T-bolt clamps included','Replaces the plastic pipe that splits at the throttle body'],foot:'Ships or installs here'},
+    {code:'N55',fitTag:'F2X · F3X · F87',title:'Charge pipe',cat:'charge',eng:['N55'],status:'spec',fit:'335i · 435i · M235i · M2 · X3 35i',pts:['2.5 in 6061 aluminum, TIG welded','F-chassis routing, BOV flange, meth bung','Silicone couplers and T-bolt clamps included','Keeps the factory BOV and sensor'],foot:'Ships or installs here'},
+    {code:'B58',fitTag:'G2X · G42 · A90',title:'Charge pipe',cat:'charge',eng:['B58'],status:'spec',fit:'M340i · M440i · M240i · 540i · Supra 3.0',pts:['Aluminum, TIG welded, bead-rolled ends','Meth bung and sensor port','Silicone coupler to the chargecooler inlet','Holds boost on flex fuel and bigger-turbo cars'],foot:'Ships or installs here'},
+    {code:'B58',fitTag:'G2X · G42 · A90',title:'Intake',cat:'intake',eng:['B58'],status:'design',fit:'M340i · M440i · M240i · Supra 3.0',pts:['Heat-shielded airbox, 4 in inlet','Keeps the factory cold-air duct','Dry filter, no oiling','Sized for the turbo we actually put on these'],foot:'Sampling next'},
+    {code:'OCC',fitTag:'N54 · N55 · B58',title:'Catch can kit',cat:'occ',eng:['N54','N55','B58'],status:'design',fit:'Platform-specific bracket and lines',pts:['Baffled billet can with dipstick','Platform bracket, no drilling','-10AN lines and fittings','Drain it at the oil change, done'],foot:'Sampling next'},
+    {code:'E85',fitTag:'N54 · N55 · B58',title:'Flex fuel kit',cat:'flex',eng:['N54','N55','B58'],status:'design',fit:'Plug-and-play with MHD and bootmod3',pts:['Ethanol content sensor, shop-built harness','Plugs into the factory connector','Reads straight into the tune','Pairs with our flex fuel tuning'],foot:'Sampling next'}
+  ];
+
+  // ===== page chrome ============================================================
+  var mb=document.querySelector('.menu-btn'),nav=document.getElementById('nav');
+  if(mb){mb.addEventListener('click',function(){var o=nav.classList.toggle('open');mb.setAttribute('aria-expanded',o?'true':'false');});}
+
+  // ===== selector ===============================================================
+  var selYear=document.getElementById('year'),selMake=document.getElementById('make'),selModel=document.getElementById('model');
+  var result=document.getElementById('result'),quick=document.getElementById('quick');
+  var state={eng:null,car:null,cat:'all',browsing:'B58'};
+  function opt(sel,items,placeholder){
+    sel.innerHTML='';var o=document.createElement('option');o.value='';o.textContent=placeholder;sel.appendChild(o);
+    items.forEach(function(v){var e=document.createElement('option');e.value=v;e.textContent=v;sel.appendChild(e);});
+  }
+  var years=[];for(var y=2025;y>=2007;y--)years.push(String(y));
+  opt(selYear,years,'Select year');
+  function rowsFor(year,make){return V.filter(function(r){return (!year||(year>=r[2]&&year<=r[3]))&&(!make||r[0]===make);});}
+  selYear.addEventListener('change',function(){
+    var yr=+selYear.value;
+    var makes=[];rowsFor(yr,null).forEach(function(r){if(makes.indexOf(r[0])<0)makes.push(r[0]);});
+    opt(selMake,makes,'Select make');selMake.disabled=!yr;
+    opt(selModel,[],'Select model');selModel.disabled=true;
+    if(makes.length===1){selMake.value=makes[0];selMake.dispatchEvent(new Event('change'));}
+    else if(!yr){setCar(null);}
+  });
+  selMake.addEventListener('change',function(){
+    var yr=+selYear.value,mk=selMake.value;
+    var models=[];rowsFor(yr,mk).forEach(function(r){if(models.indexOf(r[1])<0)models.push(r[1]);});
+    models.sort();opt(selModel,models,'Select model');selModel.disabled=!mk;
+  });
+  selModel.addEventListener('change',function(){
+    var yr=+selYear.value,mk=selMake.value,md=selModel.value;
+    var row=rowsFor(yr,mk).filter(function(r){return r[1]===md;})[0];
+    setCar(row?{year:yr,make:mk,model:md,chassis:row[4],eng:row[5]}:null);
+  });
+  quick.addEventListener('click',function(e){
+    var b=e.target.closest('[data-eng]');if(!b)return;
+    selYear.value='';opt(selMake,[],'Select make');selMake.disabled=true;opt(selModel,[],'Select model');selModel.disabled=true;
+    setCar({eng:b.getAttribute('data-eng'),quick:true});
+  });
+  function setCar(car){
+    state.car=car;state.eng=car?car.eng:null;
+    quick.querySelectorAll('[data-eng]').forEach(function(b){b.setAttribute('aria-pressed',car&&b.getAttribute('data-eng')===car.eng?'true':'false');});
+    var E=car?ENG[car.eng]:null;
+    if(car&&!car.quick){
+      result.className='result';
+      result.innerHTML='<div class="result__car">'+car.year+' '+car.make+' '+car.model+'</div><div class="result__eng">'+car.chassis+' · '+E.code+' · '+E.sub+'</div>';
+    }else if(car){
+      result.className='result';
+      result.innerHTML='<div class="result__car">'+E.code+' cars</div><div class="result__eng">'+E.sub+'</div>';
+    }else{
+      result.className='result result--none';
+      result.innerHTML='<div class="result__car">No car picked yet</div><div class="result__eng">The engine on stage is a B58 while you look.</div>';
+    }
+    try{if(car)localStorage.setItem('eins-car',JSON.stringify(car));else localStorage.removeItem('eins-car');}catch(e){}
+    showEngine(car?car.eng:state.browsing,!!car);
+    renderParts();
+  }
+
+  // ===== parts grid =============================================================
+  var cats=document.getElementById('cats'),grid=document.getElementById('grid');
+  function countFor(cat){return P.filter(function(p){return (cat==='all'||p.cat===cat)&&(!state.eng||p.eng.indexOf(state.eng)>=0);}).length;}
+  function renderCats(){
+    cats.innerHTML='';
+    CATS.forEach(function(c){
+      var b=document.createElement('button');b.type='button';b.className='cat';b.setAttribute('data-cat',c[0]);b.setAttribute('aria-pressed',state.cat===c[0]?'true':'false');
+      b.innerHTML=c[1]+'<small>'+countFor(c[0])+'</small>';cats.appendChild(b);
+    });
+  }
+  cats.addEventListener('click',function(e){var b=e.target.closest('[data-cat]');if(!b)return;setCat(b.getAttribute('data-cat'),false);});
+  function setCat(cat,fromStage){state.cat=cat;renderParts();if(stageApi)stageApi.highlight(cat);if(!fromStage&&stageApi)stageApi.lookAt(cat);}
+  function renderParts(){
+    renderCats();
+    var E=state.eng?ENG[state.eng]:null;
+    document.getElementById('partsEyebrow').textContent=E?('Parts for the '+E.code):'All platforms';
+    document.getElementById('partsTitle').textContent=E?('What we make for the '+E.code+'.'):'Parts for every car we build on.';
+    document.getElementById('partsLede').textContent=E?('Filtered to your engine. Click a part on the engine above to jump to it here.'):'Pick your car above and this narrows to what fits. Everything here starts as a problem we see on the lift.';
+    var list=P.filter(function(p){return (state.cat==='all'||p.cat===state.cat)&&(!state.eng||p.eng.indexOf(state.eng)>=0);});
+    grid.innerHTML='';
+    if(!list.length){
+      var catName=(CATS.filter(function(c){return c[0]===state.cat;})[0]||['','parts'])[1].toLowerCase();
+      var d=document.createElement('div');d.className='empty';
+      d.innerHTML='<b>Nothing in '+catName+' for the '+(E?E.code:'this car')+' yet</b><p>If you need it, tell us. The first run is shaped by what people ask for.</p><p class="mono">Text or call <b>(708) 707-9756</b></p>';
+      grid.appendChild(d);return;
+    }
+    list.forEach(function(p){
+      var a=document.createElement('article');a.className='part';
+      a.innerHTML='<div class="part__top"><div class="part__code"><small>'+p.fitTag+'</small>'+p.code+'</div><span class="chip'+(p.status==='spec'?' chip--spec':'')+'"><i class="dot '+(p.status==='spec'?'dot--spec':'dot--design')+'"></i>'+(p.status==='spec'?"Spec'd":'In design')+'</span></div>'+
+        '<div class="part__title">'+p.title+'</div><div class="part__fit">'+p.fit+'</div><ul>'+p.pts.map(function(t){return '<li>'+t+'</li>';}).join('')+'</ul>'+
+        '<div class="part__foot"><span>'+p.foot+'</span><b>Details →</b></div>';
+      grid.appendChild(a);
+    });
+  }
+
+  // ===== stage: procedural engine ==============================================
+  var stage=document.getElementById('stage'),canvas=document.getElementById('gl'),labelsEl=document.getElementById('labels');
+  var badgeCode=document.getElementById('badgeCode'),badgeSub=document.getElementById('badgeSub'),idle=document.getElementById('idle');
+  var reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var stageApi=null;
+  function showEngine(code,picked){
+    var E=ENG[code];badgeCode.textContent=E.code;badgeSub.textContent=(picked?'Your engine · ':'Browsing · ')+E.sub;
+    idle.hidden=!!picked;
+    if(stageApi)stageApi.build(E,picked);
+  }
+
+  (function initStage(){
+    if(typeof THREE==='undefined'){stage.classList.add('stage--static');return;}
+    var renderer;
+    try{renderer=new THREE.WebGLRenderer({canvas:canvas,antialias:true,powerPreference:'high-performance'});}
+    catch(e){stage.classList.add('stage--static');return;}
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,1.75));
+    renderer.outputEncoding=THREE.sRGBEncoding;
+    renderer.toneMapping=THREE.ACESFilmicToneMapping;
+    renderer.toneMappingExposure=1.0;
+    renderer.physicallyCorrectLights=true;
+    var scene=new THREE.Scene();scene.background=new THREE.Color(0x121214);
+    var camera=new THREE.PerspectiveCamera(30,1,0.1,80);
+    var camTarget=new THREE.Vector3(0.1,0.15,0.1);
+
+    // studio environment baked to a PMREM
+    (function(){
+      var room=new THREE.Scene();
+      room.add(new THREE.Mesh(new THREE.BoxGeometry(26,26,26),new THREE.MeshBasicMaterial({color:0x1a1b1e,side:THREE.BackSide})));
+      function panel(w,h,x,y,z,c,i){var m=new THREE.Mesh(new THREE.PlaneGeometry(w,h),new THREE.MeshBasicMaterial({color:c}));m.material.color.multiplyScalar(i);m.position.set(x,y,z);m.lookAt(0,0,0);room.add(m);}
+      panel(14,3.4,0,9,2,0xffffff,5.0);panel(2.4,9,-10,1,3,0xdfe8ff,3.0);panel(2.4,9,10,-1,-2,0xff3b2a,1.5);panel(9,1.4,0,-9,2,0x3a3a40,1.2);
+      var pm=new THREE.PMREMGenerator(renderer);scene.environment=pm.fromScene(room,0.03).texture;pm.dispose();
+    })();
+    scene.add(new THREE.AmbientLight(0x2a2a30,0.7));
+    var key=new THREE.DirectionalLight(0xfff7ee,1.6);key.position.set(-3,6,5);scene.add(key);
+    key.castShadow=true;key.shadow.mapSize.set(2048,2048);key.shadow.camera.left=-5;key.shadow.camera.right=5;key.shadow.camera.top=5;key.shadow.camera.bottom=-5;key.shadow.camera.near=1;key.shadow.camera.far=24;key.shadow.bias=-0.0004;key.shadow.normalBias=0.02;
+    renderer.shadowMap.type=THREE.PCFSoftShadowMap;renderer.shadowMap.enabled=false;
+    var rim=new THREE.PointLight(0xe2231a,3,16,2);rim.position.set(4,-2,-4);scene.add(rim);
+    var fill=new THREE.PointLight(0xbfd0ff,10,16,2);fill.position.set(-5,2,-3);scene.add(fill);
+    var glowLight=new THREE.PointLight(0xff7a1a,0,3,2);scene.add(glowLight);
+
+    // floor: a faint grid disc so the engine sits on something
+    var floor=new THREE.Mesh(new THREE.CircleGeometry(5.5,72),new THREE.MeshStandardMaterial({color:0x17181b,metalness:0.2,roughness:0.9}));
+    floor.rotation.x=-Math.PI/2;floor.position.y=-1.55;floor.receiveShadow=true;scene.add(floor);
+    var gridH=new THREE.GridHelper(8,16,0x2a2a2e,0x222226);gridH.position.y=-1.549;scene.add(gridH);
+
+    // materials (cloned per part so highlights don't bleed). Two looks: technical (flat PBR)
+    // and realistic (procedural cast / brushed textures, clearcoat plastics, shadows, depth of field)
+    var realistic=false,TEX=null;
+    function noiseCanvas(w,h,fx,fy,oct,base,amp){
+      var c=document.createElement('canvas');c.width=w;c.height=h;var ctx=c.getContext('2d');var img=ctx.createImageData(w,h),d=img.data;
+      function rnd(ix,iy,seed){var n=Math.imul(ix,374761393)+Math.imul(iy,668265263)+Math.imul(seed,1013904223);n=Math.imul(n^(n>>>13),1274126177);return ((n^(n>>>16))>>>0)/4294967295;}
+      function vn(x,y,seed){var ix=Math.floor(x),iy=Math.floor(y),u=x-ix,v=y-iy;u=u*u*(3-2*u);v=v*v*(3-2*v);var a=rnd(ix,iy,seed),b=rnd(ix+1,iy,seed),c2=rnd(ix,iy+1,seed),d2=rnd(ix+1,iy+1,seed);return a+(b-a)*u+(c2-a)*v+(a-b-c2+d2)*u*v;}
+      for(var y=0;y<h;y++)for(var x=0;x<w;x++){var val=0,a=1,sum=0,f=1;for(var o=0;o<oct;o++){val+=vn(x*fx*f/w,y*fy*f/h,o*7+1)*a;sum+=a;a*=0.5;f*=2;}val/=sum;var g=Math.max(0,Math.min(255,(base+(val-0.5)*amp)*255));var i=(y*w+x)*4;d[i]=d[i+1]=d[i+2]=g;d[i+3]=255;}
+      ctx.putImageData(img,0,0);return c;
+    }
+    function T(){
+      if(TEX)return TEX;
+      function mk(cv,rx,ry){var t=new THREE.CanvasTexture(cv);t.wrapS=t.wrapT=THREE.RepeatWrapping;t.repeat.set(rx,ry);return t;}
+      var cast=noiseCanvas(256,256,9,9,4,0.6,0.35),coarse=noiseCanvas(256,256,12,12,4,0.55,0.6),fine=noiseCanvas(256,256,40,40,3,0.5,0.5),brushed=noiseCanvas(128,256,0.6,110,3,0.35,0.45);
+      TEX={cast:mk(cast,2,2),castB:mk(coarse,2,2),fine:mk(fine,3,3),brushed:mk(brushed,3,1),brushedB:mk(brushed,3,1),floor:mk(fine,10,10)};
+      return TEX;
+    }
+    function makeMaterials(real){
+      if(!real)return {
+        block:function(){return new THREE.MeshStandardMaterial({color:0x4a4c52,metalness:0.85,roughness:0.5});},
+        alu:function(){return new THREE.MeshStandardMaterial({color:0xcfd2d6,metalness:1.0,roughness:0.36});},
+        cast:function(){return new THREE.MeshStandardMaterial({color:0x2d2e33,metalness:0.7,roughness:0.75});},
+        plastic:function(){return new THREE.MeshStandardMaterial({color:0x151517,metalness:0.1,roughness:0.6});},
+        rubber:function(){return new THREE.MeshStandardMaterial({color:0x111113,metalness:0.0,roughness:0.9});},
+        steel:function(){return new THREE.MeshStandardMaterial({color:0xb8bcc2,metalness:1.0,roughness:0.42});},
+        red:function(){return new THREE.MeshStandardMaterial({color:0xe2231a,metalness:0.8,roughness:0.35});},
+        fin:function(){return new THREE.MeshStandardMaterial({color:0x8d9096,metalness:0.9,roughness:0.5});}
+      };
+      var t=T();
+      return {
+        block:function(){return new THREE.MeshStandardMaterial({color:0x6d6f74,metalness:0.7,roughness:1,roughnessMap:t.cast,bumpMap:t.cast,bumpScale:0.004,envMapIntensity:0.85});},
+        alu:function(){return new THREE.MeshStandardMaterial({color:0xd3d5d9,metalness:1.0,roughness:1,roughnessMap:t.brushed,bumpMap:t.brushedB,bumpScale:0.002,envMapIntensity:1.0});},
+        cast:function(){return new THREE.MeshStandardMaterial({color:0x37383c,metalness:0.5,roughness:1,roughnessMap:t.castB,bumpMap:t.castB,bumpScale:0.009,envMapIntensity:0.8});},
+        plastic:function(){return new THREE.MeshPhysicalMaterial({color:0x151517,metalness:0.0,roughness:1,roughnessMap:t.fine,bumpMap:t.fine,bumpScale:0.004,clearcoat:0.35,clearcoatRoughness:0.5});},
+        rubber:function(){return new THREE.MeshStandardMaterial({color:0x0f0f11,metalness:0.0,roughness:0.95,bumpMap:t.fine,bumpScale:0.01});},
+        steel:function(){return new THREE.MeshStandardMaterial({color:0xb9bcc1,metalness:1.0,roughness:1,roughnessMap:t.brushed,bumpMap:t.brushedB,bumpScale:0.0015});},
+        red:function(){return new THREE.MeshPhysicalMaterial({color:0xd41f16,metalness:0.9,roughness:0.28,clearcoat:0.7,clearcoatRoughness:0.2});},
+        fin:function(){return new THREE.MeshStandardMaterial({color:0x7f8287,metalness:0.9,roughness:1,roughnessMap:t.cast});}
+      };
+    }
+    var M=makeMaterials(false);
+    function floorMat(real){if(!real)return new THREE.MeshStandardMaterial({color:0x17181b,metalness:0.2,roughness:0.9});var t=T();return new THREE.MeshStandardMaterial({color:0x141518,metalness:0.1,roughness:1,roughnessMap:t.floor});}
+    var UP=new THREE.Vector3(0,1,0),XA=new THREE.Vector3(1,0,0),ZA=new THREE.Vector3(0,0,1);
+    function V3(a){return new THREE.Vector3(a[0],a[1],a[2]);}
+    function box(w,h,d,mat,x,y,z){var g=(realistic&&THREE.RoundedBoxGeometry)?new THREE.RoundedBoxGeometry(w,h,d,3,Math.min(0.05,Math.min(w,h,d)*0.18)):new THREE.BoxGeometry(w,h,d);var m=new THREE.Mesh(g,mat);m.position.set(x,y,z);return m;}
+    function hex(r,h,mat,x,y,z,axis){var m=new THREE.Mesh(new THREE.CylinderGeometry(r,r,h,6),mat);m.position.set(x,y,z);if(axis)m.quaternion.setFromUnitVectors(UP,axis.clone().normalize());return m;}
+    function spiral(cx,cy,cz,R,tr,turn,mat){var pts=[];for(var i=0;i<=40;i++){var a=(i/40)*Math.PI*2*1.05,r=R*(0.55+0.5*i/40);pts.push(new THREE.Vector3(cx,cy+r*Math.cos(a),cz+r*Math.sin(a)*turn));}var c=new THREE.CatmullRomCurve3(pts);return new THREE.Mesh(new THREE.TubeGeometry(c,80,tr,16,false),mat);}
+    function cyl(r,h,mat,x,y,z,axis,r2){var m=new THREE.Mesh(new THREE.CylinderGeometry(r,r2===undefined?r:r2,h,40),mat);m.position.set(x,y,z);if(axis)m.quaternion.setFromUnitVectors(UP,axis.clone().normalize());return m;}
+    function tube(pts,r,mat,seg){var c=new THREE.CatmullRomCurve3(pts.map(V3),false,'catmullrom',0.4);var m=new THREE.Mesh(new THREE.TubeGeometry(c,seg||80,r,16,false),mat);m.userData.curve=c;return m;}
+    function torus(r,t,mat,x,y,z,axis){var m=new THREE.Mesh(new THREE.TorusGeometry(r,t,14,56),mat);m.position.set(x,y,z);m.quaternion.setFromUnitVectors(ZA,axis.clone().normalize());return m;}
+
+    // boost / exhaust streams
+    var vert='varying vec2 vUv;void main(){vUv=uv;gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.0);}';
+    var frag=['uniform float uTime,uSpeed,uOffset,uGain;uniform vec3 uCol,uHot;varying vec2 vUv;',
+      'void main(){float t=vUv.x;float ends=smoothstep(0.0,0.06,t)*smoothstep(1.0,0.94,t);',
+      ' float p=fract(t*3.0-uTime*uSpeed+uOffset);float pulse=exp(-pow((p-0.5)/0.09,2.0));',
+      ' float p2=fract(t*3.0-uTime*uSpeed*0.7+uOffset+0.41);float pulse2=0.4*exp(-pow((p2-0.5)/0.06,2.0));',
+      ' float k=(0.10+pulse*1.5+pulse2)*ends;vec3 c=mix(uCol,uHot,clamp(pulse+pulse2,0.0,1.0));gl_FragColor=vec4(c*k*uGain,1.0);}'].join('\n');
+    function streams(curve,count,rad,col,hot,gain){
+      var g=new THREE.Group(),mats=[];
+      var frames=curve.computeFrenetFrames(160,false);
+      for(var i=0;i<count;i++){
+        var phase=Math.random()*6.283,sw=0.6+Math.random()*1.2,rr=rad*(0.3+Math.random()*0.7),pts=[];
+        for(var k=0;k<=160;k++){var t=k/160,p=curve.getPointAt(t).clone(),a=phase+t*6.283*sw;p.addScaledVector(frames.normals[k],Math.cos(a)*rr).addScaledVector(frames.binormals[k],Math.sin(a)*rr);pts.push(p);}
+        var m=new THREE.ShaderMaterial({vertexShader:vert,fragmentShader:frag,transparent:true,blending:THREE.AdditiveBlending,depthWrite:false,depthTest:false,
+          uniforms:{uTime:{value:0},uSpeed:{value:0.35+Math.random()*0.25},uOffset:{value:Math.random()},uGain:{value:gain*(realistic?0.4:1)},uCol:{value:new THREE.Color(col)},uHot:{value:new THREE.Color(hot)}}});
+        mats.push(m);var tm=new THREE.Mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(pts),240,0.008+Math.random()*0.004,5,false),m);tm.renderOrder=3;g.add(tm);
+      }
+      g.userData.mats=mats;return g;
+    }
+
+    // the engine builder -------------------------------------------------------
+    var engine=null,parts={},spinners=[],flows=[],anchors={},explodeK=0,explodeTarget=0,assembleT=1;
+    function part(name,explode){var g=new THREE.Group();g.userData.explode=V3(explode);g.userData.name=name;parts[name]=parts[name]||[];parts[name].push(g);engine.add(g);return g;}
+    function addAll(g,list){list.forEach(function(m){g.add(m);});}
+
+    function buildEngine(E){
+      // Coordinates: front of the engine at -x (pulleys), rear at +x (bell housing).
+      // Looking at the car from the front, -z is the passenger side (exhaust, turbos),
+      // +z is the driver's side (intake manifold, throttle body, fuel rail).
+      if(engine){scene.remove(engine);engine.traverse(function(o){if(o.geometry)o.geometry.dispose();if(o.material&&o.material.dispose)o.material.dispose();});}
+      engine=new THREE.Group();scene.add(engine);parts={};spinners=[];flows=[];anchors={};
+      var i6=E.layout==='i6',EX=-1,IN=1;
+      // --- core: block, head, cover, pan, pulleys, bell housing ----------------
+      var core=part('core',[0,0,0]);
+      if(i6){
+        addAll(core,[box(3.0,1.15,1.0,M.block(),0,0,0),box(3.0,0.5,0.96,M.block(),0,0.82,0),box(2.6,0.62,0.86,M.cast(),0,-0.88,0)]);
+        var cov=part('cover',[0,0.9,0]);
+        var covMat=E.cover==='plastic'?M.plastic():M.alu();
+        addAll(cov,[box(2.86,0.36,0.82,covMat,0,1.25,0),box(2.7,0.06,0.5,covMat,0,1.46,0)]);
+        for(var c=0;c<6;c++){cov.add(cyl(0.065,0.14,M.plastic(),-1.1+c*0.44,1.5,0.06,null));cov.add(box(0.12,0.16,0.08,M.plastic(),-1.1+c*0.44,1.5,-0.1));}
+        for(var rb=0;rb<3;rb++)cov.add(box(2.6,0.025,0.06,covMat,0,1.44,-0.3+rb*0.3));
+      }else{
+        addAll(core,[box(2.6,0.9,1.3,M.block(),0,-0.15,0),box(2.2,0.62,1.1,M.cast(),0,-0.95,0)]);
+        [-1,1].forEach(function(sg){
+          var bank=new THREE.Group();bank.rotation.x=sg*0.6;bank.position.set(0,0.35,0);
+          bank.add(box(2.6,0.5,0.75,M.block(),0,0.55,sg*0.22));bank.add(box(2.5,0.3,0.72,M.alu(),0,0.95,sg*0.22));
+          for(var c=0;c<4;c++)bank.add(cyl(0.06,0.12,M.plastic(),-0.95+c*0.63,1.14,sg*0.22,null));
+          core.add(bank);
+        });
+        core.add(box(2.0,0.28,0.9,M.alu(),0,1.35,0));
+        for(var t8=0;t8<8;t8++)core.add(cyl(0.08,0.3,M.alu(),-1.05+(t8%4)*0.63,1.1,(t8<4?-1:1)*0.28,null));
+      }
+      if(realistic&&i6){
+        for(var hb=0;hb<7;hb++){cov.add(hex(0.028,0.03,M.steel(),-1.32+hb*0.44,1.44,0.37,null));cov.add(hex(0.028,0.03,M.steel(),-1.32+hb*0.44,1.44,-0.37,null));}
+        cov.add(cyl(0.11,0.06,M.plastic(),-1.0,1.5,0.22*IN,null));
+        cov.add(tube([[-1.3,1.56,0.2*IN],[0,1.57,0.22*IN],[1.3,1.56,0.2*IN],[1.5,1.3,0.5*IN]],0.022,M.rubber(),30));
+        core.add(cyl(0.22,0.34,M.block(),-1.3,0.25,-0.36,XA));core.add(cyl(0.16,0.3,M.block(),-1.72,0.95,0.42*IN,null));core.add(cyl(0.17,0.04,M.plastic(),-1.72,1.12,0.42*IN,null));
+        core.add(box(2.8,0.3,0.06,M.cast(),0,0.72,0.5*EX));for(var fb=0;fb<12;fb++)core.add(hex(0.022,0.04,M.steel(),-1.25+fb*0.227,0.72+(fb%2?0.09:-0.09),0.53*EX,ZA));
+      }
+      addAll(core,[cyl(0.34,0.12,M.cast(),-1.6,-0.22,0,XA),cyl(0.19,0.08,M.steel(),-1.62,0.5,0.32,XA),cyl(0.15,0.08,M.steel(),-1.62,0.25,-0.36,XA),
+        torus(0.36,0.025,M.rubber(),-1.66,-0.22,0,XA),cyl(0.72,0.34,M.cast(),1.68,-0.1,0,XA),box(1.3,0.86,0.78,M.cast(),2.55,-0.22,0)]);
+
+      // --- intake manifold: driver's side, throttle body at the front ---------
+      var awic=E.cooler==='awic';
+      var man=part('manifold',[0,0,1.1*IN]);
+      if(i6&&E.cooler==='top'){
+        // S55: the charge air cooler sits on top of the engine; runners drop to the head on the driver's side
+        var cac=part('cooler',[0,1.6,0]);
+        cac.add(box(2.3,0.44,0.98,M.alu(),0,1.72,0.08));cac.add(box(2.1,0.1,0.8,M.fin(),0,1.99,0.08));
+        cac.add(cyl(0.055,0.5,M.rubber(),-1.2,1.75,0.3,XA));cac.add(cyl(0.055,0.5,M.rubber(),1.2,1.75,0.3,XA));
+        for(var hb2=0;hb2<6;hb2++)cac.add(hex(0.025,0.03,M.steel(),-1.0+hb2*0.4,1.95,0.52,null));
+        for(var r7=0;r7<6;r7++)man.add(cyl(0.085,0.62,M.alu(),-1.1+r7*0.44,1.2,0.62*IN,new THREE.Vector3(0,1,0.3*IN)));
+        anchors.cooler=new THREE.Vector3(0,2.05,0.08);
+      }else if(i6){
+        man.add(box(2.5,awic?0.62:0.4,0.42,M.alu(),0,0.74,0.74*IN));
+        if(awic){man.add(box(2.2,0.14,0.36,M.fin(),0,1.12,0.74*IN));man.add(cyl(0.05,0.9,M.rubber(),-1.1,1.0,0.74*IN,ZA));man.add(cyl(0.05,0.9,M.rubber(),1.1,1.0,0.74*IN,ZA));}
+        for(var r6=0;r6<6;r6++)man.add(cyl(0.085,0.5,M.alu(),-1.1+r6*0.44,0.74,0.52*IN,new THREE.Vector3(0,0.35,-IN)));
+        if(!awic)man.add(cyl(0.17,0.16,M.alu(),-1.36,0.74,0.74*IN,XA));
+      }
+
+      // --- exhaust manifold + turbos: passenger side, low on the block -------
+      var turboX=E.turbos===2?[-0.62,0.62]:(E.turbos===1?[0.25]:[]);
+      var tR=E.turbos===2?0.21:0.3,ty=0.3,tz=1.0*EX;
+      var exh=part('exhaust',[0,0,0.8*EX]);
+      if(i6){
+        for(var r=0;r<6;r++){
+          var x=-1.1+r*0.44,tx=turboX.length===2?(r<3?turboX[0]:turboX[1]):(turboX[0]!==undefined?turboX[0]:x);
+          exh.add(tube([[x,0.72,0.5*EX],[x,0.58,0.8*EX],[tx+0.27,ty+tR*1.05,tz]],0.06,M.cast(),24));
+        }
+      }else{
+        [-1,1].forEach(function(sg){for(var r=0;r<4;r++){var x=-0.95+r*0.63;exh.add(tube([[x,0.55,sg*0.75],[x,0.1,sg*1.05],[0.6,-0.6,sg*1.0]],0.05,M.cast(),24));}});
+      }
+      turboX.forEach(function(tx){
+        // compressor at the front (inlet faces forward), turbine at the rear (outlet faces the back)
+        var tg=part('turbo',[0,0.3,1.1*EX]);
+        // cold side: aluminum compressor cover + volute, outlet stub up to the charge pipe
+        var comp=cyl(tR*0.95,0.14,M.alu(),tx-0.2,ty,tz,XA),cv=spiral(tx-0.27,ty,tz,tR*1.05,tR*0.5,1,M.alu()),cout=cyl(tR*0.42,0.32,M.alu(),tx-0.27,ty+tR*1.15,tz,null);
+        // hot side: cast turbine housing + volute, inlet flange from the manifold
+        var turbine=cyl(tR*0.85,0.14,M.cast(),tx+0.2,ty,tz,XA),tv=spiral(tx+0.27,ty,tz,tR*0.95,tR*0.46,-1,M.cast()),tin=box(tR*1.1,0.06,tR*1.1,M.cast(),tx+0.27,ty+tR*1.05,tz);
+        var ctr=cyl(0.11,0.3,M.alu(),tx,ty,tz,XA);
+        var inlet=cyl(tR*0.5,0.16,M.alu(),tx-0.47,ty,tz,XA),outlet=cyl(tR*0.58,0.14,M.cast(),tx+0.46,ty,tz,XA);
+        tg.add(tube([[tx,ty+0.12,tz],[tx,0.5,tz*0.85],[tx,0.62,0.52*EX]],0.014,M.steel(),16));
+        addAll(tg,[comp,cv,cout,turbine,tv,tin,ctr,inlet,outlet,torus(tR*1.15,0.012,M.red(),tx-0.41,ty,tz,XA)]);
+        var cw=new THREE.Group();cw.position.set(tx-0.52,ty,tz);
+        for(var b=0;b<9;b++){var bl=box(0.1,tR*0.9,0.012,M.steel(),0,0,0);bl.rotation.x=b*6.283/9;bl.rotation.y=0.35;cw.add(bl);}
+        cw.add(cyl(tR*0.22,0.12,M.steel(),0,0,0,XA,tR*0.1));tg.add(cw);spinners.push(cw);
+        var tw=new THREE.Group();tw.position.set(tx+0.52,ty,tz);
+        for(var b2=0;b2<11;b2++){var bl2=box(0.08,tR*0.95,0.012,M.cast(),0,0,0);bl2.rotation.x=b2*6.283/11;bl2.rotation.y=-0.3;tw.add(bl2);}
+        tg.add(tw);spinners.push(tw);
+        anchors.turbo=anchors.turbo||new THREE.Vector3(tx,ty+tR*1.4,tz);
+      });
+
+      // --- intake: airbox at the front passenger corner, ducts to the inlets --
+      var inG=part('intake',[-0.7,0.6,0.6*EX]);
+      if(E.turbos>0){
+        inG.add(box(0.62,0.5,0.6,M.plastic(),-2.0,1.0,0.6*EX));inG.add(box(0.56,0.08,0.54,M.alu(),-2.0,1.28,0.6*EX));
+        inG.add(cyl(0.16,0.3,M.plastic(),-2.35,0.95,0.6*EX,XA));
+        turboX.forEach(function(tx,ti){
+          var pts=ti===0?[[-1.72,0.9,0.75*EX],[-1.3,0.8,1.1*EX],[tx-0.9,0.45,1.1*EX],[tx-0.55,ty,tz]]
+                        :[[-1.72,1.0,0.75*EX],[-1.0,1.0,1.25*EX],[tx-1.2,0.9,1.35*EX],[tx-0.8,0.55,1.15*EX],[tx-0.55,ty,tz]];
+          var it=tube(pts,0.1,M.plastic(),60);inG.add(it);
+          flows.push(streams(it.userData.curve,4,0.06,0xf2c300,0xfff6d6,1.4));
+        });
+        anchors.intake=new THREE.Vector3(-2.0,1.35,0.6*EX);
+      }else{
+        inG.add(box(0.62,0.5,0.6,M.plastic(),-2.0,1.0,0.5*EX));inG.add(tube([[-1.7,1.05,0.5*EX],[-1.3,1.3,0.2*EX],[-0.95,1.5,0]],0.1,M.plastic(),30));
+        anchors.intake=new THREE.Vector3(-2.0,1.35,0.5*EX);
+      }
+
+      // --- charge pipes + cooler --------------------------------------------
+      var chg=part('charge',[-0.6,0.5,0]);
+      if(E.turbos>0){
+        if(E.cooler==='fmic'){
+          // hot side stays low on the passenger side, forward and down into the FMIC
+          turboX.forEach(function(tx,ti){
+            var hot=tube([[tx-0.27,ty+tR*1.3,tz],[tx-0.45,0.62,1.3*EX],[-1.5,0.4,1.25*EX],[-2.05,-0.1,1.0*EX],[-2.2,-0.5,0.7*EX]],0.1,M.alu(),70);chg.add(hot);
+            flows.push(streams(hot.userData.curve,4,0.06,0xf2c300,0xfff6d6,1.5));
+          });
+          var ic=part('cooler',[-1.0,0,0]);ic.add(box(0.14,0.62,1.5,M.alu(),-2.2,-0.66,0));
+          for(var f=0;f<14;f++)ic.add(box(0.2,0.5,0.012,M.fin(),-2.2,-0.66,-0.65+f*0.1));
+          ic.add(box(0.2,0.14,1.56,M.alu(),-2.2,-0.33,0));ic.add(box(0.2,0.14,1.56,M.alu(),-2.2,-0.99,0));
+          // cold side: out the driver's end of the FMIC, up to the throttle body. This is the pipe that cracks.
+          var cold=tube([[-2.2,-0.45,0.72*IN],[-2.15,0.15,0.98*IN],[-1.85,0.62,0.92*IN],[-1.5,0.74,0.74*IN]],0.11,M.alu(),50);chg.add(cold);
+          chg.add(torus(0.17,0.03,M.steel(),-1.48,0.74,0.74*IN,XA));
+          if(realistic){chg.add(torus(0.13,0.014,M.steel(),-2.2,-0.42,0.72*IN,UP));chg.add(box(0.06,0.05,0.05,M.steel(),-2.33,-0.42,0.72*IN));chg.add(torus(0.12,0.014,M.steel(),-2.2,-0.47,0.7*EX,UP));chg.add(box(0.06,0.05,0.05,M.steel(),-2.33,-0.47,0.7*EX));}
+          // diverter valve on the cold pipe
+          chg.add(cyl(0.1,0.2,M.cast(),-2.12,0.32,1.12*IN,new THREE.Vector3(0.2,0.3,1)));chg.add(cyl(0.07,0.1,M.plastic(),-2.09,0.38,1.28*IN,new THREE.Vector3(0.2,0.3,1)));
+          flows.push(streams(cold.userData.curve,5,0.07,0xf2c300,0xfff6d6,1.6));
+          anchors.charge=new THREE.Vector3(-2.1,0.3,1.05*IN);anchors.cooler=new THREE.Vector3(-2.2,-0.3,0);
+        }else if(E.cooler==='top'){
+          // S55: charge pipes climb the passenger side and enter the top-mounted cooler from the side
+          turboX.forEach(function(tx,ti){
+            var pts=[[tx-0.27,ty+tR*1.3,tz],[tx-0.32,1.05,1.25*EX],[tx-0.34,1.6,1.05*EX],[tx-0.34,1.78,0.75*EX],[tx-0.34,1.74,0.42*EX]];
+            var tp=tube(pts,0.1,M.alu(),60);chg.add(tp);
+            flows.push(streams(tp.userData.curve,4,0.06,0xf2c300,0xfff6d6,1.5));
+            chg.add(torus(0.14,0.03,M.steel(),tx-0.34,1.74,0.44*EX,ZA));
+          });
+          anchors.charge=new THREE.Vector3(turboX[0]-0.34,1.4,1.3*EX);
+        }else{
+          // AWIC: compressor outlet forward, across the front of the engine, into the chargecooler on the manifold
+          turboX.forEach(function(tx,ti){
+            var dx=ti*0.16,pts=[[tx-0.27,ty+tR*1.3,tz],[tx-0.6,0.6,1.2*EX],[-1.5-dx,0.5,1.05*EX],[-2.05-dx,0.62,0.35*EX],[-2.05-dx,0.72,0.45*IN],[-1.55-dx,1.0,0.8*IN],[-1.3+ti*0.35,1.3,0.74*IN]];
+            var hp=tube(pts,0.1,M.alu(),80);chg.add(hp);
+            flows.push(streams(hp.userData.curve,4,0.06,0xf2c300,0xfff6d6,1.5));
+            chg.add(torus(0.15,0.03,M.steel(),-1.3+ti*0.35,1.24,0.74*IN,UP));
+          });
+          anchors.charge=new THREE.Vector3(-2.1,0.75,0);
+        }
+      }
+
+      // --- downpipe(s): off the turbine outlet, rearward and down under the car
+      var dp=part('downpipe',[0.3,-0.6,0.9*EX]);
+      if(E.turbos>0){
+        var merge=[2.1,-1.15,0.85*EX];
+        turboX.forEach(function(tx,ti){
+          var pts=turboX.length===2&&ti===0
+            ?[[tx+0.55,ty,tz],[tx+0.75,0.05,1.3*EX],[tx+0.9,-0.55,1.25*EX],[tx+1.4,-1.0,1.05*EX],merge,[3.0,-1.2,0.75*EX]]
+            :[[tx+0.55,ty,tz],[tx+0.85,0.15,1.1*EX],[tx+1.05,-0.5,1.05*EX],[tx+1.3,-1.05,0.95*EX],merge,[3.0,-1.2,0.75*EX]];
+          var d=tube(pts,0.09,M.steel(),70);dp.add(d);
+          flows.push(streams(d.userData.curve,4,0.05,0xff5a12,0xffd2a6,1.8));
+        });
+        dp.add(cyl(0.17,0.6,M.steel(),2.55,-1.18,0.8*EX,new THREE.Vector3(1,-0.02,-0.1*EX)));
+        anchors.downpipe=new THREE.Vector3(turboX[turboX.length-1]+1.1,-0.5,1.3*EX);
+      }else{
+        [-1,1].forEach(function(sg){var d=tube([[0.6,-0.6,sg*1.0],[1.4,-1.1,sg*0.9],[2.9,-1.2,sg*0.8]],0.08,M.steel(),40);dp.add(d);flows.push(streams(d.userData.curve,3,0.04,0xff5a12,0xffd2a6,1.6));});
+        anchors.downpipe=new THREE.Vector3(1.0,-0.95,1.2*EX);
+      }
+
+      // --- catch can: driver's side, rear, fed from the valve cover ------------
+      var occ=part('occ',[0.4,0.8,0.7*IN]);
+      occ.add(cyl(0.15,0.42,M.alu(),1.3,1.5,0.98*IN,null));occ.add(cyl(0.165,0.06,M.cast(),1.3,1.74,0.98*IN,null));occ.add(box(0.06,0.3,0.2,M.steel(),1.5,1.4,0.98*IN));
+      occ.add(tube([[0.95,1.5,0.3*IN],[1.1,1.72,0.6*IN],[1.24,1.8,0.9*IN]],0.03,M.rubber(),20));occ.add(tube([[1.38,1.76,1.05*IN],[1.5,1.4,1.25*IN],[1.1,0.95,1.0*IN]],0.03,M.rubber(),20));
+      anchors.occ=new THREE.Vector3(1.3,1.85,0.98*IN);
+
+      // --- flex fuel sensor: inline on the fuel feed, driver's side under the manifold
+      var flex=part('flex',[0.2,0.3,0.9*IN]);
+      flex.add(tube([[1.9,0.5,1.02*IN],[0.9,0.5,1.04*IN],[-1.3,0.5,1.04*IN]],0.025,M.steel(),20));
+      flex.add(box(0.26,0.13,0.13,M.cast(),0.9,0.5,1.04*IN));flex.add(box(0.1,0.08,0.1,M.plastic(),0.9,0.62,1.04*IN));
+      anchors.flex=new THREE.Vector3(0.9,0.62,1.04*IN);
+
+      flows.forEach(function(f){engine.add(f);});
+      engine.traverse(function(o){if(o.isMesh&&!o.material.isShaderMaterial){o.castShadow=realistic;o.receiveShadow=realistic;}});
+      assembleT=0;
+      return engine;
+    }
+
+    // post: (depth of field in realistic mode) -> bloom -> gamma
+    var composer=null,bloom=null,bokeh=null;
+    function setupComposer(){
+      if(!(THREE.EffectComposer&&THREE.UnrealBloomPass&&THREE.GammaCorrectionShader)){composer=null;return;}
+      var w=stage.clientWidth||800,h=stage.clientHeight||600;
+      composer=new THREE.EffectComposer(renderer);composer.addPass(new THREE.RenderPass(scene,camera));
+      bokeh=null;
+      if(realistic&&THREE.BokehPass){bokeh=new THREE.BokehPass(scene,camera,{focus:10,aperture:0.0007,maxblur:0.003,width:w,height:h});composer.addPass(bokeh);}
+      bloom=new THREE.UnrealBloomPass(new THREE.Vector2(w,h),realistic?0.32:0.7,0.55,realistic?0.86:0.76);composer.addPass(bloom);
+      composer.addPass(new THREE.ShaderPass(THREE.GammaCorrectionShader));
+      composer.setSize(w,h);
+    }
+    setupComposer();
+
+    // camera rig: orbit angles
+    var yaw=3.95,pitch=0.48,yawT=3.95,pitchT=0.48,dist=10.0,autoSpin=true,userDrag=null,narrow=false;
+    function resize(){
+      var w=stage.clientWidth,h=stage.clientHeight;if(!w||!h)return;
+      renderer.setSize(w,h,false);camera.aspect=w/h;camera.updateProjectionMatrix();if(composer){composer.setSize(w,h);if(bokeh){clearTimeout(resize.t);resize.t=setTimeout(setupComposer,350);}}
+      narrow=w<600;dist=narrow?10.6:10.0;
+      var a=w/h,fov=30;if(a<1.3333)fov=2*Math.atan(Math.tan(15*Math.PI/180)*(1.3333/a))*180/Math.PI;camera.fov=fov;camera.updateProjectionMatrix();
+    }
+    stage.addEventListener('pointerdown',function(e){if(e.target.closest('button'))return;userDrag={x:e.clientX,y:e.clientY,yaw:yawT,pitch:pitchT};});
+    window.addEventListener('pointermove',function(e){if(!userDrag)return;yawT=userDrag.yaw+(e.clientX-userDrag.x)*0.008;pitchT=Math.max(0.05,Math.min(1.2,userDrag.pitch+(e.clientY-userDrag.y)*0.005));});
+    window.addEventListener('pointerup',function(){userDrag=null;});window.addEventListener('pointercancel',function(){userDrag=null;});
+    var explodeBtn=document.getElementById('explode'),spinBtn=document.getElementById('spin');
+    explodeBtn.addEventListener('click',function(){explodeTarget=explodeTarget?0:1;explodeBtn.setAttribute('aria-pressed',explodeTarget?'true':'false');});
+    spinBtn.addEventListener('click',function(){autoSpin=!autoSpin;spinBtn.setAttribute('aria-pressed',autoSpin?'true':'false');});
+
+    // labels
+    var LBL=[['intake','Intake',true],['charge','Charge pipe',true],['cooler','Intercooler',false],['turbo','Turbo',false],['downpipe','Downpipe',true],['occ','Catch can',true],['flex','Flex fuel',true]];
+    var labelEls={};
+    LBL.forEach(function(l){
+      var d=document.createElement('div');d.className='lbl';d.hidden=true;
+      d.innerHTML='<i></i>'+(l[2]?'<button type="button" data-cat="'+l[0]+'">'+l[1]+'</button>':'<em>'+l[1]+'</em>');
+      labelsEl.appendChild(d);labelEls[l[0]]=d;
+    });
+    labelsEl.addEventListener('click',function(e){var b=e.target.closest('[data-cat]');if(!b)return;var c=b.getAttribute('data-cat');setCat(state.cat===c?'all':c,true);lookAt(c);});
+    var YAW={intake:3.9,charge:5.73,downpipe:2.74,occ:0.6,flex:0.2,turbo:3.45,cooler:4.71,all:3.95},PITCH={downpipe:0.2,cooler:0.22,flex:0.28};
+    function lookAt(cat){if(YAW[cat]!==undefined){var top=current&&current.cooler==='top';var tgt=(cat==='charge'&&current&&current.cooler==='awic')?4.9:(cat==='charge'&&top)?3.6:(cat==='cooler'&&top)?3.9:YAW[cat];var d=tgt-yaw;d=Math.atan2(Math.sin(d),Math.cos(d));yawT=yaw+d;pitchT=((cat==='charge'||cat==='cooler')&&top)?0.75:(PITCH[cat]||0.48);}}
+    var activeCat='all';
+    function highlight(cat){
+      activeCat=cat;
+      Object.keys(parts).forEach(function(name){
+        var on=(cat==='all')?null:(name===cat||(cat==='charge'&&name==='cooler'));
+        parts[name].forEach(function(g){g.traverse(function(o){if(o.material&&o.material.emissive){o.material.emissive.setHex(on?0xff7a1a:0x000000);o.material.emissiveIntensity=on?0.28:0;}});});
+      });
+      Object.keys(labelEls).forEach(function(k){var d=labelEls[k];d.classList.toggle('is-on',cat===k||(cat==='charge'&&k==='cooler'));d.classList.toggle('is-off',cat!=='all'&&!(cat===k||(cat==='charge'&&k==='cooler')));});
+    }
+    function updateLabels(){
+      if(!engine)return;var w=stage.clientWidth,h=stage.clientHeight;
+      engine.updateMatrixWorld();
+      var camDir=new THREE.Vector3();camera.getWorldDirection(camDir);
+      Object.keys(labelEls).forEach(function(k){
+        var d=labelEls[k],a=anchors[k];
+        if(!a){d.hidden=true;return;}
+        var ex=parts[k==='cooler'?'cooler':k]?parts[k==='cooler'?'cooler':k][0].userData.explode:new THREE.Vector3();
+        var p=a.clone().addScaledVector(ex,explodeK).applyMatrix4(engine.matrixWorld);
+        var v=p.clone().project(camera);
+        d.hidden=v.z>1;
+        d.style.left=((v.x*0.5+0.5)*w)+'px';d.style.top=((-v.y*0.5+0.5)*h)+'px';
+      });
+    }
+
+    // current engine
+    var current=null,boost=0;
+    var lastPicked=false;
+    function build(E,picked){current=E;lastPicked=picked;buildEngine(E);highlight(activeCat);lookAt('all');boost=picked?1:0.6;}
+    stageApi={build:build,highlight:highlight,lookAt:lookAt};
+
+    var clock=new THREE.Clock(),t0=0,inView=true;
+    if('IntersectionObserver' in window){new IntersectionObserver(function(en){inView=en[0].isIntersecting;},{threshold:0.02}).observe(stage);}
+    function ease(x){return x<0.5?4*x*x*x:1-Math.pow(-2*x+2,3)/2;}
+    function frame(){
+      var dt=Math.min(clock.getDelta(),0.05);t0+=dt;
+      if(autoSpin&&!userDrag&&!reduce)yawT+=dt*0.12;
+      yaw+=(yawT-yaw)*0.08;pitch+=(pitchT-pitch)*0.08;
+      camera.position.set(camTarget.x+Math.sin(yaw)*Math.cos(pitch)*dist,camTarget.y+Math.sin(pitch)*dist,camTarget.z+Math.cos(yaw)*Math.cos(pitch)*dist);
+      camera.lookAt(camTarget);
+      if(engine){
+        assembleT=Math.min(1,assembleT+dt/1.4);
+        var k=explodeTarget;explodeK+=(k-explodeK)*0.08;
+        var kk=Math.max(explodeK,1-ease(assembleT));
+        Object.keys(parts).forEach(function(name){parts[name].forEach(function(g){g.position.copy(g.userData.explode).multiplyScalar(kk*1.4);});});
+        var spin=reduce?0:(boost*(40+10*Math.sin(t0*0.9)));
+        spinners.forEach(function(s){s.rotation.x+=dt*spin;});
+        flows.forEach(function(f){f.visible=assembleT>0.6&&explodeK<0.5;f.userData.mats.forEach(function(m){m.uniforms.uTime.value=t0;});});
+        if(anchors.turbo){glowLight.intensity=assembleT>0.6?(0.7+0.5*Math.sin(t0*2.3))*boost:0;glowLight.position.copy(anchors.turbo).applyMatrix4(engine.matrixWorld);}else{glowLight.intensity=0;}
+        updateLabels();
+      }
+      if(bokeh)bokeh.uniforms['focus'].value=dist;
+      if(composer)composer.render();else renderer.render(scene,camera);
+    }
+    resize();
+    if('ResizeObserver' in window){new ResizeObserver(function(){resize();if(reduce)frame();}).observe(stage);}else{window.addEventListener('resize',resize);}
+    if(reduce){renderer.setAnimationLoop(function(){if(inView)frame();});} // reduced motion: still render, no spin
+    else{renderer.setAnimationLoop(function(){if(inView)frame();});}
+  })();
+
+  // ===== stage size: bigger layout, full screen, drag handle ====================
+  (function(){
+    var pick=document.getElementById('top'),wideBtn=document.getElementById('wide'),fullBtn=document.getElementById('full');
+    function setWide(w){pick.classList.toggle('pick--wide',w);wideBtn.setAttribute('aria-pressed',w?'true':'false');wideBtn.textContent=w?'Smaller':'Bigger';stage.style.height='';stage.style.width='';try{localStorage.setItem('eins-wide',w?'1':'0');}catch(e){}}
+    wideBtn.addEventListener('click',function(){setWide(!pick.classList.contains('pick--wide'));});
+    var startWide=true;try{if(localStorage.getItem('eins-wide')==='0')startWide=false;}catch(e){}
+    setWide(startWide);
+    function isFull(){return !!document.fullscreenElement||stage.classList.contains('stage--full');}
+    function sync(){var f=isFull();fullBtn.textContent=f?'Exit full screen':'Full screen';fullBtn.setAttribute('aria-pressed',f?'true':'false');}
+    fullBtn.addEventListener('click',function(){
+      if(isFull()){if(document.fullscreenElement&&document.exitFullscreen){document.exitFullscreen().catch(function(){});}stage.classList.remove('stage--full');sync();return;}
+      var p;try{p=stage.requestFullscreen?stage.requestFullscreen():Promise.reject();}catch(e){p=Promise.reject();}
+      Promise.resolve(p).catch(function(){stage.classList.add('stage--full');}).then(sync);
+    });
+    document.addEventListener('fullscreenchange',sync);
+    document.addEventListener('keydown',function(e){if(e.key==='Escape'&&stage.classList.contains('stage--full')){stage.classList.remove('stage--full');sync();}});
+  })();
+
+  // ===== boot ==================================================================
+  var saved=null;try{saved=JSON.parse(localStorage.getItem('eins-car')||'null');}catch(e){saved=null;}
+  if(saved&&saved.eng&&ENG[saved.eng]){
+    if(!saved.quick&&saved.year){selYear.value=String(saved.year);selYear.dispatchEvent(new Event('change'));selMake.value=saved.make;selMake.dispatchEvent(new Event('change'));selModel.value=saved.model;}
+    setCar(saved);
+  }else{
+    showEngine(state.browsing,false);renderParts();
+  }
+})();
+</script>
+</body></html>
