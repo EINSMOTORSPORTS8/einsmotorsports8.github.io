@@ -1,4 +1,4 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>Build Lab · Eins Motorsports</title><meta name="claude:viewport-fit-sides" content="cover"><meta name="description" content="Spec your BMW build before you bring it in. Start the engine, rev it, tick parts and watch power, reliability, traction and the dyno curve move. Then text the build to the shop."><link rel="canonical" href="https://einsmotorsports.net/store/build/"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Barlow:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap"><style>
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>Build Lab · Eins Motorsports</title><meta name="claude:viewport-fit-sides" content="cover"><meta name="description" content="Spec your BMW build before you bring it in. Start the engine, rev it, tick parts and watch power, reliability, traction and the power curve move. Then text the build to the shop."><link rel="canonical" href="https://einsmotorsports.net/store/build/"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Barlow:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap"><style>
 /* Layout concept: a build sheet from a racing game. Pick the car, paint it, pull the hood,
    tick parts and watch the bars move. Tokens are the einsmotorsports.net system. */
 :root{
@@ -246,10 +246,10 @@ p{margin:0}
       <div class="stage__veil" aria-hidden="true"></div>
       <div class="stage__badge"><span id="badgeSub">Sample · 2017 BMW M240i · B58</span><b id="badgeCar">Pick your car</b></div>
       <div class="gauge"><div class="gauge__num"><b class="js-rpm" id="rpmNum">0</b><span>rpm · <i class="js-boost" id="boostNum">0.0</i> psi</span></div><canvas id="tach" width="240" height="240" aria-hidden="true"></canvas></div>
-      <div class="hud" id="hud"><div class="hud__head"><span>Dyno · est.</span><span class="js-peak"></span></div><canvas id="dynoHud" width="480" height="220"></canvas></div>
+      <div class="hud" id="hud"><div class="hud__head"><span>Power curve · est.</span><span class="js-peak"></span></div><canvas id="dynoHud" width="480" height="220"></canvas></div>
       <button class="pedal js-pedal" type="button" id="pedal" disabled aria-label="Hold to rev">Hold<br>to rev</button>
       <div class="stage__tools">
-        <button class="tool tool--start js-start" type="button" id="start" aria-pressed="false">Start engine</button><button class="tool" type="button" id="hudBtn" aria-pressed="true">Dyno</button>
+        <button class="tool tool--start js-start" type="button" id="start" aria-pressed="false">Start engine</button><button class="tool" type="button" id="hudBtn" aria-pressed="true">Curve</button>
         <button class="tool" type="button" id="mute" aria-pressed="true">Sound on</button>
         <button class="tool" type="button" id="spin" aria-pressed="true">Auto rotate</button>
         <button class="tool" type="button" id="full" aria-pressed="false">Full screen</button>
@@ -267,7 +267,7 @@ p{margin:0}
       <div class="stats__head"><div><b id="hpNum">300</b><small>est. whp at the wheels</small></div><div style="text-align:right"><b id="hpDelta" style="font-size:22px;color:var(--yellow)">+0</b><small>over stock</small></div></div>
       <div class="hpbar"><div class="hpbar__fill" id="hpFill"></div><div class="hpbar__goal" id="hpGoalMark"></div></div>
       <div class="goal"><div class="goal__row"><span>Power goal</span><b id="goalVal">450 whp</b></div><input type="range" id="goal" min="250" max="850" step="10" value="450" aria-label="Power goal"></div>
-      <div class="dyno"><div class="dyno__head"><span>Dyno · est.</span><span class="js-peak" id="dynoPeak">—</span></div><canvas id="dyno" width="640" height="300"></canvas></div>
+      <div class="dyno"><div class="dyno__head"><span>Power curve · est.</span><span class="js-peak" id="dynoPeak">—</span></div><canvas id="dyno" width="640" height="300"></canvas></div>
       <div id="bars"></div>
       <div class="notes" id="notes"></div>
     </div>
@@ -362,20 +362,20 @@ p{margin:0}
   var PARTS=[
     {id:'tune1',cat:'Tuning',name:'Stage 1 tune',sub:'MHD or bootmod3 on pump gas. Where every build starts.',kind:'shop',whp:{N54:55,N55:50,B58:60,S55:70,S58:80,S65:15,S63:80,S63TU:90,S63TU2:90,S63TU4:95},fx:{response:8,reliability:-4,sound:3},eng:ALL},
     {id:'tune2',cat:'Tuning',name:'Stage 2 tune',sub:'Needs downpipes and an intercooler. More timing, more boost.',kind:'shop',whp:{N54:25,N55:25,B58:30,S55:35,S58:40,S63:45,S63TU:50,S63TU2:50,S63TU4:55},fx:{response:4,reliability:-4},req:['tune1','dp','fmic'],eng:TURBO},
-    {id:'custom',cat:'Tuning',name:'Custom dyno tune',sub:'Tuned on our dyno for your fuel, your parts and your car. Replaces the off-the-shelf map and finds what it left on the table.',kind:'shop',whp:{},pct:0.06,fx:{response:7,reliability:5},req:['tune1'],eng:ALL},
+    {id:'custom',cat:'Tuning',name:'Custom tune',sub:'Built for your fuel, your parts and your car, logged and refined on the road. Replaces the off-the-shelf map and finds what it left on the table. Worth more the bigger the turbo.',kind:'shop',whp:{},pct:0.05,pctCombo:{hybrid:0.02,topmount:0.03},fx:{response:7,reliability:5},req:['tune1'],eng:ALL},
     {id:'burble',cat:'Tuning',name:'Burble and pops map',sub:'Crackles on decel. All show, a little extra heat in the cats.',kind:'shop',whp:{},fx:{sound:12,reliability:-3},req:['tune1'],eng:TURBO},
-    {id:'flex',cat:'Fuel',name:'Flex fuel kit + E85 tune',sub:'Our sensor and harness, plug-and-play into the tune. The biggest cheap power there is.',kind:'eins',engPart:'flex',whp:{N54:60,N55:45,B58:55,S55:60,S58:60,S63:80,S63TU:90,S63TU2:90,S63TU4:95},fx:{response:8,reliability:-6,sound:2},req:['tune1'],eng:TURBO},
+    {id:'flex',cat:'Fuel',name:'Flex fuel kit + E85 tune',sub:'Our sensor and harness, plug-and-play into the tune. The biggest cheap power there is, and it is worth even more once the turbos grow.',kind:'eins',engPart:'flex',combo:{hybrid:{N54:30,N55:25,B58:30,S55:30,S58:30,S63:40,S63TU:40,S63TU2:40,S63TU4:40},topmount:{N54:40,N55:35,B58:40,S55:40,S58:40},pi:10},whp:{N54:60,N55:45,B58:55,S55:60,S58:60,S63:80,S63TU:90,S63TU2:90,S63TU4:95},fx:{response:8,reliability:-6,sound:2},req:['tune1'],eng:TURBO},
     {id:'fuel',cat:'Fuel',name:'Fuel system upgrade',sub:'Upgraded high and low pressure pumps. Needed past about <em>450 whp</em> on E85.',kind:'shop',whp:{},fx:{reliability:14},eng:TURBO},
-    {id:'pi',cat:'Fuel',name:'Port injection kit',sub:'A second rail with six injectors on the intake side, so E85 and big turbos never run the direct injection out of fuel.',kind:'shop',engPart:'pi',whp:{N54:15,N55:15,B58:15,S55:15,S58:15,S63:20,S63TU:20,S63TU2:20,S63TU4:20},fx:{reliability:10,response:2},req:['tune1'],eng:TURBO},
-    {id:'dp',cat:'Exhaust',name:'Downpipes',sub:'High-flow catted. Spool, sound, and the gateway to stage 2.',kind:'shop',engPart:'downpipe',whp:{N54:25,N55:20,B58:20,S55:30,S58:30,S63:35,S63TU:35,S63TU2:35,S63TU4:35},fx:{sound:18,response:3,reliability:-3},eng:TURBO},
-    {id:'exh',cat:'Exhaust',name:'Cat-back exhaust',sub:'Mostly sound. A little weight off the back.',kind:'shop',whp:{N54:5,N55:5,B58:5,S55:8,S58:8,S65:10,S63:12,S63TU:12,S63TU2:12,S63TU4:12},fx:{sound:22},eng:ALL},
-    {id:'intake',cat:'Intake',name:'Intake',sub:'Eins intake on the B58, heat-shielded kits elsewhere. You hear the turbo.',kind:'eins',engPart:'intake',whp:{N54:8,N55:8,B58:8,S55:10,S58:10,S65:6,S63:12,S63TU:12,S63TU2:12,S63TU4:12},fx:{sound:8,response:4},eng:ALL},
+    {id:'pi',cat:'Fuel',name:'Port injection kit',sub:'A second rail with six injectors on the intake side. On its own it adds nothing; with E85 and big turbos it is what lets the rest make power.',kind:'shop',engPart:'pi',whp:{},combo:{flex:15,hybrid:10,topmount:20},fx:{reliability:10,response:2},req:['tune1'],eng:TURBO},
+    {id:'dp',cat:'Exhaust',name:'Downpipes',sub:'High-flow catted. Spool, sound, and the gateway to stage 2. Needs a tune to be worth much.',kind:'shop',engPart:'downpipe',needsTune:true,whp:{N54:25,N55:20,B58:20,S55:30,S58:30,S63:35,S63TU:35,S63TU2:35,S63TU4:35},fx:{sound:18,response:3,reliability:-3},eng:TURBO},
+    {id:'exh',cat:'Exhaust',name:'Cat-back exhaust',sub:'Mostly sound. A little weight off the back.',kind:'shop',needsTune:true,whp:{N54:5,N55:5,B58:5,S55:8,S58:8,S65:10,S63:12,S63TU:12,S63TU2:12,S63TU4:12},fx:{sound:22},eng:ALL},
+    {id:'intake',cat:'Intake',name:'Intake',sub:'Eins intake on the B58, heat-shielded kits elsewhere. You hear the turbo. Matters most once the turbo is bigger than stock.',kind:'eins',engPart:'intake',needsTune:true,combo:{hybrid:6,topmount:10},whp:{N54:8,N55:8,B58:8,S55:10,S58:10,S65:6,S63:12,S63TU:12,S63TU2:12,S63TU4:12},fx:{sound:8,response:4},eng:ALL},
     {id:'charge',cat:'Charge air',name:'Charge pipe',sub:'Eins aluminum pipe. Zero power, all reliability: the plastic one splits under boost.',kind:'eins',engPart:'charge',whp:{},fx:{reliability:14},eng:['N54','N55','B58']},
-    {id:'fmic',cat:'Charge air',name:'Intercooler upgrade',sub:'Bigger front-mount on N54/N55. Heat exchanger and chargecooler on B58, S55, S58.',kind:'shop',engPart:'cooler',whp:{N54:12,N55:12,B58:10,S55:12,S58:12,S63:15,S63TU:15,S63TU2:15,S63TU4:15},fx:{reliability:8,response:2},eng:TURBO},
+    {id:'fmic',cat:'Charge air',name:'Intercooler upgrade',sub:'Bigger front-mount on N54/N55. Heat exchanger and chargecooler on the rest. Keeps the power from fading on the third pull.',kind:'shop',engPart:'cooler',needsTune:true,combo:{hybrid:10,topmount:10},whp:{N54:12,N55:12,B58:10,S55:12,S58:12,S63:15,S63TU:15,S63TU2:15,S63TU4:15},fx:{reliability:8,response:2},eng:TURBO},
     {id:'occ',cat:'Engine',name:'Catch can kit',sub:'Keeps oil out of the intake. Your valves stay clean, your tune stays consistent.',kind:'eins',engPart:'occ',whp:{},fx:{reliability:8},eng:TURBO},
     {id:'plugs',cat:'Engine',name:'Plugs and coils',sub:'One step colder, fresh coils. Cheap insurance on any tuned car.',kind:'shop',whp:{},fx:{reliability:6,response:2},eng:ALL},
-    {id:'hybrid',cat:'Turbo',name:'Hybrid turbo(s)',sub:'Upgraded wheels in the stock housings. The big drop-in step, and it keeps most of the spool.',kind:'shop',engPart:'turbo',whp:{N54:120,N55:105,B58:125,S55:130,S58:130,S63:180,S63TU:190,S63TU2:190,S63TU4:200},fx:{reliability:-10,response:-7,sound:3},req:['tune1','fuel','fmic','dp'],excl:['topmount'],eng:TURBO},
-    {id:'topmount',cat:'Turbo',name:'Top-mount single turbo kit',sub:'One big turbo on a tubular manifold up top. The 600-plus route. Wants port injection, fuel and a custom tune, and you will feel the lag.',kind:'shop',engPart:'turbo',whp:{N54:240,N55:225,B58:250,S55:230,S58:240},fx:{reliability:-18,response:-17,sound:8},req:['tune1','fuel','fmic','dp','pi','custom'],excl:['hybrid'],eng:TURBO_I6},
+    {id:'hybrid',cat:'Turbo',name:'Hybrid turbo(s)',sub:'Upgraded wheels in the stock housings. The big drop-in step, and it keeps most of the spool. Wants E85 to really wake up.',kind:'shop',engPart:'turbo',whp:{N54:100,N55:95,B58:110,S55:110,S58:115,S63:150,S63TU:160,S63TU2:160,S63TU4:170},fx:{reliability:-10,response:-7,sound:3},req:['tune1','fuel','fmic','dp'],excl:['topmount'],eng:TURBO},
+    {id:'topmount',cat:'Turbo',name:'Top-mount single turbo kit',sub:'One big turbo on a tubular manifold up top. The 600-plus route. Wants port injection, fuel and a custom tune, and you will feel the lag.',kind:'shop',engPart:'turbo',whp:{N54:150,N55:140,B58:160,S55:150,S58:160},fx:{reliability:-18,response:-17,sound:8},req:['tune1','fuel','fmic','dp','pi','custom'],excl:['hybrid'],eng:TURBO_I6},
     {id:'clutch',cat:'Drivetrain',name:'Clutch upgrade',sub:'Holds the power you just added. For the manuals.',kind:'shop',whp:{},fx:{traction:10,reliability:6},eng:ALL},
     {id:'trans',cat:'Drivetrain',name:'Transmission tune',sub:'ZF8 or DCT software: faster shifts, higher torque limits, launch control.',kind:'shop',whp:{},fx:{traction:8,response:6},eng:ALL},
     {id:'tires',cat:'Chassis',name:'Sticky tires',sub:'The cheapest tenth you will ever buy.',kind:'shop',whp:{},fx:{traction:18},eng:ALL},
@@ -415,6 +415,15 @@ p{margin:0}
     renderParts();recalc();
   }
   function byId(id){return PARTS.filter(function(p){return p.id===id;})[0];}
+  // what a part is worth in THIS build: base gain, plus combo bonuses for other parts that are in, minus most of it if there's no tune
+  function gainOf(p,sel){
+    var eng=state.eng,g=p.whp[eng]||0,combo=0;
+    if(p.combo)Object.keys(p.combo).forEach(function(k){if(sel[k]){var c=p.combo[k];combo+=(typeof c==='number')?c:(c[eng]||0);}});
+    g+=combo;
+    if(p.needsTune&&!sel.tune1)g=Math.round(g*0.4);
+    return {whp:g,combo:combo>0};
+  }
+  function pctOf(p,sel){var pc=p.pct||0;if(p.pctCombo)Object.keys(p.pctCombo).forEach(function(k){if(sel[k])pc+=p.pctCombo[k];});return pc;}
 
   // ===== parts list ============================================================
   var partsCol=document.getElementById('partsCol');
@@ -426,8 +435,8 @@ p{margin:0}
       var list=PARTS.filter(function(p){return p.cat===c&&p.eng.indexOf(state.eng)>=0;});
       g.innerHTML='<div class="group__head">'+c+'<span>'+list.length+(list.length>1?' options':' option')+'</span></div>';
       list.forEach(function(p){
-        var whp=p.whp[state.eng]||0,fx=[];
-        if(whp)fx.push('<b>+'+whp+' whp</b>');if(p.pct)fx.push('<b>+'+Math.round(p.pct*100)+'% whp</b>');
+        var gi=gainOf(p,state.sel),whp=gi.whp,fx=[];
+        if(whp)fx.push('<b>+'+whp+' whp</b>'+(gi.combo?'<br><span style="color:var(--green)">combo</span>':''));if(p.pct)fx.push('<b>+'+Math.round(pctOf(p,state.sel)*100)+'% whp</b>');
         Object.keys(p.fx).forEach(function(k){var v=p.fx[k];fx.push((v>0?'+':'')+v+' '+k.slice(0,4));});
         var l=document.createElement('label');l.className='item';l.setAttribute('data-id',p.id);
         l.innerHTML='<input type="checkbox" id="p-'+p.id+'" '+(state.sel[p.id]?'checked':'')+'>'+
@@ -456,8 +465,8 @@ p{margin:0}
   function recalc(){
     var B=BASE[state.eng],whp=B.whp,s={response:B.response,reliability:B.reliability,traction:B.traction,sound:B.sound},notes=[];
     var sel=PARTS.filter(function(p){return state.sel[p.id];});
-    sel.forEach(function(p){whp+=p.whp[state.eng]||0;Object.keys(p.fx).forEach(function(k){s[k]+=p.fx[k];});});
-    sel.forEach(function(p){if(p.pct)whp=Math.round(whp*(1+p.pct));});
+    sel.forEach(function(p){whp+=gainOf(p,state.sel).whp;Object.keys(p.fx).forEach(function(k){s[k]+=p.fx[k];});});
+    sel.forEach(function(p){if(p.pct)whp=Math.round(whp*(1+pctOf(p,state.sel)));});
     var gain=whp-B.whp;
     // more power than grip
     var slip=Math.max(0,(gain-60)/14);s.traction-=slip;
@@ -483,7 +492,7 @@ p{margin:0}
   }
   function nextStep(whp){
     var order=['tune1','dp','fmic','tune2','flex','fuel','custom','pi','hybrid','topmount'];
-    for(var i=0;i<order.length;i++){var p=byId(order[i]);if(state.sel[order[i]]||p.eng.indexOf(state.eng)<0)continue;if((p.excl||[]).some(function(x){return state.sel[x];}))continue;if(p.pct)return p.name+' (+'+Math.round(p.pct*100)+'%)';if((p.whp[state.eng]||0)>0)return p.name+' (+'+p.whp[state.eng]+' whp)';}
+    for(var i=0;i<order.length;i++){var p=byId(order[i]);if(state.sel[order[i]]||p.eng.indexOf(state.eng)<0)continue;if((p.excl||[]).some(function(x){return state.sel[x];}))continue;if(p.pct)return p.name+' (+'+Math.round(pctOf(p,state.sel)*100)+'%)';var gw=gainOf(p,Object.assign({},state.sel,{tune1:true})).whp;if(gw>0)return p.name+' (+'+gw+' whp)';}
     return null;
   }
 
