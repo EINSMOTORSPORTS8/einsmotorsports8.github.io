@@ -654,7 +654,8 @@ p{margin:0}
         rubber:function(){return new THREE.MeshStandardMaterial({color:0x111113,metalness:0.0,roughness:0.9});},
         steel:function(){return new THREE.MeshStandardMaterial({color:0xb8bcc2,metalness:1.0,roughness:0.42});},
         red:function(){return new THREE.MeshStandardMaterial({color:0xe2231a,metalness:0.8,roughness:0.35});},
-        fin:function(){return new THREE.MeshStandardMaterial({color:0x8d9096,metalness:0.9,roughness:0.5});}
+        fin:function(){return new THREE.MeshStandardMaterial({color:0x8d9096,metalness:0.9,roughness:0.5});},
+        filter:function(){return new THREE.MeshStandardMaterial({color:0xb3161a,metalness:0.05,roughness:0.85});}
       };
       var t=T();
       return {
@@ -665,7 +666,8 @@ p{margin:0}
         rubber:function(){return new THREE.MeshStandardMaterial({color:0x0f0f11,metalness:0.0,roughness:0.95,bumpMap:t.fine,bumpScale:0.01});},
         steel:function(){return new THREE.MeshStandardMaterial({color:0xb9bcc1,metalness:1.0,roughness:1,roughnessMap:t.brushed,bumpMap:t.brushedB,bumpScale:0.0015});},
         red:function(){return new THREE.MeshPhysicalMaterial({color:0xd41f16,metalness:0.9,roughness:0.28,clearcoat:0.7,clearcoatRoughness:0.2});},
-        fin:function(){return new THREE.MeshStandardMaterial({color:0x7f8287,metalness:0.9,roughness:1,roughnessMap:t.cast});}
+        fin:function(){return new THREE.MeshStandardMaterial({color:0x7f8287,metalness:0.9,roughness:1,roughnessMap:t.cast});},
+        filter:function(){return new THREE.MeshStandardMaterial({color:0xb3161a,metalness:0.05,roughness:0.9});}
       };
     }
     var M=makeMaterials(false);
@@ -677,6 +679,12 @@ p{margin:0}
     function spiral(cx,cy,cz,R,tr,turn,mat){var pts=[];for(var i=0;i<=40;i++){var a=(i/40)*Math.PI*2*1.05,r=R*(0.55+0.5*i/40);pts.push(new THREE.Vector3(cx,cy+r*Math.cos(a),cz+r*Math.sin(a)*turn));}var c=new THREE.CatmullRomCurve3(pts);return new THREE.Mesh(new THREE.TubeGeometry(c,80,tr,16,false),mat);}
     function cyl(r,h,mat,x,y,z,axis,r2){var m=new THREE.Mesh(new THREE.CylinderGeometry(r,r2===undefined?r:r2,h,40),mat);m.position.set(x,y,z);if(axis)m.quaternion.setFromUnitVectors(UP,axis.clone().normalize());return m;}
     function tube(pts,r,mat,seg){var c=new THREE.CatmullRomCurve3(pts.map(V3),false,'catmullrom',0.4);var m=new THREE.Mesh(new THREE.TubeGeometry(c,seg||80,r,16,false),mat);m.userData.curve=c;return m;}
+    function cone(x,y,z,dir,k){k=k||1;var g=new THREE.Group(),ax=dir.clone().normalize(),o=new THREE.Vector3(x,y,z),at=function(d){return o.clone().addScaledVector(ax,d);};
+      var collar=cyl(0.13*k,0.08,M.alu(),0,0,0,ax);collar.position.copy(at(0.04));g.add(collar);
+      var body=cyl(0.15*k,0.42*k,M.filter(),0,0,0,ax,0.21*k);body.position.copy(at(0.08+0.21*k));g.add(body);
+      for(var i=0;i<5;i++){var f=0.06+i*0.08;var ring=torus((0.21-0.06*f/0.42)*k,0.007,M.steel(),0,0,0,ax);ring.position.copy(at(0.08+f*k));g.add(ring);}
+      var cap=cyl(0.15*k,0.03,M.alu(),0,0,0,ax);cap.position.copy(at(0.08+0.435*k));g.add(cap);var nut=cyl(0.03,0.03,M.steel(),0,0,0,ax);nut.position.copy(at(0.08+0.46*k));g.add(nut);
+      return g;}
     function torus(r,t,mat,x,y,z,axis){var m=new THREE.Mesh(new THREE.TorusGeometry(r,t,14,56),mat);m.position.set(x,y,z);m.quaternion.setFromUnitVectors(ZA,axis.clone().normalize());return m;}
 
     // boost / exhaust streams
@@ -779,7 +787,7 @@ p{margin:0}
           var tw=new THREE.Group();tw.position.set(tx+0.52,ty,tz);for(var b2=0;b2<11;b2++){var bl2=box(0.08,tR*0.95,0.012,M.cast(),0,0,0);bl2.rotation.x=b2*6.283/11;bl2.rotation.y=-0.3;tw.add(bl2);}tg.add(tw);spinners.push(tw);
           // intake: airbox at each front corner, duct to the compressor inlet
           var inG=part('intake',[-0.7,0.6,0.5*sg]);
-          inG.add(box(0.56,0.5,0.5,M.plastic(),-1.98,1.0,sg*1.0));inG.add(box(0.5,0.08,0.44,M.alu(),-1.98,1.28,sg*1.0));inG.add(cyl(0.14,0.3,M.plastic(),-2.3,0.95,sg*1.0,XA));
+          inG.add(cone(-1.72,1.1,sg*0.95,new THREE.Vector3(-1,0,0),0.9));
           var it=tube([[-1.72,1.1,sg*0.95],[-1.2,1.45,sg*0.55],[tx-0.55,ty,tz]],0.1,M.plastic(),50);inG.add(it);flows.push(streams(it.userData.curve,4,0.06,0xf2c300,0xfff6d6,1.4));
           // charge pipe: compressor outlet over to the chargecooler on the same side
           var chg=part('charge',[0,0.7,0.4*sg]);
@@ -848,18 +856,17 @@ p{margin:0}
       // --- intake: airbox at the front passenger corner, ducts to the inlets --
       var inG=part('intake',[-0.7,0.6,0.6*EX]);
       if(E.turbos>0){
-        inG.add(box(0.62,0.5,0.6,M.plastic(),-2.0,1.0,0.6*EX));inG.add(box(0.56,0.08,0.54,M.alu(),-2.0,1.28,0.6*EX));
-        inG.add(cyl(0.16,0.3,M.plastic(),-2.35,0.95,0.6*EX,XA));
+        inG.add(cone(-1.72,0.95,0.75*EX,new THREE.Vector3(-1,0,0),1));
         turboX.forEach(function(tx,ti){
           var pts=topmount?[[-1.72,0.95,0.75*EX],[-1.2,1.0,1.05*EX],[tx-0.9,1.05,0.95*EX],[tx-0.55,ty,tz]]:ti===0?[[-1.72,0.9,0.75*EX],[-1.3,0.8,1.1*EX],[tx-0.9,0.45,1.1*EX],[tx-0.55,ty,tz]]
                         :[[-1.72,1.0,0.75*EX],[-1.0,1.0,1.25*EX],[tx-1.2,0.9,1.35*EX],[tx-0.8,0.55,1.15*EX],[tx-0.55,ty,tz]];
           var it=tube(pts,0.1,M.plastic(),60);inG.add(it);
           flows.push(streams(it.userData.curve,4,0.06,0xf2c300,0xfff6d6,1.4));
         });
-        anchors.intake=new THREE.Vector3(-2.0,1.35,0.6*EX);
+        anchors.intake=new THREE.Vector3(-2.1,1.25,0.75*EX);
       }else{
-        inG.add(box(0.62,0.5,0.6,M.plastic(),-2.0,1.0,0.5*EX));inG.add(tube([[-1.7,1.05,0.5*EX],[-1.3,1.3,0.2*EX],[-0.95,1.5,0]],0.1,M.plastic(),30));
-        anchors.intake=new THREE.Vector3(-2.0,1.35,0.5*EX);
+        inG.add(cone(-1.7,1.05,0.5*EX,new THREE.Vector3(-1,0,0),1));inG.add(tube([[-1.7,1.05,0.5*EX],[-1.3,1.3,0.2*EX],[-0.95,1.5,0]],0.1,M.plastic(),30));
+        anchors.intake=new THREE.Vector3(-2.1,1.3,0.5*EX);
       }
 
       // --- charge pipes + cooler --------------------------------------------
