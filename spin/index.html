@@ -91,6 +91,25 @@ p{margin:0}
 .prizes li i{display:inline-block;width:14px;height:14px;border-radius:2px;transform:skewX(-12deg);align-self:center}
 .prizes li small{font-family:var(--mono);font-size:12px;color:var(--dim);text-transform:uppercase;letter-spacing:.06em}
 
+/* lead form */
+.gate{display:grid;gap:10px;background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:18px 18px 16px}
+.gate h3{font-family:var(--display);font-weight:700;font-size:20px;text-transform:uppercase;letter-spacing:.04em;margin:0}
+.gate .row{display:grid;gap:10px}
+@media (min-width:520px){.gate .row--2{grid-template-columns:1fr 1fr}}
+.field{display:grid;gap:5px}
+.field label{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.field input{width:100%;background:var(--bg);border:1px solid var(--line);border-radius:4px;color:var(--fg);font:inherit;font-size:17px;padding:12px 12px;min-height:46px}
+.field input:focus{border-color:var(--steel);outline:none}
+.field input[aria-invalid="true"]{border-color:var(--red)}
+.consent{display:flex;gap:10px;align-items:flex-start;font-size:13px;line-height:1.45;color:var(--muted)}
+.consent input{width:18px;height:18px;margin:2px 0 0;flex:none;accent-color:var(--red)}
+.gate .err{display:none;font-family:var(--mono);font-size:12px;color:#ff6b63}
+.gate .err.show{display:block}
+.wheelbox.locked .wheel{filter:saturate(.35) brightness(.55)}
+.lock{position:absolute;inset:0;display:none;place-items:end center;z-index:3;pointer-events:none}
+.wheelbox.locked .lock{display:grid}
+.lock span{background:rgba(11,11,12,.82);border:1px solid var(--line);color:var(--fg);font-family:var(--display);font-weight:700;letter-spacing:.1em;text-transform:uppercase;font-size:15px;padding:10px 16px;border-radius:4px;transform:translateY(55%)}
+
 .foot{padding-block:48px 120px;color:var(--muted);font-size:15px}
 .foot__grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:28px}
 .foot h4{font-size:16px;letter-spacing:.1em;color:var(--fg);margin-bottom:10px}
@@ -115,13 +134,24 @@ p{margin:0}
 </div></section>
 
 <section class="spin"><div class="wrap spin__grid">
-  <div class="wheelbox" aria-hidden="true">
+  <div class="wheelbox locked" id="wheelbox" aria-hidden="true">
     <div class="pointer"></div>
+    <div class="lock"><span>Fill in the card to unlock</span></div>
     <svg class="wheel" id="wheel" viewBox="-100 -100 200 200" xmlns="http://www.w3.org/2000/svg"></svg>
     <div class="hub"><img src="/img/logo.png" alt=""></div>
   </div>
   <div class="spin__side">
-    <button class="btn btn--red" id="go" type="button">Spin the wheel</button>
+    <form class="gate" id="gate" novalidate>
+      <h3>Who's spinning?</h3>
+      <div class="row row--2">
+        <div class="field"><label for="f-name">First name</label><input id="f-name" name="name" type="text" autocomplete="given-name" required maxlength="40" placeholder="Henry"></div>
+        <div class="field"><label for="f-phone">Cell number</label><input id="f-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" required placeholder="(708) 555-0100"></div>
+      </div>
+      <div class="field"><label for="f-car">What do you drive?</label><input id="f-car" name="car" type="text" required maxlength="80" placeholder="2018 M3, 2009 335i, Huracán…"></div>
+      <label class="consent"><input id="f-ok" name="consent" type="checkbox" required><span>Text me my prize code and the occasional Eins special or event. Msg &amp; data rates may apply, reply STOP anytime.</span></label>
+      <p class="err" id="f-err">Name, a real cell number, your car, and the checkbox. Then it's all yours.</p>
+      <button class="btn btn--red" id="go" type="submit">Spin the wheel</button>
+    </form>
     <div class="result" id="result" aria-live="polite">
       <span class="eyebrow" id="r-eyebrow">You won</span>
       <h2 id="r-title"></h2>
@@ -133,7 +163,7 @@ p{margin:0}
         <a class="btn btn--ghost" href="https://blueprintcatalogen.as.me/" target="_blank" rel="noopener">Book a slot</a>
       </div>
     </div>
-    <p class="terms" id="terms"><b>The fine print.</b> One spin per person. Show the code when you bring the car in; it's good for 60 days from your spin. "With install" prizes are redeemed on that job at Eins Motorsports, 222 Park St, Bensenville, IL. One prize per vehicle, not combinable with other offers, no cash value. We can verify codes, so no funny business.</p>
+    <p class="terms" id="terms"><b>The fine print.</b> One spin per person. We'll text you your prize code and, now and then, a shop special; reply STOP and we stop. Show the code when you bring the car in; it's good for 60 days from your spin. "With install" prizes are redeemed on that job at Eins Motorsports, 222 Park St, Bensenville, IL. One prize per vehicle, not combinable with other offers, no cash value. We can verify codes, so no funny business.</p>
   </div>
 </div></section>
 
@@ -154,37 +184,40 @@ p{margin:0}
 
 <script>
 (function(){
-  /* ---------- PRIZES: edit here. weight = how often it hits (relative). ---------- */
+  /* ---------- PRIZES: edit here. weight = how often it hits (relative).
+     l1/l2 are the two lines printed on the wheel. ---------- */
   var PRIZES=[
-    {tag:'INS', title:'Free inspection',            sub:'Full health check or pre-purchase look. No strings.',                 weight:22, color:'#141416', ink:'#fff'},
-    {tag:'OIL', title:'Free oil change',            sub:'With any service over $300.',                                         weight:18, color:'#e2231a', ink:'#fff'},
-    {tag:'LAB', title:'10% off labor',              sub:'On your next job. Any car.',                                          weight:20, color:'#1b1b1e', ink:'#fff'},
-    {tag:'TUN', title:'$100 off a tune',            sub:'Flex fuel, stage or custom. Your call.',                              weight:14, color:'#b8bcc2', ink:'#0b0b0c'},
-    {tag:'MRC', title:'Free Eins merch',            sub:'Shirt and sticker pack, pick them up at the shop.',                   weight:14, color:'#141416', ink:'#fff'},
-    {tag:'INT', title:'Free intake',                sub:'With any tune we do.',                                                weight:7,  color:'#f2c300', ink:'#0b0b0c'},
-    {tag:'FTN', title:'Free tune',                  sub:'With any turbo or downpipe install.',                                 weight:4,  color:'#1b1b1e', ink:'#fff'},
-    {tag:'DWP', title:'Free downpipe',              sub:'With any turbo build. The big one.',                                  weight:1,  color:'#e2231a', ink:'#fff'}
+    {tag:'INS', l1:'Free',     l2:'inspection', title:'Free inspection',  sub:'Full health check or pre-purchase look. No strings.',  weight:22, color:'#141416', ink:'#fff'},
+    {tag:'OIL', l1:'Free',     l2:'oil change', title:'Free oil change',  sub:'With any service over $300.',                          weight:18, color:'#e2231a', ink:'#fff'},
+    {tag:'LAB', l1:'10% off',  l2:'labor',      title:'10% off labor',    sub:'On your next job. Any car.',                           weight:20, color:'#1b1b1e', ink:'#fff'},
+    {tag:'TUN', l1:'$100 off', l2:'a tune',     title:'$100 off a tune',  sub:'Flex fuel, stage or custom. Your call.',               weight:14, color:'#b8bcc2', ink:'#0b0b0c'},
+    {tag:'MRC', l1:'Free',     l2:'merch',      title:'Free Eins merch',  sub:'Shirt and sticker pack, pick them up at the shop.',    weight:14, color:'#141416', ink:'#fff'},
+    {tag:'INT', l1:'Free',     l2:'intake',     title:'Free intake',      sub:'With any tune we do.',                                 weight:7,  color:'#f2c300', ink:'#0b0b0c'},
+    {tag:'FTN', l1:'Free',     l2:'tune',       title:'Free tune',        sub:'With any turbo or downpipe install.',                  weight:4,  color:'#1b1b1e', ink:'#fff'},
+    {tag:'DWP', l1:'Free',     l2:'downpipe',   title:'Free downpipe',    sub:'With any turbo build. The big one.',                   weight:1,  color:'#e2231a', ink:'#fff'}
   ];
-  var KEY='eins_spin_v1', DAYS=60, SECRET='fluentturbo';
+  /* Where each spin's name / phone / car / prize gets sent. Any endpoint that
+     accepts a JSON POST works (Formspree, Basin, a Google Apps Script web app,
+     your own worker). Leave empty and the page still runs; the lead then only
+     reaches you when they text the code. */
+  var LEAD_ENDPOINT='';
+  var KEY='eins_spin_v1', QUEUE='eins_lead_queue', DAYS=60, SECRET='fluentturbo', SHOP='+17087079756';
 
   /* ---------- draw wheel ---------- */
   var svg=document.getElementById('wheel'), n=PRIZES.length, step=360/n, NS='http://www.w3.org/2000/svg';
   function pt(a,r){var t=(a-90)*Math.PI/180;return [r*Math.cos(t), r*Math.sin(t)];}
+  function el(tag,attrs){var e=document.createElementNS(NS,tag);for(var k in attrs)e.setAttribute(k,attrs[k]);return e;}
   PRIZES.forEach(function(p,i){
-    var a0=i*step, a1=a0+step, g=document.createElementNS(NS,'g');
-    g.setAttribute('class','seg');
-    var s=pt(a0,100), e=pt(a1,100), path=document.createElementNS(NS,'path');
-    path.setAttribute('d','M0 0 L'+s[0].toFixed(3)+' '+s[1].toFixed(3)+' A100 100 0 0 1 '+e[0].toFixed(3)+' '+e[1].toFixed(3)+' Z');
-    path.setAttribute('fill',p.color); path.setAttribute('stroke','#0b0b0c'); path.setAttribute('stroke-width','1.2');
-    g.appendChild(path);
-    var mid=a0+step/2, t=document.createElementNS(NS,'text');
-    t.setAttribute('transform','rotate('+(mid-90)+') translate(63 0)');
-    t.setAttribute('text-anchor','middle'); t.setAttribute('dominant-baseline','middle');
-    t.setAttribute('fill',p.ink); t.setAttribute('font-size','8.6');
-    t.textContent=p.title; if(p.title.length>11){t.setAttribute('textLength','64');t.setAttribute('lengthAdjust','spacingAndGlyphs');}
-    g.appendChild(t); svg.appendChild(g);
+    var a0=i*step, a1=a0+step, g=el('g',{'class':'seg'});
+    var s0=pt(a0,100), e0=pt(a1,100);
+    g.appendChild(el('path',{d:'M0 0 L'+s0[0].toFixed(3)+' '+s0[1].toFixed(3)+' A100 100 0 0 1 '+e0[0].toFixed(3)+' '+e0[1].toFixed(3)+' Z', fill:p.color, stroke:'#0b0b0c','stroke-width':'1.2'}));
+    var mid=a0+step/2, tg=el('g',{transform:'rotate('+(mid-90)+') translate(63 0)'});
+    var t1=el('text',{x:0,y:-5,'text-anchor':'middle','dominant-baseline':'middle',fill:p.ink,'font-size':'7.2','opacity':'.85'}); t1.textContent=p.l1;
+    var t2=el('text',{x:0,y:5.5,'text-anchor':'middle','dominant-baseline':'middle',fill:p.ink,'font-size':'10'}); t2.textContent=p.l2;
+    if(p.l2.length>8){t2.setAttribute('textLength','58');t2.setAttribute('lengthAdjust','spacingAndGlyphs');}
+    tg.appendChild(t1); tg.appendChild(t2); g.appendChild(tg); svg.appendChild(g);
   });
-  var ring=document.createElementNS(NS,'circle'); ring.setAttribute('r','99'); ring.setAttribute('fill','none'); ring.setAttribute('stroke','#f2f2f0'); ring.setAttribute('stroke-width','2'); svg.appendChild(ring);
+  svg.appendChild(el('circle',{r:'99',fill:'none',stroke:'#f2f2f0','stroke-width':'2'}));
 
   /* prize list */
   var ul=document.getElementById('prizelist');
@@ -200,43 +233,74 @@ p{margin:0}
     for(var i=0;i<n;i++){ r-=PRIZES[i].weight; if(r<0) return i; }
     return n-1;
   }
-  function rnd(len){var A='ABCDEFGHJKLMNPQRSTUVWXYZ23456789',o='';for(var i=0;i<len;i++)o+=A[Math.floor(Math.random()*A.length)];return o;}
-  function check(s){var h=0;s=s+SECRET;for(var i=0;i<s.length;i++)h=(h*31+s.charCodeAt(i))>>>0;return 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'[h%32];}
+  var A='ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+  function rnd(len){var o='';for(var i=0;i<len;i++)o+=A[Math.floor(Math.random()*A.length)];return o;}
+  function check(s){var h=0;s=s+SECRET;for(var i=0;i<s.length;i++)h=(h*31+s.charCodeAt(i))>>>0;return A[h%32];}
   function makeCode(tag){var body=tag+'-'+rnd(4);return 'EINS-'+body+check(body);}
 
+  /* ---------- lead capture ---------- */
+  var form=document.getElementById('gate'), go=document.getElementById('go'), box=document.getElementById('result'), wb=document.getElementById('wheelbox');
+  var fName=document.getElementById('f-name'), fPhone=document.getElementById('f-phone'), fCar=document.getElementById('f-car'), fOk=document.getElementById('f-ok'), fErr=document.getElementById('f-err');
+  function digits(v){v=(v||'').replace(/\D/g,'');if(v.length===11&&v[0]==='1')v=v.slice(1);return v;}
+  function fmtPhone(d){return d.length===10?'('+d.slice(0,3)+') '+d.slice(3,6)+'-'+d.slice(6):d;}
+  fPhone.addEventListener('blur',function(){var d=digits(fPhone.value);if(d.length===10)fPhone.value=fmtPhone(d);});
+  function validate(){
+    var ok=true;
+    [[fName,fName.value.trim().length>0],[fPhone,digits(fPhone.value).length===10],[fCar,fCar.value.trim().length>0]].forEach(function(x){x[0].setAttribute('aria-invalid',x[1]?'false':'true');if(!x[1])ok=false;});
+    if(!fOk.checked)ok=false;
+    fErr.classList.toggle('show',!ok);
+    return ok;
+  }
+  function sendLead(lead){
+    try{var q=JSON.parse(localStorage.getItem(QUEUE)||'[]');q.push(lead);localStorage.setItem(QUEUE,JSON.stringify(q));}catch(e){}
+    flush();
+  }
+  function flush(){
+    if(!LEAD_ENDPOINT||!window.fetch)return;
+    var q;try{q=JSON.parse(localStorage.getItem(QUEUE)||'[]');}catch(e){return;}
+    if(!q.length)return;
+    var lead=q[0];
+    fetch(LEAD_ENDPOINT,{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify(lead)})
+      .then(function(r){if(!r.ok)throw 0;q.shift();try{localStorage.setItem(QUEUE,JSON.stringify(q));}catch(e){}if(q.length)flush();})
+      .catch(function(){});
+  }
+
   /* ---------- state ---------- */
-  var go=document.getElementById('go'), box=document.getElementById('result');
   function load(){try{return JSON.parse(localStorage.getItem(KEY)||'null')}catch(e){return null}}
   function save(v){try{localStorage.setItem(KEY,JSON.stringify(v))}catch(e){}}
   function fmt(d){return new Date(d).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});}
   function show(st, again){
     var p=PRIZES[st.i];
-    document.getElementById('r-eyebrow').textContent=again?'You already spun · your prize':'You won';
+    document.getElementById('r-eyebrow').textContent=again?'You already spun · your prize':(st.name?st.name+', you won':'You won');
     document.getElementById('r-title').textContent=p.title;
     document.getElementById('r-sub').textContent=p.sub;
     document.getElementById('r-code').textContent=st.code;
     document.getElementById('r-meta').textContent='Spun '+fmt(st.at)+' · good through '+fmt(st.at+DAYS*864e5);
-    var msg='Hey Eins, I spun the wheel on your card and got "'+p.title+'". Code '+st.code+'.';
-    document.getElementById('r-text').setAttribute('href','sms:+17087079756?&body='+encodeURIComponent(msg));
-    box.classList.add('show'); go.disabled=true; go.textContent=again?'One spin per phone':'Spun';
+    var msg='Hey Eins, '+(st.name||'I')+(st.car?' with the '+st.car:'')+' here. Spun the wheel on your card and got "'+p.title+'". Code '+st.code+'.';
+    document.getElementById('r-text').setAttribute('href','sms:'+SHOP+'?&body='+encodeURIComponent(msg));
+    box.classList.add('show'); form.style.display='none'; wb.classList.remove('locked');
   }
   var prior=load();
   if(prior&&typeof prior.i==='number'&&PRIZES[prior.i]){
     svg.style.transition='none'; svg.style.transform='rotate('+(360-(prior.i*step+step/2))+'deg)';
     show(prior,true);
   }
-  go.addEventListener('click',function(){
-    if(go.disabled) return;
-    go.disabled=true; go.textContent='Spinning…';
+  [fName,fPhone,fCar,fOk].forEach(function(f){f.addEventListener('input',function(){if(fName.value.trim()&&digits(fPhone.value).length===10&&fCar.value.trim()&&fOk.checked)wb.classList.remove('locked');});});
+  form.addEventListener('submit',function(ev){
+    ev.preventDefault();
+    if(go.disabled||!validate()) return;
+    go.disabled=true; go.textContent='Spinning…'; wb.classList.remove('locked');
     var i=pick(), jitter=(Math.random()-0.5)*(step*0.6), target=360*6+(360-(i*step+step/2))+jitter;
-    var st={i:i, code:makeCode(PRIZES[i].tag), at:Date.now()};
+    var st={i:i, code:makeCode(PRIZES[i].tag), at:Date.now(), name:fName.value.trim(), phone:fmtPhone(digits(fPhone.value)), car:fCar.value.trim()};
     save(st);
+    sendLead({name:st.name, phone:st.phone, car:st.car, consent:'yes', prize:PRIZES[i].title, code:st.code, spun_at:new Date(st.at).toISOString(), source:'business-card'});
     var reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
     if(reduced){ svg.style.transition='none'; svg.style.transform='rotate('+target+'deg)'; show(st,false); return; }
     svg.style.transition=''; svg.style.transform='rotate('+target+'deg)';
     var done=false; function fin(){ if(done)return; done=true; show(st,false); }
     svg.addEventListener('transitionend',fin,{once:true}); setTimeout(fin,5600);
   });
+  flush();
   document.getElementById('copy').addEventListener('click',function(){
     var c=this, t=document.getElementById('r-code').textContent;
     if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(function(){c.textContent='Copied';setTimeout(function(){c.textContent='Copy'},1500)});}
