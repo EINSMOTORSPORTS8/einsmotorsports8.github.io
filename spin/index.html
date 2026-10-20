@@ -1,0 +1,249 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>Spin the wheel · Eins Motorsports</title><meta name="robots" content="noindex"><meta name="description" content="You found the card. Spin once, win something real at Eins Motorsports in Bensenville, IL."><meta property="og:type" content="website"><meta property="og:site_name" content="Eins Motorsports"><meta property="og:title" content="Spin the wheel · Eins Motorsports"><meta property="og:description" content="You found the card. Spin once, win something real."><meta property="og:image" content="https://einsmotorsports.net/img/hero-g80-m4-wall.jpg"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Barlow:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"><style>
+/* Spin page: the back of the business card, made digital. One wheel, one spin
+   per phone, a code the winner texts to the shop. Same tokens as the rest of
+   the site. */
+:root{
+  --bg:#0b0b0c; --panel:#141416; --panel-2:#1b1b1e; --line:#2a2a2e;
+  --fg:#f2f2f0; --muted:#a3a39e; --dim:#6f6f6b;
+  --red:#e2231a; --red-deep:#b3160f; --yellow:#f2c300; --steel:#b8bcc2;
+  --display:"Barlow Condensed","Arial Narrow","Helvetica Neue",Arial,sans-serif;
+  --body:"Barlow","Helvetica Neue",Arial,sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+  --gutter:max(16px,env(safe-area-inset-left,0px));
+  --gutter-r:max(16px,env(safe-area-inset-right,0px));
+  --max:1180px;
+  color-scheme:dark;
+}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--body);font-size:17px;line-height:1.55;-webkit-font-smoothing:antialiased}
+img{max-width:100%;display:block}
+a{color:inherit}
+h1,h2,h3,h4{font-family:var(--display);text-transform:uppercase;line-height:.95;margin:0;text-wrap:balance;letter-spacing:.005em}
+h1{font-size:clamp(44px,9vw,96px);font-weight:800}
+h2{font-size:clamp(30px,5vw,54px);font-weight:800}
+p{margin:0}
+.wrap{max-width:var(--max);margin-inline:auto;padding-left:var(--gutter);padding-right:var(--gutter-r)}
+.eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--yellow)}
+.mono{font-family:var(--mono)}
+.stripe{display:inline-block;width:38px;height:22px;background:linear-gradient(115deg,transparent 0 18%,var(--red) 18% 42%,transparent 42% 48%,var(--yellow) 48% 72%,transparent 72% 78%,var(--steel) 78% 100%);flex:none}
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:40;background:rgba(11,11,12,.86);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.top__in{display:flex;align-items:center;gap:18px;min-height:64px}
+.brand{display:flex;align-items:center;text-decoration:none}
+.brand__logo{height:34px;width:auto;display:block}
+@media (min-width:900px){.brand__logo{height:40px}}
+.nav{display:flex;gap:4px;margin-left:auto;align-items:center}
+.nav a{text-decoration:none;font-family:var(--display);font-weight:600;font-size:17px;letter-spacing:.05em;text-transform:uppercase;padding:10px 9px;color:var(--muted);border-radius:4px;white-space:nowrap}
+.nav a:hover{color:var(--fg)}
+.nav .btn{margin-left:8px}
+.menu-btn{margin-left:auto;display:none;background:none;border:1px solid var(--line);color:var(--fg);font-family:var(--display);font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:9px 14px;border-radius:4px;font-size:15px;cursor:pointer}
+@media (max-width:860px){
+  .nav{display:none;position:absolute;left:0;right:0;top:100%;background:var(--panel);border-bottom:1px solid var(--line);flex-direction:column;align-items:stretch;padding:8px var(--gutter) 16px var(--gutter)}
+  .nav.open{display:flex}
+  .nav a{padding:12px 8px;font-size:20px}
+  .nav .btn{margin:8px 0 0}
+  .menu-btn{display:inline-block}
+}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;text-decoration:none;font-family:var(--display);font-weight:700;letter-spacing:.08em;text-transform:uppercase;font-size:18px;padding:14px 22px;border-radius:4px;border:1px solid transparent;cursor:pointer;text-align:center;max-width:100%;min-width:0}
+.btn--red{background:var(--red);color:#fff}
+.btn--red:hover{background:var(--red-deep)}
+.btn--ghost{border-color:var(--steel);color:var(--fg);background:transparent}
+.btn--ghost:hover{background:rgba(255,255,255,.06)}
+.btn--sm{font-size:15px;padding:10px 14px}
+.btn[disabled]{opacity:.5;cursor:default}
+.btn:focus-visible,a:focus-visible,button:focus-visible{outline:2px solid var(--yellow);outline-offset:3px}
+
+/* hero */
+.hero{padding-block:40px 24px}
+.hero .kicker{display:flex;align-items:center;gap:14px;margin-bottom:14px}
+.hero p{color:var(--muted);font-size:clamp(17px,2vw,20px);max-width:52ch;margin-top:12px}
+
+/* wheel */
+.spin{padding-block:8px 48px}
+.spin__grid{display:grid;gap:28px;align-items:center}
+@media (min-width:900px){.spin__grid{grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:48px}}
+.wheelbox{position:relative;width:min(92vw,440px);margin-inline:auto;aspect-ratio:1}
+.wheel{width:100%;height:100%;display:block;transform:rotate(0deg);transition:transform 5.2s cubic-bezier(.12,.72,.08,1)}
+.wheel text{font-family:var(--display);font-weight:700;letter-spacing:.03em;text-transform:uppercase}
+.pointer{position:absolute;left:50%;top:-6px;transform:translateX(-50%);width:0;height:0;border-left:16px solid transparent;border-right:16px solid transparent;border-top:34px solid var(--yellow);filter:drop-shadow(0 3px 0 rgba(0,0,0,.6));z-index:2}
+.hub{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:21%;aspect-ratio:1;border-radius:50%;background:var(--bg);border:4px solid var(--fg);display:grid;place-items:center;z-index:2}
+.hub img{width:78%;height:auto}
+.spin__side{display:grid;gap:18px}
+.terms{font-family:var(--mono);font-size:12px;line-height:1.6;color:var(--dim)}
+.terms b{color:var(--muted);font-weight:500}
+
+/* result */
+.result{display:none;background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:22px;position:relative;overflow:hidden}
+.result::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--red)}
+.result.show{display:grid;gap:14px}
+.result h2{font-size:clamp(28px,5vw,46px)}
+.result .sub{color:var(--muted)}
+.code{display:flex;align-items:center;justify-content:space-between;gap:12px;background:var(--bg);border:1px dashed var(--steel);border-radius:4px;padding:12px 14px}
+.code b{font-family:var(--mono);font-size:clamp(20px,4.6vw,26px);letter-spacing:.08em;font-weight:500}
+.code button{background:none;border:1px solid var(--line);color:var(--muted);font-family:var(--display);font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:8px 12px;border-radius:4px;font-size:14px;cursor:pointer}
+.result .meta{font-family:var(--mono);font-size:12px;color:var(--dim);letter-spacing:.06em;text-transform:uppercase}
+.result .actions{display:flex;flex-wrap:wrap;gap:10px}
+
+/* prize list */
+.prizes{padding-block:12px 64px;border-top:1px solid var(--line)}
+.prizes h2{margin:26px 0 18px}
+.prizes ul{list-style:none;margin:0;padding:0;display:grid;gap:0;border-top:1px solid var(--line)}
+.prizes li{display:grid;grid-template-columns:28px 1fr auto;gap:14px;align-items:baseline;padding:12px 0;border-bottom:1px solid var(--line);font-size:16px}
+.prizes li i{display:inline-block;width:14px;height:14px;border-radius:2px;transform:skewX(-12deg);align-self:center}
+.prizes li small{font-family:var(--mono);font-size:12px;color:var(--dim);text-transform:uppercase;letter-spacing:.06em}
+
+.foot{padding-block:48px 120px;color:var(--muted);font-size:15px}
+.foot__grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:28px}
+.foot h4{font-size:16px;letter-spacing:.1em;color:var(--fg);margin-bottom:10px}
+.foot a{color:var(--muted);text-decoration:none}
+.foot a:hover{color:var(--fg)}
+.foot ul{list-style:none;margin:0;padding:0;display:grid;gap:6px}
+.foot .fine{margin-top:34px;font-family:var(--mono);font-size:12px;color:var(--dim)}
+@media (min-width:861px){.foot{padding-bottom:48px}}
+@media (prefers-reduced-motion:reduce){.wheel{transition:none}}
+</style></head><body>
+<header class="top"><div class="wrap top__in">
+  <a class="brand" href="/"><img class="brand__logo" src="/img/logo.png" alt="Eins Motorsports" width="900" height="260"></a>
+  <button class="menu-btn" type="button" aria-expanded="false" aria-controls="nav">Menu</button>
+  <nav class="nav" id="nav" aria-label="Main"><a href="/">Home</a><a href="/platforms/">Platforms</a><a href="/services/">Services</a><a href="/store/">Store</a><a href="/exotic/">Exotic & AMG</a><a href="/builds/">Builds</a><a href="/about/">About</a><a href="/contact/">Contact</a><a class="btn btn--red btn--sm" href="sms:7087079756">Text us</a></nav>
+</div></header>
+
+<main>
+<section class="hero"><div class="wrap">
+  <div class="kicker"><span class="stripe" aria-hidden="true"></span><span class="eyebrow">You found the card</span></div>
+  <h1>Spin once.<br>Win something real.</h1>
+  <p>Every spin lands on a prize. One spin per phone, no catch, no email form. Whatever you get, text us the code and it's yours.</p>
+</div></section>
+
+<section class="spin"><div class="wrap spin__grid">
+  <div class="wheelbox" aria-hidden="true">
+    <div class="pointer"></div>
+    <svg class="wheel" id="wheel" viewBox="-100 -100 200 200" xmlns="http://www.w3.org/2000/svg"></svg>
+    <div class="hub"><img src="/img/logo.png" alt=""></div>
+  </div>
+  <div class="spin__side">
+    <button class="btn btn--red" id="go" type="button">Spin the wheel</button>
+    <div class="result" id="result" aria-live="polite">
+      <span class="eyebrow" id="r-eyebrow">You won</span>
+      <h2 id="r-title"></h2>
+      <p class="sub" id="r-sub"></p>
+      <div class="code"><b id="r-code"></b><button type="button" id="copy">Copy</button></div>
+      <p class="meta" id="r-meta"></p>
+      <div class="actions">
+        <a class="btn btn--red" id="r-text" href="sms:7087079756">Text the code to the shop</a>
+        <a class="btn btn--ghost" href="https://blueprintcatalogen.as.me/" target="_blank" rel="noopener">Book a slot</a>
+      </div>
+    </div>
+    <p class="terms" id="terms"><b>The fine print.</b> One spin per person. Show the code when you bring the car in; it's good for 60 days from your spin. "With install" prizes are redeemed on that job at Eins Motorsports, 222 Park St, Bensenville, IL. One prize per vehicle, not combinable with other offers, no cash value. We can verify codes, so no funny business.</p>
+  </div>
+</div></section>
+
+<section class="prizes"><div class="wrap">
+  <h2>What's on the wheel</h2>
+  <ul id="prizelist"></ul>
+</div></section>
+</main>
+
+<footer class="foot"><div class="wrap">
+  <div class="foot__grid">
+    <div><h4>Eins Motorsports</h4><ul><li>222 Park St</li><li>Bensenville, IL 60106</li><li><a href="https://www.google.com/maps/search/?api=1&query=Eins+Motorsports+222+Park+St+Bensenville+IL" target="_blank" rel="noopener">Open in Maps</a></li></ul></div>
+    <div><h4>Reach us</h4><ul><li><b class="mono">(708) 707-9756</b></li><li><a href="sms:7087079756">Text the shop</a></li><li><a href="https://blueprintcatalogen.as.me/" target="_blank" rel="noopener">Book online</a></li><li><a href="https://www.instagram.com/einsmotorsports/" target="_blank" rel="noopener">Instagram @einsmotorsports</a></li></ul></div>
+    <div><h4>Work</h4><ul><li><a href="/flex-fuel/">Flex fuel &amp; E85</a></li><li><a href="/tuning/">Custom tuning</a></li><li><a href="/turbo/">Turbo &amp; bolt-ons</a></li><li><a href="/repair/">Repair &amp; diagnostics</a></li><li><a href="/exotic/">Lamborghini · McLaren · AMG</a></li><li><a href="/store/">Parts store</a></li></ul></div>
+  </div>
+  <p class="fine">© 2026 Eins Motorsports · Independent shop. Not affiliated with BMW AG, Automobili Lamborghini, McLaren Automotive or Mercedes-Benz AG. Model names are used to identify the vehicles we work on.</p>
+</div></footer>
+
+<script>
+(function(){
+  /* ---------- PRIZES: edit here. weight = how often it hits (relative). ---------- */
+  var PRIZES=[
+    {tag:'INS', title:'Free inspection',            sub:'Full health check or pre-purchase look. No strings.',                 weight:22, color:'#141416', ink:'#fff'},
+    {tag:'OIL', title:'Free oil change',            sub:'With any service over $300.',                                         weight:18, color:'#e2231a', ink:'#fff'},
+    {tag:'LAB', title:'10% off labor',              sub:'On your next job. Any car.',                                          weight:20, color:'#1b1b1e', ink:'#fff'},
+    {tag:'TUN', title:'$100 off a tune',            sub:'Flex fuel, stage or custom. Your call.',                              weight:14, color:'#b8bcc2', ink:'#0b0b0c'},
+    {tag:'MRC', title:'Free Eins merch',            sub:'Shirt and sticker pack, pick them up at the shop.',                   weight:14, color:'#141416', ink:'#fff'},
+    {tag:'INT', title:'Free intake',                sub:'With any tune we do.',                                                weight:7,  color:'#f2c300', ink:'#0b0b0c'},
+    {tag:'FTN', title:'Free tune',                  sub:'With any turbo or downpipe install.',                                 weight:4,  color:'#1b1b1e', ink:'#fff'},
+    {tag:'DWP', title:'Free downpipe',              sub:'With any turbo build. The big one.',                                  weight:1,  color:'#e2231a', ink:'#fff'}
+  ];
+  var KEY='eins_spin_v1', DAYS=60, SECRET='fluentturbo';
+
+  /* ---------- draw wheel ---------- */
+  var svg=document.getElementById('wheel'), n=PRIZES.length, step=360/n, NS='http://www.w3.org/2000/svg';
+  function pt(a,r){var t=(a-90)*Math.PI/180;return [r*Math.cos(t), r*Math.sin(t)];}
+  PRIZES.forEach(function(p,i){
+    var a0=i*step, a1=a0+step, g=document.createElementNS(NS,'g');
+    g.setAttribute('class','seg');
+    var s=pt(a0,100), e=pt(a1,100), path=document.createElementNS(NS,'path');
+    path.setAttribute('d','M0 0 L'+s[0].toFixed(3)+' '+s[1].toFixed(3)+' A100 100 0 0 1 '+e[0].toFixed(3)+' '+e[1].toFixed(3)+' Z');
+    path.setAttribute('fill',p.color); path.setAttribute('stroke','#0b0b0c'); path.setAttribute('stroke-width','1.2');
+    g.appendChild(path);
+    var mid=a0+step/2, t=document.createElementNS(NS,'text');
+    t.setAttribute('transform','rotate('+(mid-90)+') translate(63 0)');
+    t.setAttribute('text-anchor','middle'); t.setAttribute('dominant-baseline','middle');
+    t.setAttribute('fill',p.ink); t.setAttribute('font-size','8.6');
+    t.textContent=p.title; if(p.title.length>11){t.setAttribute('textLength','64');t.setAttribute('lengthAdjust','spacingAndGlyphs');}
+    g.appendChild(t); svg.appendChild(g);
+  });
+  var ring=document.createElementNS(NS,'circle'); ring.setAttribute('r','99'); ring.setAttribute('fill','none'); ring.setAttribute('stroke','#f2f2f0'); ring.setAttribute('stroke-width','2'); svg.appendChild(ring);
+
+  /* prize list */
+  var ul=document.getElementById('prizelist');
+  PRIZES.forEach(function(p){
+    var li=document.createElement('li');
+    li.innerHTML='<i style="background:'+p.color+';border:1px solid #2a2a2e"></i><span><b>'+p.title+'</b> — '+p.sub+'</span>';
+    ul.appendChild(li);
+  });
+
+  /* ---------- pick + code ---------- */
+  function pick(){
+    var total=PRIZES.reduce(function(s,p){return s+p.weight},0), r=Math.random()*total;
+    for(var i=0;i<n;i++){ r-=PRIZES[i].weight; if(r<0) return i; }
+    return n-1;
+  }
+  function rnd(len){var A='ABCDEFGHJKLMNPQRSTUVWXYZ23456789',o='';for(var i=0;i<len;i++)o+=A[Math.floor(Math.random()*A.length)];return o;}
+  function check(s){var h=0;s=s+SECRET;for(var i=0;i<s.length;i++)h=(h*31+s.charCodeAt(i))>>>0;return 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'[h%32];}
+  function makeCode(tag){var body=tag+'-'+rnd(4);return 'EINS-'+body+check(body);}
+
+  /* ---------- state ---------- */
+  var go=document.getElementById('go'), box=document.getElementById('result');
+  function load(){try{return JSON.parse(localStorage.getItem(KEY)||'null')}catch(e){return null}}
+  function save(v){try{localStorage.setItem(KEY,JSON.stringify(v))}catch(e){}}
+  function fmt(d){return new Date(d).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});}
+  function show(st, again){
+    var p=PRIZES[st.i];
+    document.getElementById('r-eyebrow').textContent=again?'You already spun · your prize':'You won';
+    document.getElementById('r-title').textContent=p.title;
+    document.getElementById('r-sub').textContent=p.sub;
+    document.getElementById('r-code').textContent=st.code;
+    document.getElementById('r-meta').textContent='Spun '+fmt(st.at)+' · good through '+fmt(st.at+DAYS*864e5);
+    var msg='Hey Eins, I spun the wheel on your card and got "'+p.title+'". Code '+st.code+'.';
+    document.getElementById('r-text').setAttribute('href','sms:+17087079756?&body='+encodeURIComponent(msg));
+    box.classList.add('show'); go.disabled=true; go.textContent=again?'One spin per phone':'Spun';
+  }
+  var prior=load();
+  if(prior&&typeof prior.i==='number'&&PRIZES[prior.i]){
+    svg.style.transition='none'; svg.style.transform='rotate('+(360-(prior.i*step+step/2))+'deg)';
+    show(prior,true);
+  }
+  go.addEventListener('click',function(){
+    if(go.disabled) return;
+    go.disabled=true; go.textContent='Spinning…';
+    var i=pick(), jitter=(Math.random()-0.5)*(step*0.6), target=360*6+(360-(i*step+step/2))+jitter;
+    var st={i:i, code:makeCode(PRIZES[i].tag), at:Date.now()};
+    save(st);
+    var reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if(reduced){ svg.style.transition='none'; svg.style.transform='rotate('+target+'deg)'; show(st,false); return; }
+    svg.style.transition=''; svg.style.transform='rotate('+target+'deg)';
+    var done=false; function fin(){ if(done)return; done=true; show(st,false); }
+    svg.addEventListener('transitionend',fin,{once:true}); setTimeout(fin,5600);
+  });
+  document.getElementById('copy').addEventListener('click',function(){
+    var c=this, t=document.getElementById('r-code').textContent;
+    if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(function(){c.textContent='Copied';setTimeout(function(){c.textContent='Copy'},1500)});}
+  });
+
+  var b=document.querySelector('.menu-btn'),nv=document.querySelector('.nav');
+  if(b&&nv){b.addEventListener('click',function(){var o=nv.classList.toggle('open');b.setAttribute('aria-expanded',o?'true':'false');b.textContent=o?'Close':'Menu';});}
+})();
+</script>
+</body></html>
