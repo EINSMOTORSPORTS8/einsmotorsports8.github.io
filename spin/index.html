@@ -115,6 +115,13 @@ p{margin:0}
 .wheelbox.locked .lock{display:grid}
 .lock span{background:rgba(11,11,12,.82);border:1px solid var(--line);color:var(--fg);font-family:var(--display);font-weight:700;letter-spacing:.1em;text-transform:uppercase;font-size:15px;padding:10px 16px;border-radius:4px;transform:translateY(55%)}
 
+.nocard{display:none;background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:22px;gap:12px;position:relative;overflow:hidden}
+.nocard::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--yellow)}
+.nocard.show{display:grid}
+.nocard h3{font-family:var(--display);font-weight:700;font-size:24px;text-transform:uppercase;letter-spacing:.03em}
+.nocard p{color:var(--muted)}
+.nocard .actions{display:flex;flex-wrap:wrap;gap:10px}
+
 .foot{padding-block:48px 120px;color:var(--muted);font-size:15px}
 .foot__grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:28px}
 .foot h4{font-size:16px;letter-spacing:.1em;color:var(--fg);margin-bottom:10px}
@@ -146,6 +153,11 @@ p{margin:0}
     <div class="hub"><img src="/img/logo.png" alt=""></div>
   </div>
   <div class="spin__side">
+    <div class="nocard" id="nocard">
+      <h3>This one's card-holders only.</h3>
+      <p>The wheel unlocks when you scan the QR on an Eins business card. Don't have one? Come by the shop or ask whoever handed you this link.</p>
+      <div class="actions"><a class="btn btn--red" href="sms:7087079756">Text the shop</a><a class="btn btn--ghost" href="/">Back to the site</a></div>
+    </div>
     <form class="gate" id="gate" novalidate>
       <h3>Who's spinning?</h3>
       <div class="row row--2">
@@ -212,6 +224,9 @@ p{margin:0}
      reaches you when they text the code. */
   var LEAD_ENDPOINT='';
   var KEY='eins_spin_v1', QUEUE='eins_lead_queue', DAYS=60, SECRET='fluentturbo', SHOP='+17087079756';
+  /* The card's QR carries ?c=<CARD_KEY>. Without it the wheel stays locked.
+     Change CARD_KEY and reprint the QR to kill old links. */
+  var CARD_KEY='7k3q9m', CARD_OK='eins_card_ok';
 
   /* ---------- draw wheel ---------- */
   var svg=document.getElementById('wheel'), n=PRIZES.length, step=360/n, NS='http://www.w3.org/2000/svg';
@@ -322,7 +337,17 @@ p{margin:0}
     document.getElementById('r-text').setAttribute('href','sms:'+SHOP+'?&body='+encodeURIComponent(msg));
     box.classList.add('show'); form.style.display='none'; wb.classList.remove('locked');
   }
+  var fromCard=false;
+  try{
+    var q=new URLSearchParams(location.search);
+    if(q.get('c')===CARD_KEY){fromCard=true;sessionStorage.setItem(CARD_OK,'1');history.replaceState(null,'',location.pathname);}
+    else if(sessionStorage.getItem(CARD_OK)==='1'){fromCard=true;}
+  }catch(e){}
   var prior=load();
+  if(!fromCard&&!prior){
+    document.getElementById('nocard').classList.add('show'); form.style.display='none';
+    var lk=document.querySelector('.lock span'); if(lk) lk.textContent='Scan the card to unlock';
+  }
   if(prior&&typeof prior.i==='number'&&PRIZES[prior.i]){
     svg.style.transition='none'; svg.style.transform='rotate('+(360-(prior.i*step+step/2))+'deg)';
     show(prior,true);
