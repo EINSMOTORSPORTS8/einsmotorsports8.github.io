@@ -209,14 +209,15 @@ p{margin:0}
   /* ---------- PRIZES: edit here. weight = how often it hits (relative).
      l1/l2 are the two lines printed on the wheel. ---------- */
   var PRIZES=[
-    {tag:'INS', l1:'Free',     l2:'inspection', title:'Free inspection',  sub:'Full health check or pre-purchase look. No strings.',  weight:22, color:'#141416', ink:'#fff'},
-    {tag:'OIL', l1:'Free',     l2:'oil change', title:'Free oil change',  sub:'With any service over $300.',                          weight:18, color:'#e2231a', ink:'#fff'},
-    {tag:'LAB', l1:'10% off',  l2:'labor',      title:'10% off labor',    sub:'On your next job. Any car.',                           weight:20, color:'#1b1b1e', ink:'#fff'},
-    {tag:'TUN', l1:'$100 off', l2:'a tune',     title:'$100 off a tune',  sub:'Flex fuel, stage or custom. Your call.',               weight:14, color:'#b8bcc2', ink:'#0b0b0c'},
-    {tag:'MRC', l1:'Free',     l2:'merch',      title:'Free Eins merch',  sub:'Shirt and sticker pack, pick them up at the shop.',    weight:14, color:'#141416', ink:'#fff'},
-    {tag:'INT', l1:'Free',     l2:'intake',     title:'Free intake',      sub:'With any tune we do.',                                 weight:7,  color:'#f2c300', ink:'#0b0b0c'},
-    {tag:'FTN', l1:'Free',     l2:'tune',       title:'Free tune',        sub:'With any turbo or downpipe install.',                  weight:4,  color:'#1b1b1e', ink:'#fff'},
-    {tag:'DWP', l1:'Free',     l2:'downpipe',   title:'Free downpipe',    sub:'With any turbo build. The big one.',                   weight:1,  color:'#e2231a', ink:'#fff'}
+    {tag:'INS', l1:'Free',     l2:'inspection', title:'Free inspection',        sub:'Full health check or pre-purchase look. No strings.',  weight:26, color:'#141416', ink:'#fff'},
+    {tag:'OIL', l1:'Free',     l2:'oil change', title:'Free oil change',        sub:'With any service over $300.',                          weight:22, color:'#e2231a', ink:'#fff'},
+    {tag:'LAB', l1:'10% off',  l2:'labor',      title:'10% off labor',          sub:'On your next job. Any car.',                           weight:18, color:'#1b1b1e', ink:'#fff'},
+    {tag:'TUN', l1:'$100 off', l2:'a tune',     title:'$100 off a tune',        sub:'Flex fuel, stage or custom. Your call.',               weight:12, color:'#b8bcc2', ink:'#0b0b0c'},
+    {tag:'DIF', l1:'Free',     l2:'diff fluid', title:'Free diff fluid change', sub:'Fresh fluid in the rear diff, with any service.',      weight:14, color:'#141416', ink:'#fff'},
+    {tag:'MRC', l1:'Free',     l2:'merch',      title:'Free Eins merch',        sub:'Shirt and sticker pack, pick them up at the shop.',    weight:12, color:'#f2c300', ink:'#0b0b0c'},
+    {tag:'INT', l1:'Free',     l2:'intake',     title:'Free intake',            sub:'With any tune we do.',                                 weight:3,  color:'#1b1b1e', ink:'#fff'},
+    {tag:'FTN', l1:'Free',     l2:'tune',       title:'Free tune',              sub:'With any turbo or downpipe install.',                  weight:2,  color:'#b8bcc2', ink:'#0b0b0c'},
+    {tag:'DWP', l1:'Free',     l2:'downpipe',   title:'Free downpipe',          sub:'With any turbo build. The big one.',                   weight:1,  color:'#e2231a', ink:'#fff'}
   ];
   /* Where each spin's name / phone / car / prize gets sent. Any endpoint that
      accepts a JSON POST works (Formspree, Basin, a Google Apps Script web app,
