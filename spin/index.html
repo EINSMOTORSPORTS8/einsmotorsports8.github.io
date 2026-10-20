@@ -98,6 +98,11 @@ p{margin:0}
 @media (min-width:520px){.gate .row--2{grid-template-columns:1fr 1fr}}
 .field{display:grid;gap:5px}
 .field label{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.field select{width:100%;background:var(--bg);border:1px solid var(--line);border-radius:4px;color:var(--fg);font:inherit;font-size:17px;padding:12px 36px 12px 12px;min-height:46px;appearance:none;-webkit-appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%23b8bcc2' stroke-width='2'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center}
+.field select:focus{border-color:var(--steel);outline:none}
+.field select[aria-invalid="true"]{border-color:var(--red)}
+.field select option{background:#141416;color:#f2f2f0}
+@media (min-width:520px){.gate .row--car{grid-template-columns:92px 1fr 1fr}}
 .field input{width:100%;background:var(--bg);border:1px solid var(--line);border-radius:4px;color:var(--fg);font:inherit;font-size:17px;padding:12px 12px;min-height:46px}
 .field input:focus{border-color:var(--steel);outline:none}
 .field input[aria-invalid="true"]{border-color:var(--red)}
@@ -147,9 +152,14 @@ p{margin:0}
         <div class="field"><label for="f-name">First name</label><input id="f-name" name="name" type="text" autocomplete="given-name" required maxlength="40" placeholder="Henry"></div>
         <div class="field"><label for="f-phone">Cell number</label><input id="f-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" required placeholder="(708) 555-0100"></div>
       </div>
-      <div class="field"><label for="f-car">What do you drive?</label><input id="f-car" name="car" type="text" required maxlength="80" placeholder="2018 M3, 2009 335i, Huracán…"></div>
+      <div class="row row--car">
+        <div class="field"><label for="f-year">Year</label><select id="f-year" name="year" required><option value="">Year</option></select></div>
+        <div class="field"><label for="f-make">Make</label><select id="f-make" name="make" required><option value="">Make</option></select></div>
+        <div class="field"><label for="f-model">Model</label><select id="f-model" name="model" required disabled><option value="">Model</option></select></div>
+      </div>
+      <div class="field" id="f-other-wrap" style="display:none"><label for="f-other">Make &amp; model</label><input id="f-other" name="other" type="text" maxlength="60" placeholder="e.g. Nissan GT-R"></div>
       <label class="consent"><input id="f-ok" name="consent" type="checkbox" required><span>Text me my prize code and the occasional Eins special or event. Msg &amp; data rates may apply, reply STOP anytime.</span></label>
-      <p class="err" id="f-err">Name, a real cell number, your car, and the checkbox. Then it's all yours.</p>
+      <p class="err" id="f-err">Name, a real cell number, year / make / model, and the checkbox. Then it's all yours.</p>
       <button class="btn btn--red" id="go" type="submit">Spin the wheel</button>
     </form>
     <div class="result" id="result" aria-live="polite">
@@ -240,13 +250,45 @@ p{margin:0}
 
   /* ---------- lead capture ---------- */
   var form=document.getElementById('gate'), go=document.getElementById('go'), box=document.getElementById('result'), wb=document.getElementById('wheelbox');
-  var fName=document.getElementById('f-name'), fPhone=document.getElementById('f-phone'), fCar=document.getElementById('f-car'), fOk=document.getElementById('f-ok'), fErr=document.getElementById('f-err');
+  var fName=document.getElementById('f-name'), fPhone=document.getElementById('f-phone'), fOk=document.getElementById('f-ok'), fErr=document.getElementById('f-err');
+  var fYear=document.getElementById('f-year'), fMake=document.getElementById('f-make'), fModel=document.getElementById('f-model'), fOther=document.getElementById('f-other'), fOtherWrap=document.getElementById('f-other-wrap');
+  /* Make → models. Add to this list any time; "Other" shows a free-text box. */
+  var MAKES={
+    'BMW':['1 Series','135i','1M','2 Series','M2','M235i / M240i','3 Series','335i','340i / M340i','M3','4 Series','435i','440i','M4','5 Series','535i','540i','M5','6 Series','M6','7 Series','8 Series','M8','X3','X3 M','X4','X4 M','X5','X5 M','X6','X6 M','X7','Z4','i4','i5','i7','iX','Other BMW'],
+    'Toyota':['GR Supra','GR Corolla','GR86','Other Toyota'],
+    'Mercedes-AMG':['A 35 / A 45','CLA 45','C 43','C 63','E 53','E 63','GLC 43 / 63','GLE 53 / 63','G 63','GT','SL','Other AMG'],
+    'Mercedes-Benz':['C-Class','E-Class','S-Class','GLC','GLE','G-Class','Other Mercedes'],
+    'Lamborghini':['Huracán','Gallardo','Aventador','Urus','Revuelto','Temerario','Other Lamborghini'],
+    'McLaren':['570S / 570GT','600LT','620R','650S','675LT','720S','765LT','Artura','750S','GT','Other McLaren'],
+    'Audi':['S3','RS3','S4','RS4','S5','RS5','S6','RS6','S7','RS7','SQ5','RS Q8','R8','Other Audi'],
+    'Porsche':['911','718 Cayman / Boxster','Taycan','Panamera','Macan','Cayenne','Other Porsche'],
+    'Volkswagen':['GTI','Golf R','Jetta GLI','Arteon','Other VW'],
+    'Ferrari':['488','F8','296','SF90','Roma','Portofino','812','Other Ferrari'],
+    'Nissan':['GT-R','370Z / Z','Other Nissan'],
+    'Other':[]
+  };
+  (function(){
+    var y=new Date().getFullYear()+1;
+    for(var i=y;i>=1990;i--){var o=document.createElement('option');o.value=o.textContent=i;fYear.appendChild(o);}
+    Object.keys(MAKES).forEach(function(m){var o=document.createElement('option');o.value=o.textContent=m;fMake.appendChild(o);});
+  })();
+  fMake.addEventListener('change',function(){
+    var list=MAKES[fMake.value]||[];
+    fModel.innerHTML='<option value="">Model</option>';
+    list.forEach(function(m){var o=document.createElement('option');o.value=o.textContent=m;fModel.appendChild(o);});
+    var other=fMake.value==='Other';
+    fModel.disabled=other||!fMake.value; fModel.required=!other;
+    fOtherWrap.style.display=other?'':'none'; fOther.required=other;
+    if(other) fOther.focus();
+  });
+  function carOk(){ return fYear.value && fMake.value && (fMake.value==='Other' ? fOther.value.trim().length>0 : fModel.value); }
+  function carText(){ return fMake.value==='Other' ? fYear.value+' '+fOther.value.trim() : fYear.value+' '+fMake.value+' '+fModel.value; }
   function digits(v){v=(v||'').replace(/\D/g,'');if(v.length===11&&v[0]==='1')v=v.slice(1);return v;}
   function fmtPhone(d){return d.length===10?'('+d.slice(0,3)+') '+d.slice(3,6)+'-'+d.slice(6):d;}
   fPhone.addEventListener('blur',function(){var d=digits(fPhone.value);if(d.length===10)fPhone.value=fmtPhone(d);});
   function validate(){
     var ok=true;
-    [[fName,fName.value.trim().length>0],[fPhone,digits(fPhone.value).length===10],[fCar,fCar.value.trim().length>0]].forEach(function(x){x[0].setAttribute('aria-invalid',x[1]?'false':'true');if(!x[1])ok=false;});
+    [[fName,fName.value.trim().length>0],[fPhone,digits(fPhone.value).length===10],[fYear,!!fYear.value],[fMake,!!fMake.value],[fModel,fMake.value==='Other'||!!fModel.value],[fOther,fMake.value!=='Other'||fOther.value.trim().length>0]].forEach(function(x){x[0].setAttribute('aria-invalid',x[1]?'false':'true');if(!x[1])ok=false;});
     if(!fOk.checked)ok=false;
     fErr.classList.toggle('show',!ok);
     return ok;
@@ -285,15 +327,15 @@ p{margin:0}
     svg.style.transition='none'; svg.style.transform='rotate('+(360-(prior.i*step+step/2))+'deg)';
     show(prior,true);
   }
-  [fName,fPhone,fCar,fOk].forEach(function(f){f.addEventListener('input',function(){if(fName.value.trim()&&digits(fPhone.value).length===10&&fCar.value.trim()&&fOk.checked)wb.classList.remove('locked');});});
+  [fName,fPhone,fYear,fMake,fModel,fOther,fOk].forEach(function(f){['input','change'].forEach(function(ev){f.addEventListener(ev,function(){if(fName.value.trim()&&digits(fPhone.value).length===10&&carOk()&&fOk.checked)wb.classList.remove('locked');});});});
   form.addEventListener('submit',function(ev){
     ev.preventDefault();
     if(go.disabled||!validate()) return;
     go.disabled=true; go.textContent='Spinning…'; wb.classList.remove('locked');
     var i=pick(), jitter=(Math.random()-0.5)*(step*0.6), target=360*6+(360-(i*step+step/2))+jitter;
-    var st={i:i, code:makeCode(PRIZES[i].tag), at:Date.now(), name:fName.value.trim(), phone:fmtPhone(digits(fPhone.value)), car:fCar.value.trim()};
+    var st={i:i, code:makeCode(PRIZES[i].tag), at:Date.now(), name:fName.value.trim(), phone:fmtPhone(digits(fPhone.value)), car:carText(), year:fYear.value, make:fMake.value==='Other'?fOther.value.trim():fMake.value, model:fMake.value==='Other'?'':fModel.value};
     save(st);
-    sendLead({name:st.name, phone:st.phone, car:st.car, consent:'yes', prize:PRIZES[i].title, code:st.code, spun_at:new Date(st.at).toISOString(), source:'business-card'});
+    sendLead({name:st.name, phone:st.phone, year:st.year, make:st.make, model:st.model, car:st.car, consent:'yes', prize:PRIZES[i].title, code:st.code, spun_at:new Date(st.at).toISOString(), source:'business-card'});
     var reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
     if(reduced){ svg.style.transition='none'; svg.style.transform='rotate('+target+'deg)'; show(st,false); return; }
     svg.style.transition=''; svg.style.transform='rotate('+target+'deg)';
