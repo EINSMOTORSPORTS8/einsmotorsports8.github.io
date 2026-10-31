@@ -248,6 +248,9 @@ details p{color:var(--muted);margin-top:10px;max-width:66ch}
 
 
 
+
+
+
 /* E85 strip under the hero */
 .estrip{background:var(--panel);border-bottom:1px solid var(--line)}
 .estrip__in{display:grid;grid-template-columns:200px minmax(0,1fr) auto;gap:14px 24px;align-items:center;padding-block:18px}
@@ -291,11 +294,14 @@ details p{color:var(--muted);margin-top:10px;max-width:66ch}
 
 
 
+
+
+
 <section class="estrip" id="e85"><div class="wrap estrip__in">
   <div class="estrip__head"><span class="eyebrow">Free tool</span><h3><a href="/e85-calculator/">E85 blend calculator</a></h3><p>E10 in the tank, fill it up. For anything else, open the full one.</p></div>
   <div class="estrip__ctl">
     <label class="estrip__f"><span>Tank</span><select id="mcar" aria-label="Tank size by car"><option value="15.6">Pick your car</option><optgroup label="BMW"><option value="14.0">135i / 1M (E82)</option><option value="16.1">335i (E90 · E92 · E93)</option><option value="16.6">M3 (E90 · E92 · E93)</option><option value="15.8">335i / 340i (F30 · F32)</option><option value="15.8">M3 / M4 (F80 · F82)</option><option value="13.7">M235i / M240i (F22)</option><option value="13.7">M2 (F87)</option><option value="13.7">M240i (G42)</option><option value="13.7">M2 (G87)</option><option value="15.6">M340i / M440i (G20 · G22)</option><option value="15.6">M3 / M4 (G80 · G82)</option><option value="18.5">535i / 550i (F10)</option><option value="21.1">M5 (F10)</option><option value="18.0">540i / M550i (G30)</option><option value="18.0">M5 (F90)</option><option value="18.0">M8 / M850i (F9x · G15)</option><option value="17.2">X3 M40i / X3 M (G01 · F97)</option><option value="17.2">X4 M40i / X4 M (G02 · F98)</option><option value="21.9">X5 40i / M50i (G05)</option><option value="21.9">X5 M (F95)</option><option value="13.7">Z4 M40i (G29)</option><option value="20.6">750i (G11)</option></optgroup><optgroup label="Toyota"><option value="13.7">GR Supra 3.0 (A90)</option></optgroup><optgroup label="Mercedes-AMG"><option value="17.4">C63 (W205)</option><option value="17.4">GLC63 (X253)</option><option value="21.1">E63 (W213)</option><option value="21.1">GT 63 4-door</option><option value="26.4">G63</option></optgroup></select></label>
-    <label class="estrip__f estrip__f--slider"><span>In it now <b id="mnowLbl">4.0 gal</b></span><input type="range" id="mnow" min="0" max="15.6" step="0.1" value="4" aria-label="Fuel in the tank now, gallons"></label>
+    <label class="estrip__f estrip__f--slider"><span>In it now <b id="mnowLbl">4.0 gal</b></span><input type="range" id="mnow" min="0" max="15.6" step="1.95" value="3.9" aria-label="Fuel in the tank now, in eighths of a tank"></label>
     <div class="estrip__f"><span>I want</span><div class="estrip__chips" role="group" aria-label="Target blend"><button type="button" data-t="30" aria-pressed="true">E30</button><button type="button" data-t="40">E40</button><button type="button" data-t="50">E50</button><button type="button" data-t="85">E85</button></div></div>
   </div>
   <a class="estrip__out" id="mout" href="/e85-calculator/"><span class="estrip__nums"><span id="mEw"><b id="mE">4.2</b> gal E85</span> <i id="mplus">+</i> <span id="mPw"><b id="mP">7.4</b> gal gas</span><span id="mnone" hidden>nothing to add</span></span><span class="estrip__land" id="mland">lands at E30</span><span class="estrip__go">Full calculator →</span></a>
@@ -397,12 +403,16 @@ details p{color:var(--muted);margin-top:10px;max-width:66ch}
 </script>
 
 
+
+
+
 <script>
 (function(){
   var $=function(i){return document.getElementById(i);},car=$('mcar'),now=$('mnow');if(!car)return;
-  var t=30;function r1(v){return (Math.round(v*10)/10).toFixed(1);}
+  var t=30,FR=['Empty','⅛','¼','⅜','½','⅝','¾','⅞','Full'];function r1(v){return (Math.round(v*10)/10).toFixed(1);}
+  function k8(g,tk){return Math.max(0,Math.min(8,Math.round(g/tk*8)));}
   function calc(){var tank=parseFloat(car.value)||15.6,n=Math.min(parseFloat(now.value)||0,tank),add=tank-n,eE=85,eP=10,e0=10;
-    $('mnowLbl').textContent=r1(n)+' gal';
+    var k=k8(n,tank);$('mnowLbl').textContent=(k===0?'Empty':k===8?'Full':FR[k])+' · '+Math.round(n/tank*100)+'% · '+r1(n)+' gal';
     var a=(t*tank-e0*n-eP*add)/(eE-eP),b=add-a,e=t,note='lands at E'+t;
     if(add<=0.05){a=0;b=0;note='tank is full';}
     else if(a<0){a=0;b=add;e=(e0*n+eP*add)/tank;note='already richer than E'+t;}
@@ -411,8 +421,8 @@ details p{color:var(--muted);margin-top:10px;max-width:66ch}
     $('mplus').hidden=!(a>0.05&&b>0.05);$('mEw').hidden=a<=0.05;$('mPw').hidden=b<=0.05;$('mnone').hidden=(a>0.05||b>0.05);
     $('mout').href='/e85-calculator/?tank='+tank+'&now='+r1(n)+'&e0=10&target='+t+'&fill=full'+(car.selectedIndex>0?'&car='+tank:'');
   }
-  car.addEventListener('change',function(){var g=parseFloat(car.value)||15.6;var ratio=(parseFloat(now.value)||0)/(parseFloat(now.max)||15.6);now.max=g;now.value=r1(ratio*g);calc();});
-  now.addEventListener('input',calc);
+  car.addEventListener('change',function(){var g=parseFloat(car.value)||15.6;var k=k8(parseFloat(now.value)||0,parseFloat(now.max)||15.6);now.max=g;now.step=g/8;now.value=k*g/8;calc();});
+  now.step=15.6/8;now.addEventListener('input',calc);
   document.querySelectorAll('.estrip__chips button').forEach(function(b){b.addEventListener('click',function(){t=+b.getAttribute('data-t');document.querySelectorAll('.estrip__chips button').forEach(function(x){x.setAttribute('aria-pressed',x===b?'true':'false');});calc();});});
   calc();
 })();

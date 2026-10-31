@@ -249,6 +249,7 @@ details p{color:var(--muted);margin-top:10px;max-width:66ch}
 .chip-b:hover{color:var(--fg);border-color:var(--steel)}
 .chip-b[aria-pressed="true"]{color:var(--fg);border-color:var(--yellow);box-shadow:inset 0 -3px 0 var(--yellow)}
 .chips .custom{display:inline-flex;align-items:center;gap:4px;margin-left:auto}
+.chips--frac{display:grid;grid-template-columns:repeat(9,1fr);gap:4px}.chips--frac .chip-b{padding:0;font-size:15px;min-height:38px;text-align:center}.chips--frac .chip-b:first-child,.chips--frac .chip-b:last-child{font-size:12px}
 .chips .custom input{width:72px;min-height:36px;padding:4px 8px;font-size:16px;text-align:right}
 .chips .custom span{font-family:var(--mono);font-size:11px;color:var(--dim)}
 .inline{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
@@ -313,8 +314,8 @@ details.adv .inner{display:grid;gap:10px;padding-top:12px}
         <div class="inline sm"><span>Tank <b id="tankLbl" style="color:var(--fg);font-weight:500"></b></span><button class="linkish" type="button" id="editTank">edit</button><span id="tankEdit" hidden class="inline"><input type="number" id="tank" inputmode="decimal" min="5" max="40" step="0.1" value="15.6"><span class="unit">gal</span></span></div></div>
 
       <div class="ctl__k">In it now <b id="nowLbl"></b></div>
-      <div class="ctl__v"><input type="range" id="now" min="0" max="15.6" step="0.1" value="4" aria-label="Fuel in the tank now, gallons">
-        <div class="chips"><button class="chip-b" type="button" data-k="now" data-v="0">Empty</button><button class="chip-b" type="button" data-k="now" data-v="0.25">¼</button><button class="chip-b" type="button" data-k="now" data-v="0.5">½</button><button class="chip-b" type="button" data-k="now" data-v="0.75">¾</button></div></div>
+      <div class="ctl__v"><input type="range" id="now" min="0" max="15.6" step="1.95" value="3.9" aria-label="Fuel in the tank now, in eighths of a tank">
+        <div class="chips chips--frac"><button class="chip-b" type="button" data-k="now" data-v="0">E</button><button class="chip-b" type="button" data-k="now" data-v="0.125">⅛</button><button class="chip-b" type="button" data-k="now" data-v="0.25">¼</button><button class="chip-b" type="button" data-k="now" data-v="0.375">⅜</button><button class="chip-b" type="button" data-k="now" data-v="0.5">½</button><button class="chip-b" type="button" data-k="now" data-v="0.625">⅝</button><button class="chip-b" type="button" data-k="now" data-v="0.75">¾</button><button class="chip-b" type="button" data-k="now" data-v="0.875">⅞</button><button class="chip-b" type="button" data-k="now" data-v="1">F</button></div></div>
 
       <div class="ctl__k">It's at</div>
       <div class="ctl__v"><div class="chips"><button class="chip-b" type="button" data-k="e0" data-v="10">E10 pump gas</button><button class="chip-b" type="button" data-k="e0" data-v="30">E30</button><button class="chip-b" type="button" data-k="e0" data-v="50">E50</button><button class="chip-b" type="button" data-k="e0" data-v="85">E85</button><span class="custom"><input type="number" id="e0" inputmode="numeric" min="0" max="100" step="1" value="10" aria-label="Ethanol content now, percent"><span>%</span></span></div></div>
@@ -385,18 +386,21 @@ details.adv .inner{display:grid;gap:10px;padding-top:12px}
   function num(x,d){var v=parseFloat(x);return isNaN(v)?d:v;}
   function r1(v){return (Math.round(v*10)/10).toFixed(1);}
   function pct(v){return 'E'+Math.round(v);}
+  var FR=['Empty','⅛','¼','⅜','½','⅝','¾','⅞','Full'];
+  function eighths(gal,tank){return Math.max(0,Math.min(8,Math.round(gal/tank*8)));}
+  function nowText(gal,tank){var k=eighths(gal,tank);return (k===0?'Empty':k===8?'Full':FR[k]+' tank')+' · '+Math.round(gal/tank*100)+'% · '+r1(gal)+' gal';}
   function state(){var tank=num(el.tank.value,15.6);return {tank:tank,fillTo:fillMode==='full'?tank:num(el.fillTo.value,tank),now:num(el.now.value,0),e0:num(el.e0.value,10),target:num(el.target.value,30),eE:num(el.eE.value,85),eP:num(el.eP.value,10),pE:num(el.pE.value,0),pP:num(el.pP.value,0)};}
   function setChips(){document.querySelectorAll('.chip-b').forEach(function(b){var k=b.getAttribute('data-k'),v=b.getAttribute('data-v'),on;
-    if(k==='now'){on=(num(el.now.value,0)/Math.max(0.1,num(el.tank.value,1))).toFixed(2)===(+v).toFixed(2);}
+    if(k==='now'){on=eighths(num(el.now.value,0),Math.max(0.1,num(el.tank.value,1)))===Math.round(+v*8);}
     else if(k==='fill'){on=fillMode===v;}
     else on=String(num(el[k].value,0))===v;
     b.setAttribute('aria-pressed',on?'true':'false');});}
   function seg(id,gal,tank,txt){var e=$(id);var w=Math.max(0,Math.min(100,gal/tank*100));e.style.width=w+'%';e.textContent=w>9?txt:'';}
   function calc(){
     var s=state();
-    el.now.max=r1(s.tank);if(s.now>s.tank){s.now=s.tank;el.now.value=r1(s.tank);}
+    el.now.max=s.tank;el.now.step=s.tank/8;if(s.now>s.tank){s.now=s.tank;el.now.value=s.tank;}
     if(s.fillTo>s.tank){s.fillTo=s.tank;el.fillTo.value=r1(s.tank);}
-    $('tankLbl').textContent=r1(s.tank)+' gal';$('nowLbl').textContent=r1(s.now)+' gal · '+pct(s.e0);
+    $('tankLbl').textContent=r1(s.tank)+' gal';$('nowLbl').textContent=nowText(s.now,s.tank);
     var add=s.fillTo-s.now,out=$('outcome'),a=0,b=0,eFinal=s.e0,msg='',warn=false;
     if(add<=0.05){msg='The tank is already at the fill line. Pick <b>Only some</b> and a higher number, or burn some off first.';warn=true;}
     else if(Math.abs(s.eE-s.eP)<1){msg='Both pumps are the same blend, so there is nothing to mix. Check the pump numbers below.';warn=true;}
@@ -410,7 +414,7 @@ details.adv .inner{display:grid;gap:10px;padding-top:12px}
     $('plus').classList.toggle('off',!(a>0.05&&b>0.05));document.querySelector('.ans__nums .gas').classList.toggle('off',b<=0.05&&a>0.05);document.querySelector('.ans__nums .e85').classList.toggle('off',a<=0.05&&b>0.05);
     $('land').innerHTML=(a>0.05||b>0.05)?('lands at <b>'+pct(eFinal)+'</b> · <b>'+r1(s.now+a+b)+' gal</b> in the tank'):'nothing to add';
     out.innerHTML=msg;out.classList.toggle('warn',warn);
-    seg('segNow',s.now,s.tank,r1(s.now)+' '+pct(s.e0));seg('segE',a,s.tank,r1(a)+' E'+Math.round(s.eE));seg('segP',b,s.tank,r1(b)+' gas');
+    seg('segNow',s.now,s.tank,FR[eighths(s.now,s.tank)]+' '+pct(s.e0));seg('segE',a,s.tank,r1(a)+' E'+Math.round(s.eE));seg('segP',b,s.tank,r1(b)+' gas');
     $('fillLine').style.left=Math.min(100,s.fillTo/s.tank*100)+'%';$('fillLine').style.display=s.fillTo<s.tank-0.05?'block':'none';
     $('gaugeR').textContent=r1(s.tank)+' gal tank';
     var c=$('cost');if((s.pE>0||s.pP>0)&&(a>0||b>0)){c.hidden=false;c.innerHTML='Fill cost <b>$'+(a*s.pE+b*s.pP).toFixed(2)+'</b> · '+r1(a)+' × $'+s.pE.toFixed(2)+' + '+r1(b)+' × $'+s.pP.toFixed(2);}else c.hidden=true;
@@ -421,13 +425,13 @@ details.adv .inner{display:grid;gap:10px;padding-top:12px}
     try{var o={fillMode:fillMode,car:el.car.value};KEYS.forEach(function(k){o[k]=el[k].value;});localStorage.setItem('eins-e85',JSON.stringify(o));}catch(e){}
     window.__recipe='E'+Math.round(s.target)+' mix'+(el.car.selectedIndex>0?' for a '+el.car.options[el.car.selectedIndex].text.replace(/ · [\d.]+ gal$/,''):'')+': tank at '+r1(s.now)+' gal '+pct(s.e0)+' → add '+r1(a)+' gal E'+Math.round(s.eE)+(b>0.05?' + '+r1(b)+' gal pump gas':'')+' → ~'+pct(eFinal)+' ('+r1(s.now+a+b)+' gal). einsmotorsports.net/e85-calculator/';
   }
-  function setTank(g){var ratio=num(el.now.value,0)/Math.max(0.1,num(el.tank.value,1));el.tank.value=r1(g);el.fillTo.value=r1(g);el.now.max=r1(g);el.now.value=r1(Math.min(g,ratio*g));}
+  function setTank(g){var k=eighths(num(el.now.value,0),Math.max(0.1,num(el.tank.value,1)));el.tank.value=r1(g);el.fillTo.value=r1(g);el.now.max=g;el.now.step=g/8;el.now.value=k*g/8;}
   el.car.addEventListener('change',function(){var g=num(el.car.value,0);if(g)setTank(g);calc();});
-  el.tank.addEventListener('input',function(){var g=num(el.tank.value,0);if(g>0){el.fillTo.value=r1(Math.min(g,num(el.fillTo.value,g)));el.now.max=r1(g);}calc();});
+  el.tank.addEventListener('input',function(){var g=num(el.tank.value,0);if(g>0){var k=eighths(num(el.now.value,0),Math.max(0.1,parseFloat(el.now.max)||g));el.fillTo.value=r1(Math.min(g,num(el.fillTo.value,g)));el.now.max=g;el.now.step=g/8;el.now.value=k*g/8;}calc();});
   $('editTank').addEventListener('click',function(){var w=$('tankEdit');w.hidden=!w.hidden;if(!w.hidden)el.tank.focus();});
   Object.keys(el).forEach(function(k){if(k!=='car'&&k!=='tank')el[k].addEventListener('input',calc);});
   document.querySelectorAll('.chip-b').forEach(function(b){b.addEventListener('click',function(){var k=b.getAttribute('data-k'),v=b.getAttribute('data-v');
-    if(k==='now'){el.now.value=r1(+v*num(el.tank.value,0));}
+    if(k==='now'){el.now.value=+v*num(el.tank.value,0);}
     else if(k==='fill'){fillMode=v;$('fillWrap').hidden=(v==='full');if(v==='part'){if(num(el.fillTo.value,0)>=num(el.tank.value,0))el.fillTo.value=r1(Math.max(num(el.now.value,0)+1,num(el.tank.value,0)*0.6));el.fillTo.focus();}}
     else el[k].value=v;calc();});});
   $('copyBtn').addEventListener('click',function(){var t=window.__recipe||'',btn=this;if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(function(){btn.textContent='Copied';setTimeout(function(){btn.textContent='Copy the recipe';},1500);});}});
@@ -435,7 +439,7 @@ details.adv .inner{display:grid;gap:10px;padding-top:12px}
     if(navigator.share){navigator.share({title:'E85 blend',text:window.__recipe,url:u}).catch(function(){});}else if(navigator.clipboard){navigator.clipboard.writeText(u).then(function(){btn.textContent='Link copied';setTimeout(function(){btn.textContent='Share';},1500);});}});
   var q=new URLSearchParams(location.search),saved=null;try{saved=JSON.parse(localStorage.getItem('eins-e85')||'null');}catch(e){}
   var src=q.has('tank')?Object.fromEntries(q.entries()):saved;
-  if(src){KEYS.forEach(function(k){if(src[k]!==undefined&&src[k]!=='')el[k].value=src[k];});if(src.car)el.car.value=src.car;fillMode=(src.fill||src.fillMode)==='part'?'part':'full';$('fillWrap').hidden=(fillMode==='full');el.now.max=el.tank.value;}
+  if(src){KEYS.forEach(function(k){if(src[k]!==undefined&&src[k]!=='')el[k].value=src[k];});if(src.car)el.car.value=src.car;fillMode=(src.fill||src.fillMode)==='part'?'part':'full';$('fillWrap').hidden=(fillMode==='full');var tk=num(el.tank.value,15.6);el.now.max=tk;el.now.step=tk/8;el.now.value=eighths(num(src.now,0),tk)*tk/8;}
   calc();
 })();
 </script>
