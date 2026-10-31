@@ -204,64 +204,81 @@ details p{color:var(--muted);margin-top:10px;max-width:66ch}
 .note{font-family:var(--mono);font-size:12px;color:var(--dim);border-left:2px solid var(--yellow);padding-left:10px}
 
 /* ---- E85 calculator ---- */
-.calc{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);gap:18px;align-items:start}
-@media (max-width:900px){.calc{grid-template-columns:1fr}}
-.panel{background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:20px 18px;display:grid;gap:16px}
-.panel h3{font-size:14px;font-family:var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--yellow);font-weight:500}
-.field{display:grid;gap:7px}
-.field label,.field .lbl{font-family:var(--mono);font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);display:flex;justify-content:space-between;gap:10px;align-items:baseline}
-.field label b{color:var(--fg);font-weight:500;font-variant-numeric:tabular-nums}
-.field select,.field input[type=number],.field input[type=text]{width:100%;appearance:none;-webkit-appearance:none;background:var(--panel-2);border:1px solid var(--line);color:var(--fg);font-family:var(--display);font-weight:600;font-size:20px;padding:11px 14px;border-radius:4px;min-height:48px}
-.field select{background-image:linear-gradient(45deg,transparent 50%,var(--muted) 50%),linear-gradient(135deg,var(--muted) 50%,transparent 50%);background-position:calc(100% - 20px) 50%,calc(100% - 14px) 50%;background-size:6px 6px;background-repeat:no-repeat;padding-right:40px}
-.field input[type=range]{width:100%;accent-color:var(--yellow);margin:2px 0 0;min-height:28px}
-.field small{font-size:13px;color:var(--dim);line-height:1.35}
-.row2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.chips{display:flex;flex-wrap:wrap;gap:6px}
-.chip-b{font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;padding:7px 10px;border:1px solid var(--line);border-radius:4px;background:none;color:var(--muted);cursor:pointer;min-height:34px}
+[hidden]{display:none!important}
+.calc{max-width:700px;margin-inline:auto;display:grid;gap:14px}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:18px 18px;display:grid;gap:14px}
+.panel h3{font-size:12px;font-family:var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--yellow);font-weight:500}
+/* answer */
+.ans{display:grid;gap:12px}
+.ans__nums{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 14px;font-family:var(--display);font-weight:800;text-transform:uppercase;line-height:.95}
+.ans__nums .n{font-size:clamp(40px,8vw,60px);font-variant-numeric:tabular-nums}
+.ans__nums .u{font-size:clamp(16px,2.6vw,20px);color:var(--muted);font-weight:700;letter-spacing:.04em}
+.ans__nums .e85 .n{color:var(--yellow)}
+.ans__nums .plus{font-size:clamp(24px,4vw,34px);color:var(--dim)}
+.ans__nums .off{display:none}
+.ans__land{font-family:var(--mono);font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.ans__land b{color:var(--fg);font-weight:500}
+.ans__msg{font-size:15.5px;line-height:1.4;color:var(--muted)}
+.ans__msg.warn{color:var(--fg);padding:10px 12px;border-left:3px solid var(--red);background:var(--panel-2);border-radius:0 4px 4px 0}
+.gauge{display:grid;gap:5px}
+.gauge__bar{position:relative;height:34px;border:1px solid var(--line);border-radius:5px;background:var(--panel-2);overflow:hidden;display:flex}
+.gauge__seg{height:100%;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:11px;letter-spacing:.06em;color:#0b0b0c;white-space:nowrap;overflow:hidden;transition:width .35s cubic-bezier(.2,.8,.2,1)}
+.gauge__seg.now{background:#4a4b52;color:var(--fg)}
+.gauge__seg.e85{background:var(--yellow)}
+.gauge__seg.gas{background:#9a9da3}
+.gauge__line{position:absolute;top:-2px;bottom:-2px;width:2px;background:var(--fg);opacity:.8}
+.gauge__lbl{display:flex;justify-content:space-between;font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--dim)}
+.gauge__lbl i{font-style:normal}
+.gauge__lbl .k{display:inline-block;width:9px;height:9px;border-radius:2px;vertical-align:-1px;margin-right:4px}
+.cost{font-family:var(--mono);font-size:12.5px;color:var(--muted);letter-spacing:.04em}
+.cost b{color:var(--fg);font-weight:500}
+.ctas{display:flex;flex-wrap:wrap;gap:8px}
+.ctas .btn{font-size:14px;padding:9px 13px}
+/* controls */
+.ctl{display:grid;grid-template-columns:104px minmax(0,1fr);gap:10px 12px;align-items:start}
+@media (max-width:480px){.ctl{grid-template-columns:1fr;gap:6px}}
+.ctl__k{font-family:var(--mono);font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);padding-top:9px;line-height:1.3}
+.ctl__k b{display:block;color:var(--fg);font-weight:500;font-variant-numeric:tabular-nums;font-size:13px;letter-spacing:.04em}
+@media (max-width:480px){.ctl__k{padding-top:0;display:flex;justify-content:space-between;gap:8px}.ctl__k b{display:inline}}
+.ctl__v{display:grid;gap:6px;min-width:0}
+.ctl select,.ctl input[type=number]{appearance:none;-webkit-appearance:none;background:var(--panel-2);border:1px solid var(--line);color:var(--fg);font-family:var(--display);font-weight:600;font-size:18px;padding:9px 12px;border-radius:4px;min-height:44px;width:100%}
+.ctl select{background-image:linear-gradient(45deg,transparent 50%,var(--muted) 50%),linear-gradient(135deg,var(--muted) 50%,transparent 50%);background-position:calc(100% - 18px) 50%,calc(100% - 12px) 50%;background-size:6px 6px;background-repeat:no-repeat;padding-right:36px}
+.ctl input[type=range]{width:100%;accent-color:var(--yellow);margin:0;min-height:30px}
+.chips{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.chip-b{font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;padding:0 10px;border:1px solid var(--line);border-radius:4px;background:none;color:var(--muted);cursor:pointer;min-height:36px}
 .chip-b:hover{color:var(--fg);border-color:var(--steel)}
 .chip-b[aria-pressed="true"]{color:var(--fg);border-color:var(--yellow);box-shadow:inset 0 -3px 0 var(--yellow)}
-.numwrap{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;align-items:center}
-.unit{font-family:var(--mono);font-size:12px;letter-spacing:.1em;color:var(--dim);text-transform:uppercase}
-.result{position:sticky;top:calc(env(safe-area-inset-top,0px) + 84px)}
-@media (max-width:900px){.result{position:static}}
-.big{display:grid;gap:10px}
-.big__row{display:grid;grid-template-columns:auto minmax(0,1fr);gap:14px;align-items:center;padding:14px 16px;border-radius:6px;background:var(--panel-2);border:1px solid var(--line)}
-.big__row b{font-family:var(--display);font-weight:800;font-size:clamp(40px,7vw,56px);line-height:.9;font-variant-numeric:tabular-nums;min-width:3ch}
-.big__row span{font-family:var(--mono);font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);line-height:1.4}
-.big__row.e85 b{color:var(--yellow)}.big__row.gas b{color:var(--fg)}
-.big__row.off{opacity:.45}
-.outcome{font-size:17px;line-height:1.45;padding:12px 14px;border-left:3px solid var(--yellow);background:var(--panel-2);border-radius:0 4px 4px 0}
-.outcome.warn{border-left-color:var(--red)}
-.outcome b{color:var(--fg)}
-.tank{display:grid;gap:6px}
-.tank__bar{position:relative;height:26px;border:1px solid var(--line);border-radius:4px;background:var(--panel-2);overflow:hidden}
-.tank__fill{position:absolute;left:0;top:0;bottom:0;background:linear-gradient(90deg,#3a3a3e,#4a4a50)}
-.tank__eth{position:absolute;left:0;top:0;bottom:0;background:linear-gradient(90deg,var(--yellow),var(--ember,#ff7a1a));opacity:.9}
-.tank__lbl{display:flex;justify-content:space-between;font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--dim)}
-.cost{display:flex;justify-content:space-between;gap:10px;font-family:var(--mono);font-size:13px;color:var(--muted);flex-wrap:wrap}
-.cost b{color:var(--fg);font-weight:500}
-details.adv{border:1px solid var(--line);border-radius:4px;padding:10px 12px;background:var(--panel-2)}
+.chips .custom{display:inline-flex;align-items:center;gap:4px;margin-left:auto}
+.chips .custom input{width:72px;min-height:36px;padding:4px 8px;font-size:16px;text-align:right}
+.chips .custom span{font-family:var(--mono);font-size:11px;color:var(--dim)}
+.inline{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.inline input[type=number]{width:92px}
+.inline .unit{font-family:var(--mono);font-size:11px;letter-spacing:.1em;color:var(--dim);text-transform:uppercase}
+.linkish{background:none;border:0;padding:0;color:var(--yellow);font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;cursor:pointer}
+details.adv{border-top:1px solid var(--line);padding-top:10px}
 details.adv summary{cursor:pointer;font-family:var(--mono);font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);list-style:none}
 details.adv summary::-webkit-details-marker{display:none}
+details.adv summary{display:block;text-align:left}details.adv summary::after{content:none}
 details.adv summary::before{content:"+ ";color:var(--yellow)}
 details.adv[open] summary::before{content:"\2013 "}
-details.adv .inner{display:grid;gap:12px;padding-top:12px}
-.reverse{display:grid;gap:12px}
-.reverse .out{font-family:var(--display);font-weight:700;font-size:26px;text-transform:uppercase;letter-spacing:.02em}
-.reverse .out b{color:var(--yellow)}
-.faq{display:grid;gap:12px;max-width:72ch}
-.faq details{border-top:1px solid var(--line);padding:14px 0 4px}
-.faq summary{cursor:pointer;font-family:var(--display);font-weight:700;font-size:22px;text-transform:uppercase;letter-spacing:.02em;list-style:none;display:flex;justify-content:space-between;gap:12px}
+details.adv .inner{display:grid;gap:10px;padding-top:12px}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.sm{font-size:13px;color:var(--dim);line-height:1.35}
+.rev{display:grid;gap:8px}
+.rev .out{font-family:var(--display);font-weight:700;font-size:22px;text-transform:uppercase;letter-spacing:.02em}
+.rev .out b{color:var(--yellow)}
+.faq{display:grid;gap:10px;max-width:72ch}
+.faq details{border-top:1px solid var(--line);padding:12px 0 4px}
+.faq summary{cursor:pointer;font-family:var(--display);font-weight:700;font-size:20px;text-transform:uppercase;letter-spacing:.02em;list-style:none;display:flex;justify-content:space-between;gap:12px}
 .faq summary::-webkit-details-marker{display:none}
 .faq summary::after{content:"+";color:var(--yellow);font-weight:600}
 .faq details[open] summary::after{content:"\2013"}
-.faq p{color:var(--muted);margin-top:8px;font-size:16px}
-.ctas{display:flex;flex-wrap:wrap;gap:10px}
+.faq p{color:var(--muted);margin-top:8px;font-size:15.5px}
 .mini{text-decoration:none;display:none;position:fixed;left:0;right:0;bottom:56px;z-index:45;background:rgba(11,11,12,.94);backdrop-filter:blur(10px);border-top:1px solid var(--line);padding:9px var(--gutter-r) 9px var(--gutter);font-family:var(--mono);font-size:12px;letter-spacing:.06em;color:var(--muted);align-items:center;justify-content:space-between;gap:10px}
 .mini b{color:var(--yellow);font-weight:500;font-size:14px}
 .mini span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 @media (max-width:900px){.mini{display:flex}body{padding-bottom:110px}}
-@media (max-width:600px){.panel{padding:16px 14px}.row2{grid-template-columns:1fr 1fr}.sec{padding-block:36px}.phead .cta-row{display:none}.phead .phone-line{display:none}}
+@media (max-width:600px){.panel{padding:14px 13px}.sec{padding-block:28px}.phead .cta-row,.phead .phone-line{display:none}.phead{padding-block:28px 10px}.phead h1{font-size:40px}.phead .lede{font-size:16px}}
 </style><script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebApplication", "name": "Eins E85 Blend Calculator", "url": "https://einsmotorsports.net/e85-calculator/", "applicationCategory": "UtilitiesApplication", "operatingSystem": "Any", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}, "description": "Calculates how many gallons of E85 and pump gas to add to reach a target ethanol blend such as E30, E40 or E50, for any tank size and fuel level.", "publisher": {"@id": "https://einsmotorsports.net/#shop"}}</script><script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "What ethanol blend should I run on a tuned BMW?", "acceptedAnswer": {"@type": "Answer", "text": "Most off-the-shelf Stage 1 and Stage 2 maps for the N54, N55, B58, S55 and S58 are written for E30 to E50. With a flex fuel sensor the tune reads the actual blend and adjusts, so you can run whatever the pump gives you."}}, {"@type": "Question", "name": "Why is winter E85 different?", "acceptedAnswer": {"@type": "Answer", "text": "Pump E85 is a seasonal blend. In Illinois it is close to E85 in summer and drops to around E70 in winter; legally it only has to be E51. Use the real number when blending, or read it with a sensor."}}, {"@type": "Question", "name": "Can I run straight E85 on a stock turbo car?", "acceptedAnswer": {"@type": "Answer", "text": "Not on a pump-gas map, and not on the stock fuel system once power climbs. E85 needs about a third more fuel than gasoline; past roughly E60 the fix is port injection on the B58TU and N54, or a bigger high-pressure pump on the S55, S58 and the V8s."}}, {"@type": "Question", "name": "How accurate is the E85 calculator?", "acceptedAnswer": {"@type": "Answer", "text": "The math is exact; the inputs vary. Pump E85 content changes by season and station and tank sizes are nominal, so treat the result as a recipe that lands within a few points of the target."}}]}</script></head>
 <body>
 <header class="top"><div class="wrap top__in">
@@ -272,71 +289,65 @@ details.adv .inner{display:grid;gap:12px;padding-top:12px}
 <section class="phead"><div class="wrap stack">
   <div class="kicker"><span class="stripe" aria-hidden="true"></span><span class="eyebrow">Free tool · E85</span></div>
   <h1>E85 blend calculator.</h1>
-  <p class="lede">Tell it what's in the tank and what you want, and it tells you how many gallons of E85 and pump gas to add. Half tanks, winter E70, odd targets: it does the math so you don't guess at the pump.</p>
-  <div class="cta-row"><a class="btn btn--ghost" href="/flex-fuel/">Flex fuel kits, so you never guess →</a></div>
+  <p class="lede">What's in the tank, what you want. It tells you how many gallons of E85 and pump gas to add.</p>
 </div></section>
 
-<section class="sec sec--tight"><div class="wrap">
-  <div class="calc">
-    <div class="panel" id="inputs">
-      <h3>What's in the tank</h3>
-      <div class="field"><label for="car">Your car <small>tank sizes approx.</small></label><select id="car"><option value="">Pick a car (sets tank size)</option><optgroup label="BMW"><option value="14.0">135i / 1M (E82) · 14.0 gal</option><option value="16.1">335i (E90 · E92 · E93) · 16.1 gal</option><option value="16.6">M3 (E90 · E92 · E93) · 16.6 gal</option><option value="15.8">335i / 340i (F30 · F32) · 15.8 gal</option><option value="15.8">M3 / M4 (F80 · F82) · 15.8 gal</option><option value="13.7">M235i / M240i (F22) · 13.7 gal</option><option value="13.7">M2 (F87) · 13.7 gal</option><option value="13.7">M240i (G42) · 13.7 gal</option><option value="13.7">M2 (G87) · 13.7 gal</option><option value="15.6">M340i / M440i (G20 · G22) · 15.6 gal</option><option value="15.6">M3 / M4 (G80 · G82) · 15.6 gal</option><option value="18.5">535i / 550i (F10) · 18.5 gal</option><option value="21.1">M5 (F10) · 21.1 gal</option><option value="18.0">540i / M550i (G30) · 18.0 gal</option><option value="18.0">M5 (F90) · 18.0 gal</option><option value="18.0">M8 / M850i (F9x · G15) · 18.0 gal</option><option value="17.2">X3 M40i / X3 M (G01 · F97) · 17.2 gal</option><option value="17.2">X4 M40i / X4 M (G02 · F98) · 17.2 gal</option><option value="21.9">X5 40i / M50i (G05) · 21.9 gal</option><option value="21.9">X5 M (F95) · 21.9 gal</option><option value="13.7">Z4 M40i (G29) · 13.7 gal</option><option value="20.6">750i (G11) · 20.6 gal</option></optgroup><optgroup label="Toyota"><option value="13.7">GR Supra 3.0 (A90) · 13.7 gal</option></optgroup><optgroup label="Mercedes-AMG"><option value="17.4">C63 (W205) · 17.4 gal</option><option value="17.4">GLC63 (X253) · 17.4 gal</option><option value="21.1">E63 (W213) · 21.1 gal</option><option value="21.1">GT 63 4-door · 21.1 gal</option><option value="26.4">G63 · 26.4 gal</option></optgroup></select></div>
-      <div class="row2">
-        <div class="field"><label for="tank">Tank size <b id="tankLbl"></b></label><div class="numwrap"><input type="number" id="tank" inputmode="decimal" min="5" max="40" step="0.1" value="15.6"><span class="unit">gal</span></div></div>
-        <div class="field"><label for="fillTo">Fill to <b id="fillLbl"></b></label><div class="numwrap"><input type="number" id="fillTo" inputmode="decimal" min="1" max="40" step="0.1" value="15.6"><span class="unit">gal</span></div></div>
-      </div>
-      <div class="field"><label for="now">Fuel in it now <b id="nowLbl"></b></label><input type="range" id="now" min="0" max="15.6" step="0.1" value="4">
-        <div class="chips"><button class="chip-b" type="button" data-k="now" data-v="0">Empty</button><button class="chip-b" type="button" data-k="now" data-v="0.25">¼</button><button class="chip-b" type="button" data-k="now" data-v="0.5">½</button><button class="chip-b" type="button" data-k="now" data-v="0.75">¾</button></div></div>
-      <div class="field"><label for="e0">What's in it now</label><div class="numwrap"><input type="number" id="e0" inputmode="numeric" min="0" max="100" step="1" value="10"><span class="unit">% ethanol</span></div>
-        <div class="chips"><button class="chip-b" type="button" data-k="e0" data-v="10">E10 pump gas</button><button class="chip-b" type="button" data-k="e0" data-v="30">E30</button><button class="chip-b" type="button" data-k="e0" data-v="50">E50</button><button class="chip-b" type="button" data-k="e0" data-v="85">E85</button></div>
-        <small>If you have a flex fuel sensor, use the number your app shows. No sensor and it was filled with pump gas: E10.</small></div>
+<section class="sec sec--tight"><div class="wrap"><div class="calc">
 
-      <h3 style="margin-top:4px">What you want</h3>
-      <div class="field"><label for="target">Target blend</label><div class="numwrap"><input type="number" id="target" inputmode="numeric" min="0" max="100" step="1" value="30"><span class="unit">% ethanol</span></div>
-        <div class="chips"><button class="chip-b" type="button" data-k="target" data-v="30">E30</button><button class="chip-b" type="button" data-k="target" data-v="40">E40</button><button class="chip-b" type="button" data-k="target" data-v="50">E50</button><button class="chip-b" type="button" data-k="target" data-v="60">E60</button><button class="chip-b" type="button" data-k="target" data-v="85">E85</button></div></div>
-
-      <details class="adv"><summary>The pumps and the price</summary><div class="inner">
-        <div class="row2">
-          <div class="field"><label for="eE">E85 pump actually is</label><div class="numwrap"><input type="number" id="eE" inputmode="numeric" min="30" max="100" step="1" value="85"><span class="unit">%</span></div>
-            <div class="chips"><button class="chip-b" type="button" data-k="eE" data-v="85">E85</button><button class="chip-b" type="button" data-k="eE" data-v="70">E70 winter</button><button class="chip-b" type="button" data-k="eE" data-v="51">E51</button></div></div>
-          <div class="field"><label for="eP">Pump gas is</label><div class="numwrap"><input type="number" id="eP" inputmode="numeric" min="0" max="20" step="1" value="10"><span class="unit">%</span></div>
-            <div class="chips"><button class="chip-b" type="button" data-k="eP" data-v="10">E10</button><button class="chip-b" type="button" data-k="eP" data-v="0">E0</button></div></div>
-        </div>
-        <small>Illinois E85 drops to around E70 in winter and can legally be as low as E51. If you have a sensor, read the pump by filling a gallon and checking.</small>
-        <div class="row2">
-          <div class="field"><label for="pE">E85 price</label><div class="numwrap"><input type="number" id="pE" inputmode="decimal" min="0" step="0.01" placeholder="2.79"><span class="unit">$/gal</span></div></div>
-          <div class="field"><label for="pP">Pump gas price</label><div class="numwrap"><input type="number" id="pP" inputmode="decimal" min="0" step="0.01" placeholder="4.19"><span class="unit">$/gal</span></div></div>
-        </div>
-      </div></details>
-    </div>
-
-    <div class="panel result" id="result">
-      <h3>Add this</h3>
-      <div class="big">
-        <div class="big__row e85"><b id="addE">0.0</b><span>gal of E85<br><i id="addEsub" style="font-style:normal;color:var(--dim)"></i></span></div>
-        <div class="big__row gas"><b id="addP">0.0</b><span>gal of pump gas<br><i id="addPsub" style="font-style:normal;color:var(--dim)"></i></span></div>
-      </div>
-      <div class="outcome" id="outcome"></div>
-      <div class="tank"><div class="tank__lbl"><span>Before</span><span id="beforeLbl"></span></div><div class="tank__bar"><div class="tank__fill" id="bFill"></div><div class="tank__eth" id="bEth"></div></div>
-        <div class="tank__lbl"><span>After</span><span id="afterLbl"></span></div><div class="tank__bar"><div class="tank__fill" id="aFill"></div><div class="tank__eth" id="aEth"></div></div>
-        <div class="tank__lbl"><span style="color:var(--yellow)">■ ethanol</span><span>■ gasoline</span></div></div>
+  <div class="panel" id="result">
+    <div class="ans">
+      <div class="ans__nums"><span class="e85"><span class="n" id="addE">0.0</span> <span class="u">gal E85</span></span><span class="plus" id="plus">+</span><span class="gas"><span class="n" id="addP">0.0</span> <span class="u">gal gas</span></span></div>
+      <div class="ans__land" id="land"></div>
+      <div class="gauge"><div class="gauge__bar"><div class="gauge__seg now" id="segNow"></div><div class="gauge__seg e85" id="segE"></div><div class="gauge__seg gas" id="segP"></div><div class="gauge__line" id="fillLine"></div></div>
+        <div class="gauge__lbl"><span><i class="k" style="background:#4a4b52"></i>in it now <i class="k" style="background:var(--yellow);margin-left:8px"></i>E85 <i class="k" style="background:#9a9da3;margin-left:8px"></i>pump gas</span><span id="gaugeR"></span></div></div>
+      <div class="ans__msg" id="outcome"></div>
       <div class="cost" id="cost" hidden></div>
-      <div class="ctas"><button class="btn btn--red btn--sm" type="button" id="copyBtn">Copy the recipe</button><button class="btn btn--ghost btn--sm" type="button" id="shareBtn">Share link</button></div>
-      <small style="color:var(--dim);font-size:13px">Estimates. Pump E85 content varies, sensors drift a little, and tank sizes are from the spec sheet. A flex fuel sensor is the only thing that actually knows.</small>
+      <div class="ctas"><button class="btn btn--red" type="button" id="copyBtn">Copy the recipe</button><button class="btn btn--ghost" type="button" id="shareBtn">Share</button></div>
     </div>
   </div>
-</div></section>
 
-<a class="mini" href="#result" id="mini"><span id="miniTxt">Set the tank up above</span><b>Result</b></a>
-<section class="sec sec--tight"><div class="wrap"><div class="panel reverse" style="max-width:720px">
-  <h3>The other way around</h3>
-  <p style="color:var(--muted)">Already pumped some E85 and want to know where the tank landed? Uses the same tank, fuel level and pumps as above.</p>
-  <div class="row2">
-    <div class="field"><label for="revE">E85 added</label><div class="numwrap"><input type="number" id="revE" inputmode="decimal" min="0" step="0.1" value="5"><span class="unit">gal</span></div></div>
-    <div class="field"><label for="revP">Pump gas added</label><div class="numwrap"><input type="number" id="revP" inputmode="decimal" min="0" step="0.1" value="0"><span class="unit">gal</span></div></div>
+  <div class="panel" id="inputs">
+    <div class="ctl">
+      <div class="ctl__k">Car</div>
+      <div class="ctl__v"><select id="car"><option value="">Pick a car (sets tank size)</option><optgroup label="BMW"><option value="14.0">135i / 1M (E82) · 14.0 gal</option><option value="16.1">335i (E90 · E92 · E93) · 16.1 gal</option><option value="16.6">M3 (E90 · E92 · E93) · 16.6 gal</option><option value="15.8">335i / 340i (F30 · F32) · 15.8 gal</option><option value="15.8">M3 / M4 (F80 · F82) · 15.8 gal</option><option value="13.7">M235i / M240i (F22) · 13.7 gal</option><option value="13.7">M2 (F87) · 13.7 gal</option><option value="13.7">M240i (G42) · 13.7 gal</option><option value="13.7">M2 (G87) · 13.7 gal</option><option value="15.6">M340i / M440i (G20 · G22) · 15.6 gal</option><option value="15.6">M3 / M4 (G80 · G82) · 15.6 gal</option><option value="18.5">535i / 550i (F10) · 18.5 gal</option><option value="21.1">M5 (F10) · 21.1 gal</option><option value="18.0">540i / M550i (G30) · 18.0 gal</option><option value="18.0">M5 (F90) · 18.0 gal</option><option value="18.0">M8 / M850i (F9x · G15) · 18.0 gal</option><option value="17.2">X3 M40i / X3 M (G01 · F97) · 17.2 gal</option><option value="17.2">X4 M40i / X4 M (G02 · F98) · 17.2 gal</option><option value="21.9">X5 40i / M50i (G05) · 21.9 gal</option><option value="21.9">X5 M (F95) · 21.9 gal</option><option value="13.7">Z4 M40i (G29) · 13.7 gal</option><option value="20.6">750i (G11) · 20.6 gal</option></optgroup><optgroup label="Toyota"><option value="13.7">GR Supra 3.0 (A90) · 13.7 gal</option></optgroup><optgroup label="Mercedes-AMG"><option value="17.4">C63 (W205) · 17.4 gal</option><option value="17.4">GLC63 (X253) · 17.4 gal</option><option value="21.1">E63 (W213) · 21.1 gal</option><option value="21.1">GT 63 4-door · 21.1 gal</option><option value="26.4">G63 · 26.4 gal</option></optgroup></select>
+        <div class="inline sm"><span>Tank <b id="tankLbl" style="color:var(--fg);font-weight:500"></b></span><button class="linkish" type="button" id="editTank">edit</button><span id="tankEdit" hidden class="inline"><input type="number" id="tank" inputmode="decimal" min="5" max="40" step="0.1" value="15.6"><span class="unit">gal</span></span></div></div>
+
+      <div class="ctl__k">In it now <b id="nowLbl"></b></div>
+      <div class="ctl__v"><input type="range" id="now" min="0" max="15.6" step="0.1" value="4" aria-label="Fuel in the tank now, gallons">
+        <div class="chips"><button class="chip-b" type="button" data-k="now" data-v="0">Empty</button><button class="chip-b" type="button" data-k="now" data-v="0.25">¼</button><button class="chip-b" type="button" data-k="now" data-v="0.5">½</button><button class="chip-b" type="button" data-k="now" data-v="0.75">¾</button></div></div>
+
+      <div class="ctl__k">It's at</div>
+      <div class="ctl__v"><div class="chips"><button class="chip-b" type="button" data-k="e0" data-v="10">E10 pump gas</button><button class="chip-b" type="button" data-k="e0" data-v="30">E30</button><button class="chip-b" type="button" data-k="e0" data-v="50">E50</button><button class="chip-b" type="button" data-k="e0" data-v="85">E85</button><span class="custom"><input type="number" id="e0" inputmode="numeric" min="0" max="100" step="1" value="10" aria-label="Ethanol content now, percent"><span>%</span></span></div></div>
+
+      <div class="ctl__k">I want</div>
+      <div class="ctl__v"><div class="chips"><button class="chip-b" type="button" data-k="target" data-v="30">E30</button><button class="chip-b" type="button" data-k="target" data-v="40">E40</button><button class="chip-b" type="button" data-k="target" data-v="50">E50</button><button class="chip-b" type="button" data-k="target" data-v="60">E60</button><button class="chip-b" type="button" data-k="target" data-v="85">E85</button><span class="custom"><input type="number" id="target" inputmode="numeric" min="0" max="100" step="1" value="30" aria-label="Target ethanol content, percent"><span>%</span></span></div></div>
+
+      <div class="ctl__k">Fill to</div>
+      <div class="ctl__v"><div class="chips"><button class="chip-b" type="button" data-k="fill" data-v="full">Full tank</button><button class="chip-b" type="button" data-k="fill" data-v="part">Only some</button><span class="custom" id="fillWrap" hidden><input type="number" id="fillTo" inputmode="decimal" min="1" max="40" step="0.1" value="15.6" aria-label="Fill to, gallons"><span>gal</span></span></div></div>
+    </div>
+
+    <details class="adv"><summary>Pumps, prices, and the other way around</summary><div class="inner">
+      <div class="row2">
+        <div class="ctl__v"><div class="ctl__k">E85 pump is</div><div class="chips"><button class="chip-b" type="button" data-k="eE" data-v="85">E85</button><button class="chip-b" type="button" data-k="eE" data-v="70">E70 winter</button><button class="chip-b" type="button" data-k="eE" data-v="51">E51</button><span class="custom"><input type="number" id="eE" inputmode="numeric" min="30" max="100" step="1" value="85" aria-label="E85 pump ethanol content"><span>%</span></span></div></div>
+        <div class="ctl__v"><div class="ctl__k">Pump gas is</div><div class="chips"><button class="chip-b" type="button" data-k="eP" data-v="10">E10</button><button class="chip-b" type="button" data-k="eP" data-v="0">E0</button><span class="custom"><input type="number" id="eP" inputmode="numeric" min="0" max="20" step="1" value="10" aria-label="Pump gas ethanol content"><span>%</span></span></div></div>
+      </div>
+      <p class="sm">Illinois E85 runs about E70 in winter and can legally be E51. If you have a sensor, pump a gallon and read it.</p>
+      <div class="row2">
+        <div class="ctl__v"><div class="ctl__k">E85 price</div><div class="inline"><input type="number" id="pE" inputmode="decimal" min="0" step="0.01" placeholder="2.79"><span class="unit">$/gal</span></div></div>
+        <div class="ctl__v"><div class="ctl__k">Gas price</div><div class="inline"><input type="number" id="pP" inputmode="decimal" min="0" step="0.01" placeholder="4.19"><span class="unit">$/gal</span></div></div>
+      </div>
+      <div class="rev"><div class="ctl__k">Already pumped? Where did it land</div>
+        <div class="row2">
+          <div class="inline"><input type="number" id="revE" inputmode="decimal" min="0" step="0.1" value="5" aria-label="E85 added, gallons"><span class="unit">gal E85</span></div>
+          <div class="inline"><input type="number" id="revP" inputmode="decimal" min="0" step="0.1" value="0" aria-label="Pump gas added, gallons"><span class="unit">gal gas</span></div>
+        </div>
+        <div class="out" id="revOut"></div></div>
+    </div></details>
+    <p class="sm">Estimates. Pump E85 varies by season, tank sizes are spec-sheet numbers. A <a href="/flex-fuel/" style="color:var(--yellow)">flex fuel sensor</a> is the only thing that actually knows.</p>
   </div>
-  <div class="out" id="revOut"></div>
+
 </div></div></section>
+<a class="mini" href="#result" id="mini"><span id="miniTxt">Set the tank up above</span><b>Result</b></a>
 
 <section class="sec"><div class="wrap">
   <div class="sec__head"><span class="eyebrow">Straight answers</span><h2>Ethanol questions we get every week.</h2></div>
@@ -346,7 +357,7 @@ details.adv .inner{display:grid;gap:12px;padding-top:12px}
     <details><summary>Can I just run straight E85 on a stock turbo car?</summary><p>Not on a pump-gas map, and not on the stock fuel system once power climbs. E85 needs about a third more fuel than gasoline. On the B58TU and N54 the answer past about E60 is port injection; on the S55, S58 and the V8s it is a bigger high-pressure pump. The <a href="/store/build/">Build Lab</a> walks through what each engine needs.</p></details>
     <details><summary>How accurate is this?</summary><p>The math is exact; the inputs are not. Pump E85 content varies by season and by station, tank sizes are nominal, and the car's reading moves a little with temperature. Treat the result as a recipe that lands within a few points of the target, and let the sensor do the rest.</p></details>
   </div>
-  <div class="cta-row" style="margin-top:28px"><a class="btn btn--red" href="/flex-fuel/">Flex fuel kits &amp; E85 tuning</a><a class="btn btn--ghost" href="/store/build/">Spec a build in the Build Lab</a></div>
+  <div class="cta-row" style="margin-top:24px"><a class="btn btn--red" href="/flex-fuel/">Flex fuel kits &amp; E85 tuning</a><a class="btn btn--ghost" href="/store/build/">Spec a build in the Build Lab</a></div>
 </div></section>
 <footer class="foot"><div class="wrap">
   <div class="foot__grid">
@@ -370,61 +381,61 @@ details.adv .inner{display:grid;gap:12px;padding-top:12px}
   var $=function(id){return document.getElementById(id);};
   var el={car:$('car'),tank:$('tank'),fillTo:$('fillTo'),now:$('now'),e0:$('e0'),target:$('target'),eE:$('eE'),eP:$('eP'),pE:$('pE'),pP:$('pP'),revE:$('revE'),revP:$('revP')};
   var KEYS=['tank','fillTo','now','e0','target','eE','eP','pE','pP'];
+  var fillMode='full';
   function num(x,d){var v=parseFloat(x);return isNaN(v)?d:v;}
   function r1(v){return (Math.round(v*10)/10).toFixed(1);}
   function pct(v){return 'E'+Math.round(v);}
-  function state(){return {tank:num(el.tank.value,15.6),fillTo:num(el.fillTo.value,15.6),now:num(el.now.value,0),e0:num(el.e0.value,10),target:num(el.target.value,30),eE:num(el.eE.value,85),eP:num(el.eP.value,10),pE:num(el.pE.value,0),pP:num(el.pP.value,0)};}
-  function setChips(){document.querySelectorAll('.chip-b').forEach(function(b){var k=b.getAttribute('data-k'),v=b.getAttribute('data-v');var cur;if(k==='now'){cur=(num(el.now.value,0)/Math.max(0.1,num(el.tank.value,1))).toFixed(2);v=(+v).toFixed(2);}else cur=String(num(el[k].value,0));b.setAttribute('aria-pressed',cur===v?'true':'false');});}
-  function bars(fillId,ethId,gal,e,tank){var f=Math.min(100,gal/tank*100);$(fillId).style.width=f+'%';$(ethId).style.width=(f*e/100)+'%';}
+  function state(){var tank=num(el.tank.value,15.6);return {tank:tank,fillTo:fillMode==='full'?tank:num(el.fillTo.value,tank),now:num(el.now.value,0),e0:num(el.e0.value,10),target:num(el.target.value,30),eE:num(el.eE.value,85),eP:num(el.eP.value,10),pE:num(el.pE.value,0),pP:num(el.pP.value,0)};}
+  function setChips(){document.querySelectorAll('.chip-b').forEach(function(b){var k=b.getAttribute('data-k'),v=b.getAttribute('data-v'),on;
+    if(k==='now'){on=(num(el.now.value,0)/Math.max(0.1,num(el.tank.value,1))).toFixed(2)===(+v).toFixed(2);}
+    else if(k==='fill'){on=fillMode===v;}
+    else on=String(num(el[k].value,0))===v;
+    b.setAttribute('aria-pressed',on?'true':'false');});}
+  function seg(id,gal,tank,txt){var e=$(id);var w=Math.max(0,Math.min(100,gal/tank*100));e.style.width=w+'%';e.textContent=w>9?txt:'';}
   function calc(){
     var s=state();
-    if(s.fillTo>s.tank){s.fillTo=s.tank;el.fillTo.value=r1(s.tank);}
     el.now.max=r1(s.tank);if(s.now>s.tank){s.now=s.tank;el.now.value=r1(s.tank);}
-    $('tankLbl').textContent=r1(s.tank)+' gal';$('fillLbl').textContent=r1(s.fillTo)+' gal';$('nowLbl').textContent=r1(s.now)+' gal · '+pct(s.e0);
-    var add=s.fillTo-s.now,out=$('outcome'),rowE=$('addE').parentNode,rowP=$('addP').parentNode;
-    rowE.classList.remove('off');rowP.classList.remove('off');out.classList.remove('warn');
-    var a=0,b=0,eFinal=s.e0,msg='';
-    if(add<=0.05){
-      a=0;b=0;eFinal=s.e0;
-      msg='The tank is already at your fill line. Set <b>fill to</b> higher than what’s in it, or burn some off first.';out.classList.add('warn');
-    }else if(Math.abs(s.eE-s.eP)<1){
-      msg='The two pumps are the same blend, so there is nothing to mix. Check the pump numbers under the pumps and the price.';out.classList.add('warn');
-    }else{
+    if(s.fillTo>s.tank){s.fillTo=s.tank;el.fillTo.value=r1(s.tank);}
+    $('tankLbl').textContent=r1(s.tank)+' gal';$('nowLbl').textContent=r1(s.now)+' gal · '+pct(s.e0);
+    var add=s.fillTo-s.now,out=$('outcome'),a=0,b=0,eFinal=s.e0,msg='',warn=false;
+    if(add<=0.05){msg='The tank is already at the fill line. Pick <b>Only some</b> and a higher number, or burn some off first.';warn=true;}
+    else if(Math.abs(s.eE-s.eP)<1){msg='Both pumps are the same blend, so there is nothing to mix. Check the pump numbers below.';warn=true;}
+    else{
       a=(s.target*s.fillTo-s.e0*s.now-s.eP*add)/(s.eE-s.eP);b=add-a;
-      if(a<0){a=0;b=add;eFinal=(s.e0*s.now+s.eP*add)/s.fillTo;
-        msg='You can’t get down to <b>'+pct(s.target)+'</b> by adding fuel: what’s in the tank is already richer than that. Filling the rest with pump gas lands at <b>'+pct(eFinal)+'</b>. Burn some off and come back, or run it.';out.classList.add('warn');rowE.classList.add('off');}
-      else if(a>add){a=add;b=0;eFinal=(s.e0*s.now+s.eE*add)/s.fillTo;
-        msg='You can’t reach <b>'+pct(s.target)+'</b> on top of what’s in there. Filling the rest with straight E'+Math.round(s.eE)+' gets you to <b>'+pct(eFinal)+'</b>. Run that, or drive it down first.';out.classList.add('warn');rowP.classList.add('off');}
-      else{eFinal=(s.e0*s.now+a*s.eE+b*s.eP)/s.fillTo;
-        msg='Pump <b>'+r1(a)+' gal of E'+Math.round(s.eE)+'</b>'+(b>0.05?' and <b>'+r1(b)+' gal of pump gas</b>':'')+'. The tank lands at <b>'+pct(eFinal)+'</b> with '+r1(s.fillTo)+' gal in it. Pump the E85 first so it mixes on the way in.';
-        if(b<0.05)rowP.classList.add('off');}
+      if(a<0){a=0;b=add;eFinal=(s.e0*s.now+s.eP*add)/s.fillTo;msg='What’s in the tank is already richer than <b>'+pct(s.target)+'</b>. Filling the rest with pump gas lands at <b>'+pct(eFinal)+'</b>. Run that, or burn some off and come back.';warn=true;}
+      else if(a>add){a=add;b=0;eFinal=(s.e0*s.now+s.eE*add)/s.fillTo;msg='Not enough room to reach <b>'+pct(s.target)+'</b> on top of what’s in there. Straight E'+Math.round(s.eE)+' for the rest gets you to <b>'+pct(eFinal)+'</b>. Run that, or drive it down first.';warn=true;}
+      else{eFinal=(s.e0*s.now+a*s.eE+b*s.eP)/s.fillTo;msg='Pump the E85 first so it mixes on the way in.';}
     }
     $('addE').textContent=r1(a);$('addP').textContent=r1(b);
-    $('addEsub').textContent=a>0?'E'+Math.round(s.eE)+' at the pump':'';$('addPsub').textContent=b>0?'E'+Math.round(s.eP)+' pump gas':'';
-    out.innerHTML=msg;
-    $('beforeLbl').textContent=r1(s.now)+' gal · '+pct(s.e0);$('afterLbl').textContent=r1(s.now+a+b)+' gal · '+pct(eFinal);
-    bars('bFill','bEth',s.now,s.e0,s.tank);bars('aFill','aEth',s.now+a+b,eFinal,s.tank);
-    var c=$('cost');if((s.pE>0||s.pP>0)&&(a>0||b>0)){var tot=a*s.pE+b*s.pP;c.hidden=false;c.innerHTML='<span>E85 '+r1(a)+' × $'+s.pE.toFixed(2)+'</span><span>gas '+r1(b)+' × $'+s.pP.toFixed(2)+'</span><span>total <b>$'+tot.toFixed(2)+'</b></span>';}else c.hidden=true;
-    // reverse
+    $('plus').classList.toggle('off',!(a>0.05&&b>0.05));document.querySelector('.ans__nums .gas').classList.toggle('off',b<=0.05&&a>0.05);document.querySelector('.ans__nums .e85').classList.toggle('off',a<=0.05&&b>0.05);
+    $('land').innerHTML=(a>0.05||b>0.05)?('lands at <b>'+pct(eFinal)+'</b> · <b>'+r1(s.now+a+b)+' gal</b> in the tank'):'nothing to add';
+    out.innerHTML=msg;out.classList.toggle('warn',warn);
+    seg('segNow',s.now,s.tank,r1(s.now)+' '+pct(s.e0));seg('segE',a,s.tank,r1(a)+' E'+Math.round(s.eE));seg('segP',b,s.tank,r1(b)+' gas');
+    $('fillLine').style.left=Math.min(100,s.fillTo/s.tank*100)+'%';$('fillLine').style.display=s.fillTo<s.tank-0.05?'block':'none';
+    $('gaugeR').textContent=r1(s.tank)+' gal tank';
+    var c=$('cost');if((s.pE>0||s.pP>0)&&(a>0||b>0)){c.hidden=false;c.innerHTML='Fill cost <b>$'+(a*s.pE+b*s.pP).toFixed(2)+'</b> · '+r1(a)+' × $'+s.pE.toFixed(2)+' + '+r1(b)+' × $'+s.pP.toFixed(2);}else c.hidden=true;
     var ra=num(el.revE.value,0),rb=num(el.revP.value,0),rv=s.now+ra+rb;
-    $('revOut').innerHTML=rv>0?('That tank is at <b>'+pct((s.e0*s.now+ra*s.eE+rb*s.eP)/rv)+'</b> · '+r1(rv)+' gal'+(rv>s.tank+0.05?' <span style="color:var(--red)">(more than the tank holds)</span>':'')):'Add some fuel above.';
+    $('revOut').innerHTML=rv>0?('Lands at <b>'+pct((s.e0*s.now+ra*s.eE+rb*s.eP)/rv)+'</b> · '+r1(rv)+' gal'+(rv>s.tank+0.05?' <span style="color:var(--red)">(more than the tank holds)</span>':'')):'';
     setChips();
-    $('miniTxt').innerHTML=(a>0||b>0)?('<b>'+r1(a)+'</b> gal E'+Math.round(s.eE)+(b>0.05?' + <b>'+r1(b)+'</b> gal gas':'')+' → '+pct(eFinal)):'Nothing to add yet';
-    try{var o={};KEYS.forEach(function(k){o[k]=el[k].value;});o.car=el.car.value;localStorage.setItem('eins-e85',JSON.stringify(o));}catch(e){}
+    $('miniTxt').innerHTML=(a>0.05||b>0.05)?('<b>'+r1(a)+'</b> E'+Math.round(s.eE)+(b>0.05?' + <b>'+r1(b)+'</b> gas':'')+' → '+pct(eFinal)):'Nothing to add yet';
+    try{var o={fillMode:fillMode,car:el.car.value};KEYS.forEach(function(k){o[k]=el[k].value;});localStorage.setItem('eins-e85',JSON.stringify(o));}catch(e){}
     window.__recipe='E'+Math.round(s.target)+' mix'+(el.car.selectedIndex>0?' for a '+el.car.options[el.car.selectedIndex].text.replace(/ · [\d.]+ gal$/,''):'')+': tank at '+r1(s.now)+' gal '+pct(s.e0)+' → add '+r1(a)+' gal E'+Math.round(s.eE)+(b>0.05?' + '+r1(b)+' gal pump gas':'')+' → ~'+pct(eFinal)+' ('+r1(s.now+a+b)+' gal). einsmotorsports.net/e85-calculator/';
   }
-  // car picker sets the tank
-  el.car.addEventListener('change',function(){var g=num(el.car.value,0);if(g){var ratio=num(el.now.value,0)/Math.max(0.1,num(el.tank.value,1));el.tank.value=r1(g);el.fillTo.value=r1(g);el.now.max=r1(g);el.now.value=r1(Math.min(g,ratio*g));}calc();});
-  el.tank.addEventListener('input',function(){var g=num(el.tank.value,0);if(g>0){el.fillTo.value=r1(g);el.now.max=r1(g);}calc();});
+  function setTank(g){var ratio=num(el.now.value,0)/Math.max(0.1,num(el.tank.value,1));el.tank.value=r1(g);el.fillTo.value=r1(g);el.now.max=r1(g);el.now.value=r1(Math.min(g,ratio*g));}
+  el.car.addEventListener('change',function(){var g=num(el.car.value,0);if(g)setTank(g);calc();});
+  el.tank.addEventListener('input',function(){var g=num(el.tank.value,0);if(g>0){el.fillTo.value=r1(Math.min(g,num(el.fillTo.value,g)));el.now.max=r1(g);}calc();});
+  $('editTank').addEventListener('click',function(){var w=$('tankEdit');w.hidden=!w.hidden;if(!w.hidden)el.tank.focus();});
   Object.keys(el).forEach(function(k){if(k!=='car'&&k!=='tank')el[k].addEventListener('input',calc);});
-  document.querySelectorAll('.chip-b').forEach(function(b){b.addEventListener('click',function(){var k=b.getAttribute('data-k'),v=b.getAttribute('data-v');if(k==='now'){el.now.value=r1(+v*num(el.tank.value,0));}else el[k].value=v;calc();});});
+  document.querySelectorAll('.chip-b').forEach(function(b){b.addEventListener('click',function(){var k=b.getAttribute('data-k'),v=b.getAttribute('data-v');
+    if(k==='now'){el.now.value=r1(+v*num(el.tank.value,0));}
+    else if(k==='fill'){fillMode=v;$('fillWrap').hidden=(v==='full');if(v==='part'){if(num(el.fillTo.value,0)>=num(el.tank.value,0))el.fillTo.value=r1(Math.max(num(el.now.value,0)+1,num(el.tank.value,0)*0.6));el.fillTo.focus();}}
+    else el[k].value=v;calc();});});
   $('copyBtn').addEventListener('click',function(){var t=window.__recipe||'',btn=this;if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(function(){btn.textContent='Copied';setTimeout(function(){btn.textContent='Copy the recipe';},1500);});}});
-  $('shareBtn').addEventListener('click',function(){var s=state(),q=new URLSearchParams();KEYS.forEach(function(k){if(k!=='pE'&&k!=='pP')q.set(k,el[k].value);});if(el.car.value)q.set('car',el.car.value);var u=location.origin+location.pathname+'?'+q.toString(),btn=this;
-    if(navigator.share){navigator.share({title:'E85 blend',text:window.__recipe,url:u}).catch(function(){});}else if(navigator.clipboard){navigator.clipboard.writeText(u).then(function(){btn.textContent='Link copied';setTimeout(function(){btn.textContent='Share link';},1500);});}});
-  // restore: URL first, then last session
+  $('shareBtn').addEventListener('click',function(){var q=new URLSearchParams();KEYS.forEach(function(k){if(k!=='pE'&&k!=='pP')q.set(k,el[k].value);});q.set('fill',fillMode);if(el.car.value)q.set('car',el.car.value);var u=location.origin+location.pathname+'?'+q.toString(),btn=this;
+    if(navigator.share){navigator.share({title:'E85 blend',text:window.__recipe,url:u}).catch(function(){});}else if(navigator.clipboard){navigator.clipboard.writeText(u).then(function(){btn.textContent='Link copied';setTimeout(function(){btn.textContent='Share';},1500);});}});
   var q=new URLSearchParams(location.search),saved=null;try{saved=JSON.parse(localStorage.getItem('eins-e85')||'null');}catch(e){}
   var src=q.has('tank')?Object.fromEntries(q.entries()):saved;
-  if(src){KEYS.forEach(function(k){if(src[k]!==undefined&&src[k]!=='')el[k].value=src[k];});if(src.car){el.car.value=src.car;}el.now.max=el.tank.value;}
+  if(src){KEYS.forEach(function(k){if(src[k]!==undefined&&src[k]!=='')el[k].value=src[k];});if(src.car)el.car.value=src.car;fillMode=(src.fill||src.fillMode)==='part'?'part':'full';$('fillWrap').hidden=(fillMode==='full');el.now.max=el.tank.value;}
   calc();
 })();
 </script>
