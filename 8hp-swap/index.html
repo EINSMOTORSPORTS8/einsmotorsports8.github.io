@@ -1,0 +1,606 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>8HP Swap Gear Ratio Simulator · ZF 8HP vs Your Gearbox · Eins Motorsports</title><meta property="og:type" content="website"><meta property="og:site_name" content="Eins Motorsports"><meta property="og:title" content="8HP Swap Gear Ratio Simulator · ZF 8HP vs Your Gearbox · Eins Motorsports"><meta property="og:description" content="Planning a ZF 8HP swap? Pick your car and gearbox, pick the 8HP donor (BMW, Dodge, Jaguar, Alfa, Maserati, Audi), drag the speed slider and watch the gear curve, wheel torque and simulated 0-60 and quarter mile change. Free, from Eins Motorsports in Bensenville, IL."><meta property="og:url" content="https://einsmotorsports.net/8hp-swap/"><meta property="og:image" content="https://einsmotorsports.net/img/build-lab.jpg"><meta property="og:locale" content="en_US"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="8HP Swap Gear Ratio Simulator · ZF 8HP vs Your Gearbox · Eins Motorsports"><meta name="twitter:description" content="Planning a ZF 8HP swap? Pick your car and gearbox, pick the 8HP donor (BMW, Dodge, Jaguar, Alfa, Maserati, Audi), drag the speed slider and watch the gear curve, wheel torque and simulated 0-60 and quarter mile change. Free, from Eins Motorsports in Bensenville, IL."><meta name="twitter:image" content="https://einsmotorsports.net/img/build-lab.jpg"><meta name="description" content="Planning a ZF 8HP swap? Pick your car and gearbox, pick the 8HP donor (BMW, Dodge, Jaguar, Alfa, Maserati, Audi), drag the speed slider and watch the gear curve, wheel torque and simulated 0-60 and quarter mile change. Free, from Eins Motorsports in Bensenville, IL."><link rel="canonical" href="https://einsmotorsports.net/8hp-swap/"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Barlow:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap"><style>
+/* Layout concept: a shop floor at night. Full-bleed photo bands alternate with
+   dense, catalog-style information blocks. One accent (brand red) for actions,
+   lift-arm yellow only as a marker. Tri-stripe slash = brand mark. */
+:root{
+  --bg:#0b0b0c; --panel:#141416; --panel-2:#1b1b1e; --line:#2a2a2e;
+  --fg:#f2f2f0; --muted:#a3a39e; --dim:#6f6f6b;
+  --red:#e2231a; --red-deep:#b3160f; --yellow:#f2c300; --steel:#b8bcc2;
+  --display:"Barlow Condensed","Arial Narrow","Helvetica Neue",Arial,sans-serif;
+  --body:"Barlow","Helvetica Neue",Arial,sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+  --gutter:max(16px,env(safe-area-inset-left,0px));
+  --gutter-r:max(16px,env(safe-area-inset-right,0px));
+  --max:1180px;
+  color-scheme:dark;
+}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto} *{animation:none!important;transition:none!important}}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--body);font-size:17px;line-height:1.55;-webkit-font-smoothing:antialiased}
+img{max-width:100%;display:block}
+a{color:inherit}
+h1,h2,h3,h4{font-family:var(--display);text-transform:uppercase;line-height:.95;margin:0;text-wrap:balance;letter-spacing:.005em}
+h1{font-size:clamp(44px,8.5vw,112px);font-weight:800}
+h2{font-size:clamp(34px,5.2vw,64px);font-weight:800}
+h3{font-size:clamp(24px,3vw,34px);font-weight:700}
+p{margin:0}
+.wrap{max-width:var(--max);margin-inline:auto;padding-left:var(--gutter);padding-right:var(--gutter-r)}
+.eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--yellow)}
+.eyebrow--muted{color:var(--muted)}
+.lede{font-size:clamp(18px,2vw,22px);line-height:1.45;color:var(--muted);max-width:62ch}
+.prose{max-width:66ch;display:grid;gap:1em;color:var(--fg)}
+.prose p{color:var(--muted)}
+.prose strong{color:var(--fg);font-weight:600}
+.mono{font-family:var(--mono)}
+.tabular{font-variant-numeric:tabular-nums}
+
+/* tri-stripe brand mark */
+.stripe{display:inline-block;width:38px;height:22px;background:
+  linear-gradient(115deg,transparent 0 18%,var(--red) 18% 42%,transparent 42% 48%,var(--yellow) 48% 72%,transparent 72% 78%,var(--steel) 78% 100%);
+  flex:none}
+.stripe--lg{width:64px;height:36px}
+
+/* header */
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:40;background:rgba(11,11,12,.86);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.top__in{display:flex;align-items:center;gap:18px;min-height:64px}
+.brand{display:flex;align-items:center;gap:12px;text-decoration:none;font-family:var(--display);font-weight:800;font-size:26px;letter-spacing:.02em;text-transform:uppercase}
+.brand small{display:block;font-size:11px;letter-spacing:.22em;color:var(--muted);font-weight:600;line-height:1}
+.brand__logo{height:34px;width:auto;display:block}
+@media (min-width:900px){.brand__logo{height:40px}}
+.nav{display:flex;gap:4px;margin-left:auto;align-items:center}
+.nav a{text-decoration:none;font-family:var(--display);font-weight:600;font-size:17px;letter-spacing:.05em;text-transform:uppercase;padding:10px 9px;color:var(--muted);border-radius:4px;white-space:nowrap}
+.nav a:hover,.nav a[aria-current]{color:var(--fg)}
+.nav a[aria-current]{box-shadow:inset 0 -3px 0 var(--red)}
+.nav .btn{margin-left:8px}
+.menu-btn{margin-left:auto;display:none;background:none;border:1px solid var(--line);color:var(--fg);font-family:var(--display);font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:9px 14px;border-radius:4px;font-size:15px;cursor:pointer}
+@media (max-width:860px){
+  .nav{display:none;position:absolute;left:0;right:0;top:100%;background:var(--panel);border-bottom:1px solid var(--line);flex-direction:column;align-items:stretch;padding:8px var(--gutter) 16px var(--gutter)}
+  .nav.open{display:flex}
+  .nav a{padding:12px 8px;font-size:20px}
+  .nav .btn{margin:8px 0 0}
+  .menu-btn{display:block}
+}
+
+/* buttons */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;text-decoration:none;font-family:var(--display);font-weight:700;letter-spacing:.08em;text-transform:uppercase;font-size:18px;padding:14px 22px;border-radius:4px;border:1px solid transparent;cursor:pointer;text-align:center;max-width:100%;min-width:0}
+.btn--red{background:var(--red);color:#fff}
+.btn--red:hover{background:var(--red-deep)}
+.btn--ghost{border-color:var(--steel);color:var(--fg);background:transparent}
+.btn--ghost:hover{background:rgba(255,255,255,.06)}
+.btn--sm{font-size:15px;padding:10px 14px}
+.btn:focus-visible,a:focus-visible,button:focus-visible{outline:2px solid var(--yellow);outline-offset:3px}
+
+/* hero */
+.hero{position:relative;isolation:isolate;overflow:hidden;border-bottom:1px solid var(--line)}
+.hero .ph{position:absolute;inset:0;aspect-ratio:auto;height:100%;z-index:-2;margin:0}
+.hero .ph img{width:100%;height:100%;object-fit:cover}
+.hero::after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(90deg,rgba(11,11,12,.92) 0%,rgba(11,11,12,.72) 45%,rgba(11,11,12,.35) 100%),linear-gradient(0deg,var(--bg) 0%,transparent 40%)}
+.hero__in{padding-block:clamp(72px,12vw,150px) clamp(44px,7vw,90px);display:grid;gap:22px;max-width:900px}
+.hero__codes{display:flex;flex-wrap:wrap;gap:8px 18px;font-family:var(--mono);font-size:13px;letter-spacing:.12em;color:var(--steel)}
+.hero__codes b{color:var(--yellow);font-weight:500}
+.cta-row{display:flex;flex-wrap:wrap;gap:12px;align-items:center}
+.phone-line{font-family:var(--mono);font-size:15px;color:var(--muted);display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.phone-line b{color:var(--fg);font-weight:500;user-select:all}
+.copy{background:none;border:1px solid var(--line);color:var(--muted);font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;padding:5px 9px;border-radius:3px;cursor:pointer}
+.copy:hover{color:var(--fg);border-color:var(--steel)}
+
+/* sections */
+.sec{padding-block:clamp(56px,8vw,110px);border-bottom:1px solid var(--line)}
+.sec--tight{padding-block:clamp(36px,5vw,64px)}
+.sec--panel{background:var(--panel)}
+.sec__head{display:grid;gap:14px;margin-bottom:clamp(28px,4vw,48px);max-width:820px}
+.sec__head .lede{max-width:60ch}
+.split{display:grid;grid-template-columns:1fr 1fr;gap:clamp(24px,5vw,64px);align-items:center}
+@media (max-width:860px){.split{grid-template-columns:1fr}}
+.split>*{min-width:0}
+
+/* photo placeholders / figures */
+.ph{margin:0;position:relative;overflow:hidden;background:var(--panel-2);max-width:100%;border:1px solid var(--line)}
+.ph img{width:100%;height:100%;object-fit:cover}
+.ph--empty{background:
+  repeating-linear-gradient(135deg,transparent 0 14px,rgba(255,255,255,.035) 14px 15px),var(--panel-2);
+  display:flex;flex-direction:column;justify-content:flex-end;padding:14px}
+.ph__tag{position:absolute;top:12px;left:12px;font-family:var(--mono);font-size:10px;letter-spacing:.18em;color:var(--yellow);border:1px solid rgba(242,195,0,.5);padding:3px 6px;border-radius:2px}
+.ph__alt{font-family:var(--mono);font-size:12px;color:var(--muted);line-height:1.4}
+.ph--round{border-radius:6px}
+
+/* platform catalog */
+.catalog{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:22px 22px 20px;display:grid;gap:12px;text-decoration:none;position:relative;overflow:hidden;min-width:0}
+.card:hover{border-color:var(--steel)}
+.card::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--red);transform:scaleY(0);transform-origin:top;transition:transform .2s}
+.card:hover::before{transform:scaleY(1)}
+.card__code{font-family:var(--display);font-weight:800;font-size:clamp(44px,5vw,60px);line-height:.9;letter-spacing:.01em}
+.card__chassis{font-family:var(--mono);font-size:12px;letter-spacing:.1em;color:var(--yellow);text-transform:uppercase}
+.card__title{font-family:var(--display);font-weight:700;font-size:22px;text-transform:uppercase;letter-spacing:.03em}
+.card ul{margin:0;padding:0;list-style:none;display:grid;gap:6px;color:var(--muted);font-size:15.5px}
+.card ul li::before{content:"— ";color:var(--dim)}
+.card__go{font-family:var(--display);font-weight:700;letter-spacing:.08em;text-transform:uppercase;font-size:15px;color:var(--fg);margin-top:4px}
+
+/* services list */
+.svc{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1px;background:var(--line);border:1px solid var(--line)}
+.svc>a,.svc>div{background:var(--bg);padding:24px 22px;display:grid;gap:10px;text-decoration:none;min-width:0}
+.svc>a:hover{background:var(--panel)}
+.svc h3{font-size:26px}
+.svc p{color:var(--muted);font-size:15.5px}
+.svc .mono{font-size:12px;letter-spacing:.12em;color:var(--yellow);text-transform:uppercase}
+
+/* process strip */
+.steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:18px;counter-reset:s}
+.step{display:grid;gap:8px;padding-top:14px;border-top:2px solid var(--line);position:relative}
+.step::before{counter-increment:s;content:"0" counter(s);font-family:var(--mono);font-size:12px;color:var(--yellow);letter-spacing:.14em}
+.step h3{font-size:24px}
+.step p{color:var(--muted);font-size:15.5px}
+
+/* spec table */
+.spec{width:100%;border-collapse:collapse;font-size:15.5px}
+.spec th,.spec td{text-align:left;padding:12px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+.spec th{font-family:var(--mono);font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:500;width:38%}
+.spec td{color:var(--fg)}
+.table-wrap{overflow-x:auto}
+
+/* gallery */
+.gallery{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:10px}
+.gallery figure{aspect-ratio:4/5}
+.gallery .wide{grid-column:span 2;aspect-ratio:16/10}
+@media (max-width:560px){.gallery{grid-template-columns:1fr 1fr}.gallery .wide{grid-column:span 2}}
+.cap{font-family:var(--mono);font-size:12px;color:var(--muted);margin-top:8px}
+
+/* build list */
+.builds{display:grid;gap:14px}
+.build{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:18px;background:var(--panel);border:1px solid var(--line);border-radius:6px;overflow:hidden}
+.build .ph{border:0;border-radius:0;aspect-ratio:4/3}
+.build__body{padding:22px 22px 22px 4px;display:grid;gap:10px;align-content:center}
+.build__body h3{font-size:28px}
+.build__body p{color:var(--muted);font-size:15.5px}
+.build__tags{display:flex;flex-wrap:wrap;gap:6px}
+.tag{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--steel);border:1px solid var(--line);padding:4px 7px;border-radius:3px}
+@media (max-width:700px){.build{grid-template-columns:1fr}.build__body{padding:18px}}
+
+/* callout band */
+.band{background:var(--red);color:#fff;border-bottom:1px solid var(--line)}
+.band .wrap{display:flex;flex-wrap:wrap;gap:16px 32px;align-items:center;justify-content:space-between;padding-block:26px}
+.band h2{font-size:clamp(28px,4vw,44px)}
+.band .btn--ghost{border-color:#fff;color:#fff}
+.band .btn--ghost:hover{background:rgba(255,255,255,.14)}
+
+/* footer */
+.foot{padding-block:48px 120px;color:var(--muted);font-size:15px}
+.foot__grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:28px}
+.foot h4{font-size:16px;letter-spacing:.1em;color:var(--fg);margin-bottom:10px}
+.foot a{color:var(--muted);text-decoration:none}
+.foot a:hover{color:var(--fg)}
+.foot ul{list-style:none;margin:0;padding:0;display:grid;gap:6px}
+.foot .fine{margin-top:34px;font-family:var(--mono);font-size:12px;color:var(--dim)}
+@media (min-width:861px){.foot{padding-bottom:48px}}
+
+/* mobile action bar */
+.actbar{position:fixed;left:0;right:0;bottom:0;z-index:50;display:none;grid-template-columns:1fr 1fr 1fr;gap:1px;background:var(--line);border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom,0px);padding-left:env(safe-area-inset-left,0px);padding-right:env(safe-area-inset-right,0px)}
+.actbar a{background:var(--panel);color:var(--fg);text-decoration:none;font-family:var(--display);font-weight:700;letter-spacing:.08em;text-transform:uppercase;font-size:16px;padding:15px 8px;text-align:center}
+.actbar a.red{background:var(--red);color:#fff}
+@media (max-width:860px){.actbar{display:grid}}
+
+/* page hero (interior) */
+.phead{padding-block:clamp(48px,7vw,96px) clamp(28px,4vw,48px);border-bottom:1px solid var(--line);display:grid;gap:16px}
+.phead .lede{max-width:64ch}
+.kicker{display:flex;align-items:center;gap:14px}
+
+/* faq */
+details{border-top:1px solid var(--line);padding:16px 0}
+details:last-of-type{border-bottom:1px solid var(--line)}
+summary{cursor:pointer;font-family:var(--display);font-weight:700;font-size:22px;text-transform:uppercase;letter-spacing:.03em;list-style:none;display:flex;justify-content:space-between;gap:16px}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"+";color:var(--yellow);font-weight:600}
+details[open] summary::after{content:"–"}
+details p{color:var(--muted);margin-top:10px;max-width:66ch}
+
+/* utilities */
+.grid-2{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px}
+.stack{display:grid;gap:14px}
+.muted{color:var(--muted)}
+.ig-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:6px}
+.ig-grid figure{aspect-ratio:1}
+.note{font-family:var(--mono);font-size:12px;color:var(--dim);border-left:2px solid var(--yellow);padding-left:10px}
+
+/* ---- 8HP simulator ---- */
+[hidden]{display:none!important}
+.sim{display:grid;grid-template-columns:340px minmax(0,1fr);gap:16px;align-items:start}
+@media (max-width:1000px){.sim{grid-template-columns:1fr}}
+.pnl{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:16px;display:grid;gap:12px;min-width:0}
+.pnl h3{font-size:12px;font-family:var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--yellow);font-weight:500;display:flex;justify-content:space-between;align-items:center;gap:8px}
+.pnl h3 small{color:var(--dim);letter-spacing:.06em;text-transform:none;font-size:11px}
+.f{display:grid;gap:5px;min-width:0}
+.f>span{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);display:flex;justify-content:space-between;gap:8px}
+.f>span b{color:var(--fg);font-weight:500;font-variant-numeric:tabular-nums}
+.sim select,.sim input[type=number]{appearance:none;-webkit-appearance:none;width:100%;background:var(--panel-2);border:1px solid var(--line);color:var(--fg);font-family:var(--display);font-weight:600;font-size:16px;padding:8px 11px;border-radius:4px;min-height:42px}
+.sim select{background-image:linear-gradient(45deg,transparent 50%,var(--muted) 50%),linear-gradient(135deg,var(--muted) 50%,transparent 50%);background-position:calc(100% - 16px) 50%,calc(100% - 10px) 50%;background-size:6px 6px;background-repeat:no-repeat;padding-right:34px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sim input[type=range]{width:100%;accent-color:var(--yellow);margin:0;min-height:30px}
+.chips{display:flex;flex-wrap:wrap;gap:5px}
+.chip{font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;padding:0 10px;min-height:36px;border:1px solid var(--line);border-radius:4px;background:none;color:var(--muted);cursor:pointer}
+.chip:hover{color:var(--fg);border-color:var(--steel)}
+.chip[aria-pressed="true"]{color:var(--fg);border-color:var(--yellow);box-shadow:inset 0 -3px 0 var(--yellow)}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}.row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
+.ratios{display:grid;grid-template-columns:repeat(8,1fr);gap:4px}
+.ratios input{padding:6px 4px;font-size:14px;text-align:center;min-height:36px}
+.ratios .g{font-family:var(--mono);font-size:10px;color:var(--dim);text-align:center;letter-spacing:.08em}
+@media (max-width:520px){.ratios{grid-template-columns:repeat(4,1fr)}}
+.adv{border-top:1px solid var(--line);padding-top:8px}
+.adv summary{cursor:pointer;font-family:var(--mono);font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);list-style:none;display:block;text-align:left}
+.adv summary::-webkit-details-marker{display:none}.adv summary::before{content:"+ ";color:var(--yellow)}.adv[open] summary::before{content:"\2013 "}.adv summary::after{content:none}
+.adv .in{display:grid;gap:10px;padding-top:10px}
+/* chart */
+.chartwrap{position:relative;background:#0b0b0c;border:1px solid var(--line);border-radius:6px;overflow:hidden}
+.chartwrap canvas{display:block;width:100%;height:auto;touch-action:none;cursor:ew-resize}
+.views{display:flex;gap:4px;flex-wrap:wrap}
+.legend{display:flex;gap:14px;flex-wrap:wrap;font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.legend i{display:inline-block;width:18px;height:3px;vertical-align:middle;margin-right:6px;border-radius:2px}
+.reads{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.read{background:var(--panel-2);border:1px solid var(--line);border-radius:6px;padding:10px 12px;display:grid;gap:4px}
+.read .t{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.read .n{font-family:var(--display);font-weight:800;font-size:28px;line-height:1;text-transform:uppercase;font-variant-numeric:tabular-nums}
+.read.hp .n{color:var(--yellow)}
+.read .s{font-size:13px;color:var(--dim);line-height:1.35}
+.speedlbl{display:flex;justify-content:space-between;font-family:var(--mono);font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.speedlbl b{color:var(--fg);font-weight:500;font-size:16px}
+/* results */
+.res{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+@media (max-width:560px){.res{grid-template-columns:1fr}}
+.stat{background:var(--panel-2);border:1px solid var(--line);border-radius:6px;padding:10px 12px;display:grid;gap:6px}
+.stat .t{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.stat .v{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap;font-family:var(--display);font-weight:800;text-transform:uppercase}
+.stat .v .a{font-size:20px;color:var(--muted);text-decoration:line-through;text-decoration-color:rgba(255,255,255,.3)}
+.stat .v .b{font-size:30px;color:var(--yellow);font-variant-numeric:tabular-nums}
+.stat .v .d{font-family:var(--mono);font-size:12px;letter-spacing:.06em;color:var(--green,#5ad26f)}
+.stat .v .d.bad{color:var(--red)}
+.stat .s{font-size:12.5px;color:var(--dim)}
+.track{background:#0b0b0c;border:1px solid var(--line);border-radius:6px;padding:12px;display:grid;gap:10px}
+.lane{display:grid;grid-template-columns:minmax(64px,110px) minmax(0,1fr) 44px;align-items:center;gap:10px;min-width:0}
+.lane .ltag{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.lane .road{position:relative;height:18px;border-bottom:1px dashed rgba(255,255,255,.14)}
+.lane .road::after{content:"";position:absolute;right:0;top:-4px;bottom:-4px;width:3px;background:repeating-linear-gradient(0deg,#fff 0 4px,#000 4px 8px);opacity:.7}
+.lane .car{position:absolute;left:0;top:3px;width:34px;height:12px;border-radius:3px 7px 7px 3px;transform:translateX(0);will-change:transform}
+.lane .car.a{background:#8d9096}.lane .car.b{background:var(--yellow)}
+.lane .clk{font-family:var(--mono);font-size:12px;color:var(--fg);font-variant-numeric:tabular-nums;text-align:right}
+.btnrow{display:flex;gap:8px;flex-wrap:wrap}
+.btnrow .btn{font-size:14px;padding:9px 13px}
+/* assistant */
+.asst{position:fixed;right:16px;bottom:16px;z-index:60;width:min(360px,calc(100vw - 32px));display:grid;gap:8px;justify-items:end}
+.asst__card{background:rgba(16,16,18,.96);backdrop-filter:blur(12px);border:1px solid var(--line);border-left:3px solid var(--yellow);border-radius:10px 10px 2px 10px;padding:12px 14px;display:grid;gap:10px;box-shadow:0 20px 50px rgba(0,0,0,.55);width:100%;transform-origin:bottom right;animation:pop .25s cubic-bezier(.2,.8,.2,1)}
+@keyframes pop{from{transform:scale(.92);opacity:0}to{transform:scale(1);opacity:1}}
+.asst__who{display:flex;align-items:center;gap:8px;font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.asst__who i{display:inline-grid;place-items:center;width:22px;height:22px;border-radius:50%;background:var(--yellow);color:#0b0b0c;font-family:var(--display);font-weight:800;font-style:normal;font-size:13px}
+.asst__msg{font-size:15px;line-height:1.45;color:var(--fg)}
+.asst__msg b{color:var(--yellow);font-weight:600}
+.asst__chips{display:flex;flex-wrap:wrap;gap:6px}
+.asst__chips .chip{min-height:34px;font-size:11.5px}
+.asst__fab{width:48px;height:48px;border-radius:50%;background:var(--yellow);color:#0b0b0c;border:0;font-family:var(--display);font-weight:800;font-size:18px;cursor:pointer;box-shadow:0 10px 30px rgba(0,0,0,.5);display:grid;place-items:center}
+.asst__fab .dot{position:absolute;top:-2px;right:-2px;width:12px;height:12px;border-radius:50%;background:var(--red);border:2px solid #0b0b0c}
+.asst__fab{position:relative}
+.asst__x{background:none;border:0;color:var(--dim);font-size:18px;cursor:pointer;margin-left:auto;line-height:1}
+@media (max-width:900px){.asst{bottom:72px;right:12px}.asst__card{max-height:55vh;overflow:auto;padding:10px 12px}.asst__msg{font-size:14px}}
+@media (max-width:600px){.lane{grid-template-columns:60px minmax(0,1fr) 40px;gap:8px}.pnl{padding:13px}.sec{padding-block:28px}.phead .cta-row,.phead .phone-line{display:none}.phead{padding-block:28px 10px}.phead h1{font-size:38px}.phead .lede{font-size:16px}.reads{grid-template-columns:1fr 1fr}.read .n{font-size:22px}body{padding-bottom:90px}}
+.faq{display:grid;gap:10px;max-width:72ch}
+.faq details{border-top:1px solid var(--line);padding:12px 0 4px}
+.faq summary{cursor:pointer;font-family:var(--display);font-weight:700;font-size:20px;text-transform:uppercase;letter-spacing:.02em;list-style:none;display:flex;justify-content:space-between;gap:12px}
+.faq summary::-webkit-details-marker{display:none}.faq summary::after{content:"+";color:var(--yellow);font-weight:600}.faq details[open] summary::after{content:"\2013"}
+.faq p{color:var(--muted);margin-top:8px;font-size:15.5px}
+.sm{font-size:12.5px;color:var(--dim);line-height:1.35}
+</style><script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebApplication", "name": "Eins 8HP Swap Simulator", "url": "https://einsmotorsports.net/8hp-swap/", "applicationCategory": "UtilitiesApplication", "operatingSystem": "Any", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}, "description": "Compare your current gearbox to a ZF 8HP (BMW, Dodge, Jaguar, Alfa Romeo, Maserati, Audi donors): gear curve, wheel torque and simulated 0-60, quarter mile and 60-130, with diff and shift-point suggestions.", "publisher": {"@id": "https://einsmotorsports.net/#shop"}}</script><script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Which ZF 8HP should I use for a swap?", "acceptedAnswer": {"@type": "Answer", "text": "The 8HP45 and 8HP50 handle a stock-turbo car; hybrids and E85 want an 8HP70 or 8HP75; a big single wants the 8HP90/95. Dodge 845RE/850RE/8HP70 units are cheap and plentiful, Jaguar and Maserati 8HP70s are the same box with a different bellhousing, and BMW units bolt up. Gen 1 (4.71 first, 0.67 eighth) and gen 2 (5.00 first, 0.64 eighth) ratios feel different."}}, {"@type": "Question", "name": "Does an 8HP swap make the car faster?", "acceptedAnswer": {"@type": "Answer", "text": "With the same engine and tires, yes, mostly from the shift: a 6HP or a manual loses 0.3 to 0.4 seconds per gear change, the 8HP about 0.15, and it has two more gears to keep a turbo engine in its plateau. Typical gain is 0.2 to 0.5 s in the quarter mile and more in 60-130."}}, {"@type": "Question", "name": "Do I need to change the differential for an 8HP swap?", "acceptedAnswer": {"@type": "Answer", "text": "Often not. The 8HP's 0.67 or 0.64 eighth gear is taller than a 6HP19's 0.69 or a manual's 0.85, so cruise rpm drops with the stock diff. The simulator scores the common BMW diffs against your engine and tires."}}, {"@type": "Question", "name": "What else does an 8HP swap need?", "acceptedAnswer": {"@type": "Answer", "text": "A transmission controller that speaks to the 8HP, the right bellhousing and flexplate, a driveshaft, mounts, a cooler and a shifter solution. The gearbox is the cheap part."}}]}</script></head>
+<body>
+<header class="top"><div class="wrap top__in">
+  <a class="brand" href="/"><img class="brand__logo" src="/img/logo.png" alt="Eins Motorsports" width="900" height="260"></a>
+  <button class="menu-btn" type="button" aria-expanded="false" aria-controls="nav">Menu</button>
+  <nav class="nav" id="nav" aria-label="Main"><a href="/">Home</a><a href="/platforms/">Platforms</a><a href="/services/">Services</a><a href="/store/">Store</a><a href="/exotic/">Exotic & AMG</a><a href="/builds/">Builds</a><a href="/about/">About</a><a href="/contact/">Contact</a><a class="btn btn--red btn--sm" href="sms:7087079756">Text us</a></nav>
+</div></header>
+<section class="phead"><div class="wrap stack">
+  <div class="kicker"><span class="stripe" aria-hidden="true"></span><span class="eyebrow">Free tool · 8HP swap</span></div>
+  <h1>8HP swap simulator.</h1>
+  <p class="lede">Your car, your gearbox, the 8HP you're eyeing. Drag the speed and watch the gears, the wheel torque and the quarter mile move before you buy a transmission.</p>
+</div></section>
+
+<section class="sec sec--tight"><div class="wrap"><div class="sim">
+
+  <div class="pnl" id="setup">
+    <h3>Your car now</h3>
+    <div class="f"><span>Car</span><select id="car"></select></div>
+    <div class="f"><span>Gearbox in it</span><div class="chips" id="transChips"></div></div>
+    <div class="f"><span>Engine <b id="engLbl"></b></span><select id="eng"></select></div>
+    <div class="f"><span>Peak torque <b id="tqLbl"></b></span><input type="range" id="tq" min="150" max="800" step="5" value="300"></div>
+    <div class="row2">
+      <div class="f"><span>Redline <b id="rlLbl"></b></span><input type="range" id="rl" min="5500" max="9000" step="100" value="7000"></div>
+      <div class="f"><span>Shift at <b id="shLbl"></b></span><input type="range" id="sh" min="4500" max="9000" step="100" value="6800"></div>
+    </div>
+    <div class="f"><span>Final drive <b id="fdLbl"></b></span><div class="chips" id="fdChips"></div></div>
+    <details class="adv"><summary>Tires, weight, current ratios</summary><div class="in">
+      <div class="row3">
+        <div class="f"><span>Width</span><input type="number" id="tw" value="255" min="155" max="355" step="5"></div>
+        <div class="f"><span>Aspect</span><input type="number" id="ta" value="35" min="20" max="80" step="5"></div>
+        <div class="f"><span>Wheel</span><input type="number" id="tr" value="18" min="14" max="22" step="1"></div>
+      </div>
+      <div class="f"><span>Weight with you in it <b id="wtLbl"></b></span><input type="range" id="wt" min="2400" max="5000" step="25" value="3700"></div>
+      <div class="f"><span>Current gear ratios</span><div class="ratios" id="curRatios"></div></div>
+    </div></details>
+  </div>
+
+  <div style="display:grid;gap:16px;min-width:0">
+    <div class="pnl">
+      <h3>The 8HP you want <small>ratios editable</small></h3>
+      <div class="f"><select id="donor"></select></div>
+      <div class="ratios" id="hpRatios"></div>
+      <p class="sm" id="donorNote"></p>
+    </div>
+
+    <div class="pnl">
+      <h3>Gear curve <small id="viewNote">rpm vs speed</small></h3>
+      <div class="views"><button class="chip" type="button" data-view="rpm" aria-pressed="true">RPM</button><button class="chip" type="button" data-view="tq">Wheel torque</button><button class="chip" type="button" data-view="acc">Acceleration</button></div>
+      <div class="chartwrap"><canvas id="chart" width="1200" height="620" aria-label="Gear ratio curve"></canvas></div>
+      <div class="legend"><span><i style="background:#8d9096"></i><span id="legA">Current</span></span><span><i style="background:var(--yellow)"></i><span id="legB">8HP</span></span><span><i style="background:rgba(255,255,255,.25);height:1px"></i>shift point</span></div>
+      <div class="f"><div class="speedlbl"><span>Drag the speed</span><b id="spdLbl">60 mph</b></div><input type="range" id="spd" min="5" max="170" step="1" value="60"></div>
+      <div class="reads">
+        <div class="read"><div class="t" id="rdAt">Current @ 60 mph</div><div class="n" id="rdAn">3rd · 4,200</div><div class="s" id="rdAs"></div></div>
+        <div class="read hp"><div class="t" id="rdBt">8HP @ 60 mph</div><div class="n" id="rdBn">4th · 3,900</div><div class="s" id="rdBs"></div></div>
+      </div>
+    </div>
+
+    <div class="pnl" id="results">
+      <h3>Simulated, same engine and tires <small>shift at the slider above</small></h3>
+      <div class="res">
+        <div class="stat"><div class="t">0–60 mph</div><div class="v"><span class="a" id="s60a"></span><span class="b" id="s60b"></span><span class="d" id="s60d"></span></div><div class="s">launch grip-limited, street tires</div></div>
+        <div class="stat"><div class="t">¼ mile</div><div class="v"><span class="a" id="sqa"></span><span class="b" id="sqb"></span><span class="d" id="sqd"></span></div><div class="s" id="sqs"></div></div>
+        <div class="stat"><div class="t">60–130 mph</div><div class="v"><span class="a" id="s613a"></span><span class="b" id="s613b"></span><span class="d" id="s613d"></span></div><div class="s">the number that shows gearing</div></div>
+      </div>
+      <div class="res">
+        <div class="stat"><div class="t">75 mph cruise</div><div class="v"><span class="a" id="scra"></span><span class="b" id="scrb"></span></div><div class="s" id="scrs">top gear rpm</div></div>
+        <div class="stat"><div class="t">1st gear tops out</div><div class="v"><span class="a" id="s1a"></span><span class="b" id="s1b"></span></div><div class="s">at the shift point</div></div>
+        <div class="stat"><div class="t">Overall 1st (gear × diff)</div><div class="v"><span class="a" id="so1a"></span><span class="b" id="so1b"></span></div><div class="s">leverage off the line</div></div>
+      </div>
+      <div class="track" id="track">
+        <div class="lane"><span class="ltag" id="laneA">Current</span><div class="road" id="roadA"><div class="car a" id="carA"></div></div><span class="clk" id="clkA">0.00</span></div>
+        <div class="lane"><span class="ltag">8HP</span><div class="road"><div class="car b" id="carB"></div></div><span class="clk" id="clkB">0.00</span></div>
+      </div>
+      <div class="btnrow"><button class="btn btn--red" type="button" id="raceBtn">Race them</button><button class="btn btn--ghost" type="button" id="copyBtn">Copy the summary</button><a class="btn btn--ghost" href="sms:7087079756?&body=Thinking%20about%20an%208HP%20swap">Text us about a swap</a></div>
+      <p class="sm">A physics estimate, not a dyno sheet: a parametric torque curve for the engine you picked, street-tire launch grip with converter multiplication on the automatics, a shift that takes 0.15 s on the 8HP and 0.3–0.4 s on what you have, air drag and rolling resistance. Both cars get the same engine, tires and weight, so the gap you see is the gearbox.</p>
+    </div>
+  </div>
+</div></div></section>
+
+<div class="asst" id="asst"><div class="asst__card" id="asstCard" hidden><div class="asst__who"><i>E</i>Eins assistant<button class="asst__x" type="button" id="asstX" aria-label="Close">×</button></div><div class="asst__msg" id="asstMsg"></div><div class="asst__chips" id="asstChips"></div></div><button class="asst__fab" type="button" id="asstFab" aria-label="Open the assistant">E<span class="dot" id="asstDot"></span></button></div>
+
+<section class="sec"><div class="wrap">
+  <div class="sec__head"><span class="eyebrow">Straight answers</span><h2>8HP swap questions we get.</h2></div>
+  <div class="faq">
+    <details><summary>Which 8HP should I use?</summary><p>They all share the ZF 8HP architecture, so what matters is torque rating and ratios. The 8HP45 and 8HP50 handle a stock-turbo car; hybrids and E85 want an 8HP70 or 8HP75; a big single wants the 8HP90/95. Dodge 845RE/850RE/8HP70 units are cheap and everywhere, Jaguar and Maserati 8HP70s are the same box with a different bellhousing, and the BMW units bolt up. Gen 1 ratios (4.71 first, 0.67 eighth) and gen 2 (5.00 first, 0.64 eighth) feel different: try both above.</p></details>
+    <details><summary>Does the swap actually make the car faster?</summary><p>Same engine, same tires: yes, mostly from the shift. A 6HP or a manual loses 0.3 to 0.4 seconds every gear change; the 8HP loses about 0.15 and has two more gears to keep a turbo engine in its plateau. The simulator shows 0.2 to 0.5 s in the quarter on a typical N54, more on a car that was shifting a slow automatic before. Gearing-wise the real gain is 60–130.</p></details>
+    <details><summary>Do I need to change the diff?</summary><p>Often not. The 8HP's 0.67 or 0.64 eighth is taller than a 6HP19's 0.69 or a 6MT's 0.85, so with your stock diff the cruise rpm drops. Ask the assistant for the optimal setup and it scores the common BMW diffs against your engine and tires.</p></details>
+    <details><summary>What else does the swap need?</summary><p>A standalone transmission controller or a BMW DME/TCU that speaks to the 8HP, the right bellhousing and flexplate, a driveshaft, mounts, a trans cooler and a shifter solution. The gearbox is the cheap part. If you want it done right the first time, text the shop.</p></details>
+  </div>
+  <div class="cta-row" style="margin-top:24px"><a class="btn btn--red" href="sms:7087079756">Text the shop about a swap</a><a class="btn btn--ghost" href="/store/build/">Spec the engine side in the Build Lab</a></div>
+</div></section>
+<footer class="foot"><div class="wrap">
+  <div class="foot__grid">
+    <div><h4>Eins Motorsports</h4><ul><li>222 Park St</li><li>Bensenville, IL 60106</li><li><a href="https://www.google.com/maps/search/?api=1&query=Eins+Motorsports+222+Park+St+Bensenville+IL" target="_blank" rel="noopener">Open in Maps</a></li></ul></div>
+    <div><h4>Reach us</h4><ul><li><b class="mono">(708) 707-9756</b></li><li><a href="sms:7087079756">Text the shop</a></li><li><a href="https://eins-motorsports.as.me/" target="_blank" rel="noopener">Book online</a></li><li><a href="https://www.instagram.com/einsmotorsports/" target="_blank" rel="noopener">Instagram @einsmotorsports</a></li></ul></div>
+    <div><h4>Platforms</h4><ul><li><a href="/s55/">F80 / F82 M3 M4 · S55</a></li><li><a href="/s58/">G80 / G82 / G87 · S58</a></li><li><a href="/b58/">B58 &amp; N55</a></li><li><a href="/n54/">N54 · 335i 135i 1M</a></li><li><a href="/s65/">E90 / E92 M3 · S65</a></li></ul></div>
+    <div><h4>Work</h4><ul><li><a href="/flex-fuel/">Flex fuel &amp; E85</a></li><li><a href="/tuning/">Custom tuning</a></li><li><a href="/turbo/">Turbo &amp; bolt-ons</a></li><li><a href="/repair/">Repair &amp; diagnostics</a></li><li><a href="/exotic/">Lamborghini · McLaren · AMG</a></li><li><a href="/store/">Parts store</a></li><li><a href="/store/build/">Build Lab</a></li><li><a href="/mgu/">MGU coding · cluster &amp; HUD</a></li><li><a href="/e85-calculator/">E85 blend calculator</a></li><li><a href="/8hp-swap/">8HP swap simulator</a></li></ul></div>
+  </div>
+  <p class="fine">© 2026 Eins Motorsports · Independent shop. Not affiliated with BMW AG, Automobili Lamborghini, McLaren Automotive or Mercedes-Benz AG. Model names are used to identify the vehicles we work on.</p>
+</div></footer>
+<nav class="actbar" aria-label="Quick actions"><a href="sms:7087079756" class="red">Text</a><a href="tel:+17087079756">Call</a><a href="https://eins-motorsports.as.me/" target="_blank" rel="noopener">Book</a></nav><script>
+(function(){
+  var b=document.querySelector('.menu-btn'),n=document.querySelector('.nav');
+  if(b&&n){b.addEventListener('click',function(){var o=n.classList.toggle('open');b.setAttribute('aria-expanded',o?'true':'false');b.textContent=o?'Close':'Menu';});}
+  document.querySelectorAll('.copy').forEach(function(c){c.addEventListener('click',function(){var t=c.getAttribute('data-copy');function sel(){var el=c.previousElementSibling;if(el){var r=document.createRange();r.selectNodeContents(el);var s=getSelection();s.removeAllRanges();s.addRange(r);}}
+    if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(function(){c.textContent='Copied';setTimeout(function(){c.textContent='Copy'},1500)}).catch(sel);}else{sel();}});});
+})();
+</script>
+<script>
+(function(){
+'use strict';
+var $=function(i){return document.getElementById(i);};
+// ---------- data ----------
+var ENG={
+  m52:{n:'M52 2.8 (328i)',tq:206,p1:3400,p2:4400,rl:6500,k:.78},
+  s52:{n:'S52 3.2 (E36 M3)',tq:236,p1:3400,p2:4600,rl:6800,k:.8},
+  m54:{n:'M54 3.0 (330i)',tq:214,p1:3200,p2:4300,rl:6500,k:.78},
+  s54:{n:'S54 3.2 (E46 M3)',tq:262,p1:4400,p2:5800,rl:8000,k:.86},
+  n52:{n:'N52 3.0 (328i)',tq:200,p1:2700,p2:4600,rl:7000,k:.8},
+  n54:{n:'N54 stock',tq:315,p1:1500,p2:5000,rl:7000,k:.7},
+  n54s2:{n:'N54 stage 2 + E85',tq:430,p1:2600,p2:5600,rl:7000,k:.75},
+  n54h:{n:'N54 hybrids + E85',tq:520,p1:3200,p2:6000,rl:7000,k:.8},
+  n54bt:{n:'N54 single turbo',tq:620,p1:3800,p2:6400,rl:7200,k:.85},
+  n55:{n:'N55 stock',tq:310,p1:1300,p2:4800,rl:7000,k:.7},
+  n55t:{n:'N55 stage 2 + E85',tq:400,p1:2400,p2:5400,rl:7000,k:.75},
+  b58:{n:'B58 stock',tq:380,p1:1600,p2:4800,rl:7000,k:.72},
+  b58t:{n:'B58 stage 2 + E85',tq:480,p1:2500,p2:5600,rl:7000,k:.76},
+  s65:{n:'S65 4.0 V8',tq:295,p1:3900,p2:6800,rl:8400,k:.9},
+  s85:{n:'S85 5.0 V10',tq:383,p1:4600,p2:6800,rl:8250,k:.9},
+  s62:{n:'S62 5.0 V8',tq:369,p1:3600,p2:5200,rl:7000,k:.8},
+  s63:{n:'S63TU (F10 M5)',tq:500,p1:1800,p2:5700,rl:7200,k:.78}
+};
+// shift times (s) and torque-converter stall for launches
+var BOX={auto5:{t:.45,st:2200},auto6:{t:.35,st:2400},gm6:{t:.4,st:2300},mt:{t:.35,st:3200},smg:{t:.25,st:3000},dct:{t:.1,st:3000},hp8:{t:.15,st:2400}};
+var G1=[4.714,3.143,2.106,1.667,1.285,1.0,0.839,0.667],G2=[5.0,3.2,2.143,1.72,1.313,1.0,0.823,0.64];
+var CARS=[
+ {n:'E36 328i (1996–99)',eng:'m52',wt:3300,tire:[225,50,16],tr:[{n:'5-speed manual',k:'mt',r:[4.20,2.49,1.66,1.24,1.00],fd:2.93},{n:'5HP18 auto',k:'auto5',r:[3.67,2.00,1.41,1.00,0.74],fd:3.15}]},
+ {n:'E36 M3 (1995–99)',eng:'s52',wt:3300,tire:[245,40,17],tr:[{n:'5-speed manual',k:'mt',r:[4.20,2.49,1.66,1.24,1.00],fd:3.23},{n:'5HP18 auto',k:'auto5',r:[3.67,2.00,1.41,1.00,0.74],fd:3.15}]},
+ {n:'E46 330i / 325i (2001–06)',eng:'m54',wt:3400,tire:[225,45,17],tr:[{n:'5-speed manual',k:'mt',r:[4.23,2.52,1.67,1.23,1.00],fd:3.07},{n:'5HP19 / 5L40 auto',k:'auto5',r:[3.57,2.20,1.51,1.00,0.80],fd:3.46}]},
+ {n:'E46 M3 (2001–06)',eng:'s54',wt:3500,tire:[255,40,18],tr:[{n:'6-speed manual',k:'mt',r:[4.23,2.53,1.67,1.23,1.00,0.83],fd:3.62},{n:'SMG II',k:'smg',r:[4.23,2.53,1.67,1.23,1.00,0.83],fd:3.62}]},
+ {n:'E90 / E92 328i (2007–13)',eng:'n52',wt:3500,tire:[225,45,17],tr:[{n:'6-speed manual',k:'mt',r:[4.32,2.46,1.66,1.23,1.00,0.85],fd:3.23},{n:'6L45 auto',k:'gm6',r:[4.06,2.37,1.55,1.16,0.85,0.67],fd:3.46}]},
+ {n:'E90 / E92 335i (2007–13)',eng:'n54',wt:3750,tire:[255,35,18],tr:[{n:'6-speed manual',k:'mt',r:[4.11,2.32,1.54,1.18,1.00,0.85],fd:3.08},{n:'6HP19 auto',k:'auto6',r:[4.17,2.34,1.52,1.14,0.87,0.69],fd:3.46}]},
+ {n:'E82 135i / 1M (2008–13)',eng:'n54',wt:3450,tire:[245,35,18],tr:[{n:'6-speed manual',k:'mt',r:[4.11,2.32,1.54,1.18,1.00,0.85],fd:3.08},{n:'6HP19 auto',k:'auto6',r:[4.17,2.34,1.52,1.14,0.87,0.69],fd:3.46},{n:'1M 6-speed',k:'mt',r:[4.11,2.32,1.54,1.18,1.00,0.85],fd:3.15}]},
+ {n:'E90 / E92 M3 (2008–13)',eng:'s65',wt:3750,tire:[265,40,18],tr:[{n:'6-speed manual',k:'mt',r:[4.06,2.40,1.58,1.19,1.00,0.87],fd:3.85},{n:'7-speed DCT',k:'dct',r:[4.78,3.06,2.15,1.67,1.26,1.00,0.84],fd:3.15}]},
+ {n:'E60 535i (2008–10)',eng:'n54',wt:3900,tire:[245,40,18],tr:[{n:'6HP19 auto',k:'auto6',r:[4.17,2.34,1.52,1.14,0.87,0.69],fd:3.46},{n:'6-speed manual',k:'mt',r:[4.11,2.32,1.54,1.18,1.00,0.85],fd:3.08}]},
+ {n:'E60 M5 (2006–10)',eng:'s85',wt:4100,tire:[285,35,19],tr:[{n:'SMG III 7-speed',k:'smg',r:[3.99,2.65,1.81,1.39,1.16,1.00,0.83],fd:3.62},{n:'6-speed manual',k:'mt',r:[4.23,2.53,1.67,1.23,1.00,0.83],fd:3.62}]},
+ {n:'E39 M5 (2000–03)',eng:'s62',wt:4050,tire:[275,35,18],tr:[{n:'6-speed manual',k:'mt',r:[4.23,2.53,1.67,1.23,1.00,0.83],fd:3.15}]},
+ {n:'F30 335i / F22 M235i (8HP45)',eng:'n55',wt:3650,tire:[255,35,18],tr:[{n:'8HP45',k:'hp8',r:G1.slice(),fd:3.08}]},
+ {n:'F10 M5 (8HP70 gen 1)',eng:'s63',wt:4300,tire:[295,30,20],tr:[{n:'8HP70',k:'hp8',r:G1.slice(),fd:3.15}]},
+ {n:'Custom / enter my own',eng:'n54',wt:3600,tire:[255,35,18],tr:[{n:'Manual',k:'mt',r:[4.11,2.32,1.54,1.18,1.00,0.85],fd:3.08},{n:'Automatic',k:'auto6',r:[4.17,2.34,1.52,1.14,0.87,0.69],fd:3.46}]}
+];
+var DONORS=[
+ {g:'BMW',n:'8HP45 · F30 335i, F22 M235i, F10 528i (2012–16)',r:G1,note:'Gen 1 ratios. Bolts to BMW inline-six bellhousing patterns. Rated ~330 lb-ft; fine on a stock turbo, marginal past that.'},
+ {g:'BMW',n:'8HP70 · F10 550i, F12 650i, F01 750i, F10 M5',r:G1,note:'Gen 1 ratios, the strong one. Rated ~520 lb-ft; the one for hybrids and E85.'},
+ {g:'BMW',n:'8HP50 · F30 340i, G20 M340i, X3 M40i (2016+)',r:G2,note:'Gen 2 ratios: 5.00 first, 0.64 eighth. Wider spread, shorter first.'},
+ {g:'BMW',n:'8HP51 · G20 330i, G42 M240i, A90 Supra',r:G2,note:'Gen 3 box with gen 2 ratios. Needs its own controller logic; common on Supra swaps.'},
+ {g:'BMW',n:'8HP75 · G30 M550i, F90 M5, X3 M / X4 M',r:G2,note:'Gen 2 ratios, ~550 lb-ft rating. The big-power BMW box.'},
+ {g:'BMW',n:'8HP76 · G80 M3 / G82 M4 Competition, G87 M2',r:G2,note:'Gen 3, M-calibrated. Same ratios as the 8HP75.'},
+ {g:'Dodge',n:'845RE · Charger / Challenger / 300 3.6 (2013–19)',r:G1,note:'A ZF 8HP45 built by Chrysler. Cheapest 8HP on earth; needs a BMW-pattern bellhousing adapter and a standalone TCU.'},
+ {g:'Dodge',n:'850RE · Charger / Challenger / Durango / Ram 3.6 (2018+)',r:G1,note:'8HP50 built by Chrysler. Gen 1 ratios despite the 50 name.'},
+ {g:'Dodge',n:'8HP70 · Charger / Challenger 5.7 & 6.4, Jeep SRT (2015+)',r:G1,note:'Plentiful and strong. Chrysler bellhousing pattern.'},
+ {g:'Dodge',n:'8HP90 · Hellcat (2015–18)',r:G1,note:'~650 lb-ft rating. Heavy. For the single-turbo builds.'},
+ {g:'Dodge',n:'8HP95 · Hellcat Redeye, Demon, Ram TRX',r:G1,note:'Dodge publishes gen 1 ratios for the 95. The strongest 8HP you can buy used.'},
+ {g:'Jaguar / Land Rover',n:'8HP45 · XF / XJ 3.0 (2013–15)',r:G1,note:'Same box as the BMW 8HP45 with a Jaguar bellhousing.'},
+ {g:'Jaguar / Land Rover',n:'8HP70 · F-Type V8, XFR, XJR, Range Rover 5.0 SC',r:G1,note:'8HP70 internals, Jaguar case. Good source for the strong box.'},
+ {g:'Alfa Romeo / Maserati',n:'8HP50 · Giulia / Stelvio 2.0T',r:G1,note:'Alfa publishes gen 1 ratios on the Giulia.'},
+ {g:'Alfa Romeo / Maserati',n:'8HP75 · Giulia / Stelvio Quadrifoglio',r:G1,note:'The QV box. Gen 1 ratios per Alfa.'},
+ {g:'Alfa Romeo / Maserati',n:'8HP70 · Ghibli, Quattroporte, Levante',r:G1,note:'Maserati-cased 8HP70.'},
+ {g:'Audi / VW',n:'8HP55 · A8 / S8 4.0T, Q7 (tiptronic)',r:G1,note:'ZF 8HP in an Audi case. Longitudinal only.'},
+ {g:'Rolls-Royce / Bentley',n:'8HP90 · Ghost, Wraith, Continental GT',r:G1,note:'Same family as the Hellcat box, nicer badge.'}
+];
+var FDS=[2.93,3.07,3.08,3.15,3.23,3.38,3.46,3.64,3.73,3.91,4.10];
+// ---------- state ----------
+var st={car:5,tr:1,eng:'n54',tq:300,rl:7000,sh:6800,fd:3.46,tire:[255,35,18],wt:3750,cur:[],donor:0,hp:G1.slice(),view:'rpm',spd:60};
+function num(v,d){var x=parseFloat(v);return isNaN(x)?d:x;}
+function fmt(n){return Math.round(n).toString().replace(/\B(?=(\d{3})+(?!\d))/g,',');}
+function ord(i){return i+(i===1?'st':i===2?'nd':i===3?'rd':'th');}
+// ---------- physics ----------
+function tireR(){return (st.tire[2]*25.4+2*st.tire[0]*st.tire[1]/100)/2/1000;} // m
+function torque(rpm){var e=ENG[st.eng],p1=e.p1,p2=e.p2,rl=st.rl,T=st.tq;if(rpm<1000)return T*.35;if(rpm<p1)return T*(.45+.55*(rpm-1000)/(p1-1000));if(rpm<=p2)return T;var f=(rpm-p2)/Math.max(300,rl-p2);return T*(1-(1-e.k)*Math.min(1.3,f));}
+function speedAt(rpm,g,fd){return rpm/60*2*Math.PI*tireR()/(g*fd);} // m/s
+function rpmAt(v,g,fd){return v*60*(g*fd)/(2*Math.PI*tireR());}
+var MPH=2.23694;
+var AUTO={auto5:1,auto6:1,gm6:1,hp8:1};
+function sim(ratios,fd,box){
+  var m=st.wt*0.4536,r=tireR(),eff=box==='mt'||box==='dct'||box==='smg'?.9:box==='hp8'?.88:.85,B=BOX[box],sht=B.t,g=0,v=0.1,t=0,x=0,dt=.004,t60=null,tq=null,vq=null,t130=null,pos=[],lastP=0,shifting=0,t0=null;
+  var Cd=.30,A=2.15,rho=1.2,crr=.015,grip=.88*9.81;
+  while(t<40&&(tq===null||v<58.12)){
+    var rpmA=rpmAt(v,ratios[g],fd),rpm=rpmA,mult=1;
+    if(g===0&&rpmA<B.st){rpm=B.st;if(AUTO[box])mult=1+.6*(1-rpmA/B.st);} // converter multiplication / clutch slip off the line
+    if(shifting>0){shifting-=dt;}
+    else if(rpm>=st.sh&&g<ratios.length-1){g++;shifting=sht;rpm=rpmAt(v,ratios[g],fd);}
+    var F=shifting>0?0:torque(Math.min(rpm,st.rl))*mult*1.3558*ratios[g]*fd*eff/r;
+    var N=ratios[g]*fd,me=m*(1.04+.001*N*N); // rotating mass reflected through the gearing
+    var a=(F-.5*rho*Cd*A*v*v-crr*m*9.81)/me;a=Math.min(a,grip);if(a<0&&v<1)a=0;
+    v+=a*dt;x+=v*dt;t+=dt;
+    if(t0===null&&x>=.3048)t0=t; // 1-ft rollout, like the strip and the magazines
+    var tc=t0===null?0:t-t0;
+    if(t60===null&&v>=26.82)t60=tc;if(t130===null&&v>=58.12)t130=tc;
+    if(tq===null&&x>=402.3){tq=tc;vq=v*MPH;}
+    if(tq===null&&t-lastP>=.05){pos.push([tc,x]);lastP=t;}
+  }
+  if(tq===null){tq=t;vq=v*MPH;}
+  return {t60:t60,tq:tq,vq:vq,t613:(t130!==null&&t60!==null)?t130-t60:null,pos:pos,top:ratios.length};
+}
+function gearAt(v,ratios,fd){ // accelerating gear: lowest gear that keeps rpm under the shift point
+  for(var i=0;i<ratios.length;i++){var rpm=rpmAt(v,ratios[i],fd);if(rpm<=st.sh)return {g:i,rpm:rpm};}
+  return {g:ratios.length-1,rpm:rpmAt(v,ratios[ratios.length-1],fd)};
+}
+function cruiseAt(v,ratios,fd){for(var i=ratios.length-1;i>=0;i--){var rpm=rpmAt(v,ratios[i],fd);if(rpm>=1150)return {g:i,rpm:rpm};}return {g:0,rpm:rpmAt(v,ratios[0],fd)};}
+// ---------- ui build ----------
+var car=$('car'),eng=$('eng'),donor=$('donor');
+CARS.forEach(function(c,i){var o=document.createElement('option');o.value=i;o.textContent=c.n;car.appendChild(o);});
+Object.keys(ENG).forEach(function(k){var o=document.createElement('option');o.value=k;o.textContent=ENG[k].n;eng.appendChild(o);});
+(function(){var groups={};DONORS.forEach(function(d,i){(groups[d.g]=groups[d.g]||[]).push([i,d]);});Object.keys(groups).forEach(function(g){var og=document.createElement('optgroup');og.label=g;groups[g].forEach(function(p){var o=document.createElement('option');o.value=p[0];o.textContent=p[1].n;og.appendChild(o);});donor.appendChild(og);});})();
+function ratioGrid(id,arr,onChange){var w=$(id);w.innerHTML='';arr.forEach(function(r,i){var d=document.createElement('div');d.className='f';d.innerHTML='<div class="g">'+ord(i+1)+'</div>';var inp=document.createElement('input');inp.type='number';inp.step='0.001';inp.min='0.3';inp.max='6';inp.value=r.toFixed(3);inp.setAttribute('aria-label',ord(i+1)+' gear ratio');inp.addEventListener('input',function(){var v=num(inp.value,r);if(v>0)onChange(i,v);});d.appendChild(inp);w.appendChild(d);});}
+function chips(id,items,cur,on){var w=$(id);w.innerHTML='';items.forEach(function(it){var b=document.createElement('button');b.type='button';b.className='chip';b.textContent=it.label;b.setAttribute('aria-pressed',it.v===cur?'true':'false');b.addEventListener('click',function(){on(it.v);});w.appendChild(b);});}
+function loadCar(i,keepTr){var c=CARS[i];st.car=i;if(!keepTr)st.tr=0;var t=c.tr[st.tr];st.cur=t.r.slice();st.box=t.k;st.fd=t.fd;st.tire=c.tire.slice();st.wt=c.wt;st.eng=c.eng;st.tq=ENG[c.eng].tq;st.rl=ENG[c.eng].rl;st.sh=Math.max(4500,st.rl-200);
+  eng.value=st.eng;$('tq').value=st.tq;$('rl').value=st.rl;$('sh').value=st.sh;$('tw').value=st.tire[0];$('ta').value=st.tire[1];$('tr').value=st.tire[2];$('wt').value=st.wt;
+  chips('transChips',c.tr.map(function(t,j){return {label:t.n,v:j};}),st.tr,function(j){loadCar(st.car,true,j);});
+  if(arguments.length>2){st.tr=arguments[2];var tt=c.tr[st.tr];st.cur=tt.r.slice();st.box=tt.k;st.fd=tt.fd;chips('transChips',c.tr.map(function(t,j){return {label:t.n,v:j};}),st.tr,function(j){loadCar(st.car,true,j);});}
+  ratioGrid('curRatios',st.cur,function(i,v){st.cur[i]=v;update();});
+  fdChips();update();}
+function fdChips(){var list=FDS.slice();if(list.indexOf(st.fd)<0){list.push(st.fd);list.sort();}chips('fdChips',list.map(function(f){return {label:f.toFixed(2),v:f};}),st.fd,function(f){st.fd=f;fdChips();update();});}
+function loadDonor(i){st.donor=i;st.hp=DONORS[i].r.slice();ratioGrid('hpRatios',st.hp,function(j,v){st.hp[j]=v;update();});$('donorNote').textContent=DONORS[i].note;update();}
+car.addEventListener('change',function(){loadCar(+car.value);});
+donor.addEventListener('change',function(){loadDonor(+donor.value);});
+eng.addEventListener('change',function(){st.eng=eng.value;st.tq=ENG[st.eng].tq;st.rl=ENG[st.eng].rl;st.sh=Math.max(4500,st.rl-200);$('tq').value=st.tq;$('rl').value=st.rl;$('sh').value=st.sh;update();});
+$('tq').addEventListener('input',function(){st.tq=+this.value;update();});
+$('rl').addEventListener('input',function(){st.rl=+this.value;if(st.sh>st.rl){st.sh=st.rl;$('sh').value=st.sh;}update();});
+$('sh').addEventListener('input',function(){st.sh=Math.min(+this.value,st.rl);this.value=st.sh;update();});
+['tw','ta','tr'].forEach(function(id,k){$(id).addEventListener('input',function(){st.tire[k]=num(this.value,st.tire[k]);update();});});
+$('wt').addEventListener('input',function(){st.wt=+this.value;update();});
+$('spd').addEventListener('input',function(){st.spd=+this.value;draw();reads();});
+document.querySelectorAll('.views .chip').forEach(function(b){b.addEventListener('click',function(){setView(b.getAttribute('data-view'));});});
+function setView(v){st.view=v;document.querySelectorAll('.views .chip').forEach(function(x){x.setAttribute('aria-pressed',x.getAttribute('data-view')===v?'true':'false');});$('viewNote').textContent=v==='rpm'?'rpm vs speed':v==='tq'?'wheel torque vs speed':'g vs speed';draw();}
+// ---------- chart ----------
+var cv=$('chart'),cx=cv.getContext('2d'),W=1200,H=620,PL=70,PR=24,PT=28,PB=56,maxV=170;
+function X(mph){return PL+(mph/maxV)*(W-PL-PR);}function Y(f){return PT+(1-f)*(H-PT-PB);}
+function series(ratios,fd){var out=[];ratios.forEach(function(g){var pts=[];for(var mph=1;mph<=maxV;mph+=1){var v=mph/MPH,rpm=rpmAt(v,g,fd);if(rpm<900)continue;if(rpm>st.rl){break;}var tqw=torque(rpm)*g*fd*.88,acc=(torque(rpm)*1.3558*g*fd*.88/tireR()-.5*1.2*.31*2.2*v*v-.015*st.wt*.4536*9.81)/(st.wt*.4536)/9.81;pts.push({mph:mph,rpm:rpm,tq:tqw,acc:Math.min(acc,.9)});}out.push(pts);});return out;}
+function draw(){
+  cx.clearRect(0,0,W,H);cx.fillStyle='#0b0b0c';cx.fillRect(0,0,W,H);
+  var A=series(st.cur,st.fd),B=series(st.hp,st.fd),ymax,key,unit;
+  if(st.view==='rpm'){ymax=Math.ceil(st.rl/1000)*1000;key='rpm';unit='rpm';}
+  else if(st.view==='tq'){ymax=0;A.concat(B).forEach(function(p){p.forEach(function(q){ymax=Math.max(ymax,q.tq);});});ymax=Math.ceil(ymax/500)*500||1000;key='tq';unit='lb-ft at the wheels';}
+  else{ymax=1;key='acc';unit='g';}
+  // grid
+  cx.strokeStyle='rgba(255,255,255,.08)';cx.lineWidth=1;cx.font='12px ui-monospace,Menlo,monospace';cx.fillStyle='#8d9096';cx.textAlign='right';
+  var ysteps=st.view==='acc'?5:st.view==='rpm'?ymax/1000:ymax/500;
+  for(var i=0;i<=ysteps;i++){var f=i/ysteps,y=Y(f);cx.beginPath();cx.moveTo(PL,y);cx.lineTo(W-PR,y);cx.stroke();var lab=st.view==='acc'?(f).toFixed(1):fmt(f*ymax);cx.fillText(lab,PL-8,y+4);}
+  cx.textAlign='center';for(var m=0;m<=maxV;m+=20){var x=X(m);cx.beginPath();cx.moveTo(x,PT);cx.lineTo(x,H-PB);cx.stroke();cx.fillText(m,x,H-PB+18);}
+  cx.fillStyle='#8d9096';cx.fillText('mph',W-PR-14,H-PB+36);cx.save();cx.translate(16,H/2);cx.rotate(-Math.PI/2);cx.fillText(unit,0,0);cx.restore();
+  // shift line
+  if(st.view==='rpm'){var ys=Y(st.sh/ymax);cx.setLineDash([4,6]);cx.strokeStyle='rgba(255,255,255,.28)';cx.beginPath();cx.moveTo(PL,ys);cx.lineTo(W-PR,ys);cx.stroke();cx.setLineDash([]);}
+  function plot(S,color,wd,label){cx.strokeStyle=color;cx.lineWidth=wd;S.forEach(function(pts,gi){if(pts.length<2)return;cx.beginPath();pts.forEach(function(p,k){var y=Y(p[key]/ymax);if(k===0)cx.moveTo(X(p.mph),y);else cx.lineTo(X(p.mph),y);});cx.stroke();var last=pts[pts.length-1];cx.fillStyle=color;cx.font='bold 11px ui-monospace,Menlo,monospace';cx.textAlign='left';cx.fillText(label+(gi+1),X(last.mph)+3,Y(last[key]/ymax)-4);});}
+  plot(A,'#8d9096',2,'');plot(B,'#f2c300',2.5,'');
+  // cursor
+  var xc=X(st.spd);cx.strokeStyle='#fff';cx.lineWidth=1;cx.setLineDash([3,4]);cx.beginPath();cx.moveTo(xc,PT);cx.lineTo(xc,H-PB);cx.stroke();cx.setLineDash([]);
+  var v=st.spd/MPH,ga=gearAt(v,st.cur,st.fd),gb=gearAt(v,st.hp,st.fd);
+  function dot(gear,ratios,color){var rpm=rpmAt(v,ratios[gear.g],st.fd);var val=st.view==='rpm'?rpm:st.view==='tq'?torque(rpm)*ratios[gear.g]*st.fd*.88:Math.min(.9,(torque(rpm)*1.3558*ratios[gear.g]*st.fd*.88/tireR()-.5*1.2*.31*2.2*v*v-.015*st.wt*.4536*9.81)/(st.wt*.4536)/9.81);cx.fillStyle=color;cx.beginPath();cx.arc(xc,Y(Math.min(1,val/ymax)),6,0,Math.PI*2);cx.fill();cx.strokeStyle='#0b0b0c';cx.lineWidth=2;cx.stroke();}
+  dot(ga,st.cur,'#c9ccd1');dot(gb,st.hp,'#f2c300');
+}
+// drag on the canvas moves the speed
+(function(){var down=false;function setFrom(e){var r=cv.getBoundingClientRect();var mph=Math.round((e.clientX-r.left)/r.width*W);mph=(mph-PL)/(W-PL-PR)*maxV;st.spd=Math.max(5,Math.min(maxV,Math.round(mph)));$('spd').value=st.spd;draw();reads();}
+cv.addEventListener('pointerdown',function(e){down=true;cv.setPointerCapture(e.pointerId);setFrom(e);});cv.addEventListener('pointermove',function(e){if(down)setFrom(e);});cv.addEventListener('pointerup',function(){down=false;});cv.addEventListener('pointercancel',function(){down=false;});})();
+// ---------- readouts & results ----------
+var last={};
+function reads(){var v=st.spd/MPH,ga=gearAt(v,st.cur,st.fd),gb=gearAt(v,st.hp,st.fd),ca=cruiseAt(v,st.cur,st.fd),cb=cruiseAt(v,st.hp,st.fd);
+  $('spdLbl').textContent=st.spd+' mph';$('rdAt').textContent=CARS[st.car].tr[st.tr].n+' @ '+st.spd+' mph';$('rdBt').textContent='8HP @ '+st.spd+' mph';
+  $('rdAn').textContent=ord(ga.g+1)+' · '+fmt(ga.rpm);$('rdBn').textContent=ord(gb.g+1)+' · '+fmt(gb.rpm);
+  $('rdAs').textContent='on the gas. Cruising: '+ord(ca.g+1)+' at '+fmt(ca.rpm);$('rdBs').textContent='on the gas. Cruising: '+ord(cb.g+1)+' at '+fmt(cb.rpm);}
+function tf(t){return t===null?'—':t.toFixed(2)+' s';}
+function delta(a,b,id,lowerBetter){var e=$(id);if(a===null||b===null){e.textContent='';return;}var d=b-a;var good=lowerBetter?d<0:d>0;e.textContent=(d>0?'+':'')+d.toFixed(2)+' s';e.className='d'+(good?'':' bad');}
+function update(){
+  $('engLbl').textContent='';$('tqLbl').textContent=st.tq+' lb-ft';$('rlLbl').textContent=fmt(st.rl);$('shLbl').textContent=fmt(st.sh);$('fdLbl').textContent=st.fd.toFixed(2);$('wtLbl').textContent=fmt(st.wt)+' lb';
+  $('legA').textContent=CARS[st.car].tr[st.tr].n;$('legB').textContent=DONORS[st.donor].n.split(' · ')[0];$('laneA').textContent=CARS[st.car].tr[st.tr].n;
+  var A=sim(st.cur,st.fd,st.box),B=sim(st.hp,st.fd,'hp8');last={A:A,B:B};
+  $('s60a').textContent=tf(A.t60);$('s60b').textContent=tf(B.t60);delta(A.t60,B.t60,'s60d',true);
+  $('sqa').textContent=tf(A.tq);$('sqb').textContent=tf(B.tq);delta(A.tq,B.tq,'sqd',true);$('sqs').textContent='trap '+Math.round(A.vq)+' → '+Math.round(B.vq)+' mph';
+  $('s613a').textContent=tf(A.t613);$('s613b').textContent=tf(B.t613);delta(A.t613,B.t613,'s613d',true);
+  var v75=75/MPH;$('scra').textContent=fmt(rpmAt(v75,st.cur[st.cur.length-1],st.fd));$('scrb').textContent=fmt(rpmAt(v75,st.hp[st.hp.length-1],st.fd));
+  $('s1a').textContent=Math.round(speedAt(st.sh,st.cur[0],st.fd)*MPH)+' mph';$('s1b').textContent=Math.round(speedAt(st.sh,st.hp[0],st.fd)*MPH)+' mph';
+  $('so1a').textContent=(st.cur[0]*st.fd).toFixed(1)+':1';$('so1b').textContent=(st.hp[0]*st.fd).toFixed(1)+':1';
+  draw();reads();
+  try{localStorage.setItem('eins-8hp',JSON.stringify({car:st.car,tr:st.tr,eng:st.eng,tq:st.tq,rl:st.rl,sh:st.sh,fd:st.fd,tire:st.tire,wt:st.wt,donor:st.donor,hp:st.hp,cur:st.cur}));}catch(e){}
+}
+// ---------- race ----------
+var racing=null;
+$('raceBtn').addEventListener('click',function(){if(racing){cancelAnimationFrame(racing);racing=null;}var A=last.A,B=last.B,t0=null,span=Math.max(A.tq,B.tq),lane=$('roadA').clientWidth-34-3;
+  function posAt(P,t){for(var i=1;i<P.pos.length;i++){if(P.pos[i][0]>=t){var a=P.pos[i-1],b=P.pos[i];return a[1]+(b[1]-a[1])*(t-a[0])/(b[0]-a[0]);}}return 402.3;}
+  function frame(ts){if(t0===null)t0=ts;var t=(ts-t0)/1000*2.5;$('carA').style.transform='translateX('+Math.min(lane,posAt(A,t)/402.3*lane)+'px)';$('carB').style.transform='translateX('+Math.min(lane,posAt(B,t)/402.3*lane)+'px)';$('clkA').textContent=Math.min(t,A.tq).toFixed(2);$('clkB').textContent=Math.min(t,B.tq).toFixed(2);if(t<span+.3)racing=requestAnimationFrame(frame);else racing=null;}
+  racing=requestAnimationFrame(frame);});
+$('copyBtn').addEventListener('click',function(){var A=last.A,B=last.B,c=CARS[st.car],tr=c.tr[st.tr],txt=c.n+' ('+tr.n+', '+st.fd.toFixed(2)+' diff, '+ENG[st.eng].n+' '+st.tq+' lb-ft) vs '+DONORS[st.donor].n+': 0-60 '+tf(A.t60)+' → '+tf(B.t60)+', 1/4 '+tf(A.tq)+' @ '+Math.round(A.vq)+' → '+tf(B.tq)+' @ '+Math.round(B.vq)+', 60-130 '+tf(A.t613)+' → '+tf(B.t613)+'. 75 mph cruise '+fmt(rpmAt(75/MPH,st.cur[st.cur.length-1],st.fd))+' → '+fmt(rpmAt(75/MPH,st.hp[st.hp.length-1],st.fd))+' rpm. einsmotorsports.net/8hp-swap/';var b=this;if(navigator.clipboard)navigator.clipboard.writeText(txt).then(function(){b.textContent='Copied';setTimeout(function(){b.textContent='Copy the summary';},1500);});});
+// ---------- assistant ----------
+var AS={card:$('asstCard'),msg:$('asstMsg'),chips:$('asstChips'),fab:$('asstFab'),dot:$('asstDot')};
+function say(html,opts){AS.msg.innerHTML=html;AS.chips.innerHTML='';(opts||[]).forEach(function(o){var b=document.createElement('button');b.type='button';b.className='chip';b.textContent=o[0];b.addEventListener('click',o[1]);AS.chips.appendChild(b);});AS.card.hidden=false;AS.dot.hidden=true;}
+function ask(){say('What are you after with the swap? I’ll set the view up and tell you what the numbers say.',[['Launch & wheel torque',modeTorque],['Straight-line acceleration',modeAccel],['Best all-round setup',modeOptimal]]);}
+function modeTorque(){setView('tq');var v=20/MPH,ga=gearAt(v,st.cur,st.fd),gb=gearAt(v,st.hp,st.fd),ta=torque(ga.rpm)*st.cur[ga.g]*st.fd*.88,tb=torque(gb.rpm)*st.hp[gb.g]*st.fd*.88,o1=st.cur[0]*st.fd,o2=st.hp[0]*st.fd,pc=Math.round((o2/o1-1)*100);
+  say('Off the line your '+CARS[st.car].tr[st.tr].n+' is <b>'+o1.toFixed(1)+':1</b> overall in first; the 8HP’s '+st.hp[0].toFixed(2)+' first makes it <b>'+o2.toFixed(1)+':1</b>, '+(pc>=0?pc+'% more':Math.abs(pc)+'% less')+' leverage. At 20 mph that is <b>'+fmt(ta)+'</b> vs <b>'+fmt(tb)+' lb-ft</b> at the wheels. The bigger deal is the steps: after the 1–2 the 8HP drops you to '+fmt(rpmAt(speedAt(st.sh,st.hp[0],st.fd),st.hp[1],st.fd))+' rpm instead of '+fmt(rpmAt(speedAt(st.sh,st.cur[0],st.fd),st.cur[1],st.fd))+', so the turbo never falls off.',
+   [['Try a shorter diff ('+nextFd(1)+')',function(){st.fd=nextFd(1);fdChips();update();modeTorque();}],['Try a taller diff ('+nextFd(-1)+')',function(){st.fd=nextFd(-1);fdChips();update();modeTorque();}],['Show acceleration',modeAccel],['Best setup',modeOptimal]]);}
+function nextFd(dir){var i=FDS.indexOf(st.fd);if(i<0){i=0;for(var k=0;k<FDS.length;k++)if(FDS[k]<st.fd)i=k;}var j=Math.max(0,Math.min(FDS.length-1,i+dir));return FDS[j];}
+function modeAccel(){setView('acc');var A=last.A,B=last.B,gain=(A.tq-B.tq);
+  say('Same engine, same tires. Simulated: 0–60 <b>'+tf(A.t60)+' → '+tf(B.t60)+'</b>, quarter mile <b>'+tf(A.tq)+' → '+tf(B.tq)+'</b>, 60–130 <b>'+tf(A.t613)+' → '+tf(B.t613)+'</b>. '+(gain>0.05?'Most of that '+gain.toFixed(2)+' s is the shift: '+(BOX[st.box].t*1000)+' ms per gear on what you have against 150 on the 8HP, and eight closer steps keep the engine in its plateau.':'Your current box already shifts fast and the gearing is close, so the swap is about the 60–130 and the two extra gears, not the launch.')+' Shifting at '+fmt(st.sh)+' now; a turbo engine usually wants the shift a little past the torque plateau, not at redline.',
+   [['Race them',function(){$('raceBtn').click();}],['Shift at '+fmt(Math.min(st.rl,ENG[st.eng].p2+800)),function(){st.sh=Math.min(st.rl,ENG[st.eng].p2+800);$('sh').value=st.sh;update();modeAccel();}],['Shift at redline',function(){st.sh=st.rl;$('sh').value=st.sh;update();modeAccel();}],['Best setup',modeOptimal]]);}
+function modeOptimal(){var best=null,rows=[];FDS.forEach(function(fd){var B=sim(st.hp,fd,'hp8'),cr=rpmAt(75/MPH,st.hp[st.hp.length-1],fd),first=speedAt(st.sh,st.hp[0],fd)*MPH;var score=(B.tq||99)+Math.abs(cr-2200)/1500+(first<34?1:0)+(cr>2900?.5:0);rows.push({fd:fd,q:B.tq,cr:cr,first:first,score:score});if(!best||score<best.score)best=rows[rows.length-1];});
+  var curRow=rows.filter(function(r){return Math.abs(r.fd-st.fd)<.005;})[0]||rows[0],quick=rows.slice().sort(function(a,b){return a.q-b.q;})[0];
+  say('Scoring the common BMW diffs for the '+DONORS[st.donor].n.split(' · ')[0]+' on your '+ENG[st.eng].n+' and '+st.tire.join('/')+'s: the sweet spot is a <b>'+best.fd.toFixed(2)+'</b>. 75 mph cruise at <b>'+fmt(best.cr)+' rpm</b> in 8th, first gear good to <b>'+Math.round(best.first)+' mph</b>, quarter mile '+tf(best.q)+'. '+(Math.abs(best.fd-st.fd)<.005?'That is what you have, keep it.':'You have a '+st.fd.toFixed(2)+' now: '+tf(curRow.q)+' and '+fmt(curRow.cr)+' rpm cruise.')+(quick.fd!==best.fd?' The outright quickest is the '+quick.fd.toFixed(2)+' ('+tf(quick.q)+') but you’d cruise at '+fmt(quick.cr)+'.':''),
+   [['Use the '+best.fd.toFixed(2),function(){st.fd=best.fd;fdChips();update();modeOptimal();}],['Compare the '+quick.fd.toFixed(2),function(){st.fd=quick.fd;fdChips();update();modeAccel();}],['Show the curve',function(){setView('rpm');say('RPM against speed: gray is what you have, yellow is the 8HP. Drag the line. The dashed line is your shift point.',[['Launch & torque',modeTorque],['Acceleration',modeAccel]]);}]]);}
+AS.fab.addEventListener('click',function(){if(AS.card.hidden)ask();else AS.card.hidden=true;});
+$('asstX').addEventListener('click',function(){AS.card.hidden=true;});
+// ---------- init ----------
+var saved=null;try{saved=JSON.parse(localStorage.getItem('eins-8hp')||'null');}catch(e){}
+if(saved&&CARS[saved.car]){car.value=saved.car;loadCar(saved.car,true,saved.tr||0);st.eng=saved.eng||st.eng;eng.value=st.eng;st.tq=saved.tq||st.tq;st.rl=saved.rl||st.rl;st.sh=saved.sh||st.sh;st.fd=saved.fd||st.fd;if(saved.tire)st.tire=saved.tire;st.wt=saved.wt||st.wt;if(saved.cur&&saved.cur.length===st.cur.length)st.cur=saved.cur;$('tq').value=st.tq;$('rl').value=st.rl;$('sh').value=st.sh;$('tw').value=st.tire[0];$('ta').value=st.tire[1];$('tr').value=st.tire[2];$('wt').value=st.wt;ratioGrid('curRatios',st.cur,function(i,v){st.cur[i]=v;update();});fdChips();donor.value=saved.donor||0;loadDonor(saved.donor||0);if(saved.hp&&saved.hp.length===8){st.hp=saved.hp;ratioGrid('hpRatios',st.hp,function(j,v){st.hp[j]=v;update();});update();}}
+else{car.value=5;loadCar(5,true,1);donor.value=1;loadDonor(1);}
+setTimeout(function(){if(AS.card.hidden)ask();},1800);
+})();
+</script>
+</body></html>
